@@ -1,14 +1,17 @@
+
 import time
 import board
 import adafruit_ahtx0
 import datetime as dt
 import os
 import sys
+from classes import *
+
 import Adafruit_BBIO.GPIO as GPIO
 GPIO.setup("P9_15", GPIO.OUT)
 import adafruit_ssd1306
 import busio as io
-import class
+import time
 threshold = 80
 # Create sensor object, communicating over the board's default I2C bus
 i2c = board.I2C()  # uses board.SCL and board.SDA
@@ -28,16 +31,19 @@ def main():
     textIn = "/home/debian/greenhouse/command.txt"
 
     while True:
-        if isCommand(textIn):
-            print(textIn)
-            cmdRead = open(textIn, 'r+')
-            cmd = cmdRead.read()
-            console(cmd)
-            cmdRead.truncate(0)
+        # if isCommand(textIn):
+        #     print(textIn)
+        #     cmdRead = open(textIn, 'r+')
+        #     cmd = cmdRead.read()
+        #     console(cmd)
+        #     cmdRead.truncate(0)
 
-        line = str(sys.stdin.readline())
-        if line:
-            console(line)
+        # line = str(sys.stdin.readline())
+        # if line:
+        #     console(line)
+        sensor1 = soilMoisture("AIN0")
+        sensor1.readMoisture()
+        time.sleep(1)
 
     #blah blah blah
 

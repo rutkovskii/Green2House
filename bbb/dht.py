@@ -1,6 +1,7 @@
 import time, os, csv, sys
 import board
 import Adafruit_BBIO.GPIO as GPIO
+import Adafruit_BBIO.ADC as ADC
 import adafruit_ahtx0, adafruit_ssd1306
 import busio as io
 
@@ -14,7 +15,7 @@ i2c = board.I2C()  # uses board.SCL and board.SDA
 sensor = adafruit_ahtx0.AHTx0(i2c)
 auto = True
 oled = adafruit_ssd1306.SSD1306_I2C(128, 64, i2c)
-
+ADC.setup()
 
 def isCommand(file_path): #detect presence of commands
     if os.stat(file_path).st_size == 0:
@@ -34,6 +35,7 @@ def console(usr_cmd): #process user command
         sensorF = sensor.temperature*9/5+32
         sensorH = sensor.relative_humidity
         print("Temperature: %2.1f°F\nHumidity: %2.0f%%" %(sensorF, sensorH))
+        print(ADC.read("AIN0"))
 
         temp_string = str(round(sensorF, 1))
         hum_string = str(sensorH)
