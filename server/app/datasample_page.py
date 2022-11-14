@@ -71,9 +71,9 @@ def serve_data_samples():
     length = request.args.get('length', type=int)
     query = query.offset(start).limit(length)
 
-    print([sample.to_dict() for sample in query])
-    print()
-    print(json.dumps([sample.to_dict() for sample in query],default=str))
+    # print([sample.to_dict() for sample in query])
+    # print()
+    # print(json.dumps([sample.to_dict() for sample in query],default=str))
 
     # response to be shown on HTML side
     return json.dumps({

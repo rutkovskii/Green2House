@@ -6,11 +6,13 @@ import os
 
 from app.admin.admin_page import admin_page_bp
 from app.datasample_page import datasample_page_bp
+from app.get_data import get_data_bp
 from app.admin.config import FLASK_HTML_DIR
 
 app = Flask(__name__, template_folder=os.path.abspath(FLASK_HTML_DIR))
 app.register_blueprint(admin_page_bp)
 app.register_blueprint(datasample_page_bp)
+app.register_blueprint(get_data_bp)
 bootstrap = Bootstrap(app)
 
 

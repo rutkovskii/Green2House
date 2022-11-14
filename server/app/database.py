@@ -37,7 +37,7 @@ def add_sample_users():
 
 
 
-def add_sample_datasamples():
+def add_example_datasamples():
     s = Session()
     bulk_list = [
         DataSample(user_id=1,temperature=78.3, humidity=43.2, timestamp=u.dt_ts2dt_obj(tm1),
@@ -84,6 +84,6 @@ if __name__ == "__main__":
     # When running database.py
     # recreate_database()
     # add_sample_users()
-    # add_sample_datasamples()
+    # add_example_datasamples()
 
     pass
