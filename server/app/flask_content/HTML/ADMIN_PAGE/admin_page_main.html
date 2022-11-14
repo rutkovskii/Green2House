@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+
+{% extends "bootstrap/base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% block title %}Admin Page{% endblock %}
+{% block navbar %}
+<nav class="navbar navbar-expand navbar-dark bg-dark" style="background-color: #222222; font-size:14px">
+       <div class="container-fluid">
+          <nav class="navbar-expand">
+             <ul class=" nav navbar-nav horizontal">
+                <li class="nav-item"> <a class="nav-link active" href="/admin">Main Page</a> </li>
+                <li class="nav-item"> <a class="nav-link active" href="/admin/all_users">All Users</a> </li>
+                <li class="nav-item"> <a class="nav-link active" href="/all_data_samples">All Data Samples</a> </li>
+             </ul>
+          </nav>
+       </div>
+</nav>
+{% endblock %}
+{% block content %}
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+<ul class=flashes>
+   {% for message in messages %}
+   <li>{{ message }}</li>
+   {% endfor %}
+</ul>
+{% endif %}
+{% endwith %}
+<div class="container">
+   <div class="page-header">
+      <h2>Use Header for now</h2>
+   </div>
+</div>
+{% endblock %}

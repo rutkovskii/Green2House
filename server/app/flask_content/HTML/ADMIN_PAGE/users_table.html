@@ -1,0 +1,47 @@
+{% extends "table_base.html" %}
+
+{% block content %}
+  <table id="all_users" class="table table-striped">
+    <thead>
+      <tr>
+        <th>Phone Number</th>
+        <th>Email</th>
+        <th>Date and Time Joined</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+{% endblock %}
+
+{% block scripts %}
+<script>
+
+$(document).ready(function () {
+    var table = $('#all_users').DataTable({
+      order: [],
+      ajax: {
+        url:"/api/serve_users",
+      },
+      serverSide: true,
+      columns: [
+        {data: 'phone_number', width: "30%"},
+        {data: 'email', width: "35%"},
+        {data: 'datetime_joined', width: "35%"}
+      ]
+    });
+
+      // Switching with left and right keyboard buttons
+    $(document).keydown( function(e) {
+      // left arrow
+      if ((e.keyCode || e.which) === 37) {
+        $( "#data_previous" ).click();
+      }
+      // right arrow
+      if ((e.keyCode || e.which) === 39) {
+        $( "#data_next" ).click();
+      }
+    })
+});
+
+  </script>
+{% endblock %}
