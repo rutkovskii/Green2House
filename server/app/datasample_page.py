@@ -22,7 +22,7 @@ def serve_page_data_samples():
 def serve_data_samples():
     """Sorts the table, returns searched data"""
     session = Session()
-    query = session.query(DataSample)
+    query = session.query(DataSample).order_by(DataSample.id.desc())
     session.close()
 
     func.to_char()
@@ -38,6 +38,7 @@ def serve_data_samples():
         ))
 
     total_filtered = query.count()
+
 
     # sorting
     order = []
@@ -76,9 +77,10 @@ def serve_data_samples():
     # print(json.dumps([sample.to_dict() for sample in query],default=str))
 
     # response to be shown on HTML side
-    return json.dumps({
-        'data': [sample.to_dict() for sample in query],# default=str),
-        'recordsFiltered': total_filtered,
-        'recordsTotal': query.count(),
-        'draw': request.args.get('draw', type=int),
-    },default=str)
+    return json.dumps(
+        {
+            'data': [sample.to_dict() for sample in query],
+            'recordsFiltered': total_filtered,
+            'recordsTotal': query.count(),
+            'draw': request.args.get('draw', type=int),
+        },default=str)
