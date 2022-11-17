@@ -1,10 +1,14 @@
 import time, os, csv, sys
+from datetime import datetime as dt
+from math import floor
+
 import board
 import Adafruit_BBIO.GPIO as GPIO
 import Adafruit_BBIO.ADC as ADC
 import adafruit_ahtx0, adafruit_ssd1306
 import busio as io
 
+from send_data import send_sample_data
 
 threshold = 80
 
@@ -23,6 +27,10 @@ def isCommand(file_path): #detect presence of commands
     return True
 
 
+def single_float_pt(number):
+    return floor(number*10)/10
+
+
 def console(usr_cmd): #process user command
     #file = open(input, "r+")
     parse = usr_cmd.split(" ")
@@ -35,6 +43,11 @@ def console(usr_cmd): #process user command
         sensorF = sensor.temperature*9/5+32
         sensorH = sensor.relative_humidity
         print("Temperature: %2.1f°F\nHumidity: %2.0f%%" %(sensorF, sensorH))
+
+        sample = {'user_id': 1, 'temperature':single_float_pt(sensorF), 'humidity':single_float_pt(sensorH), 'timestamp': int(round(dt.timestamp(dt.now())))}
+
+        samples = [sample]
+        send_sample_data(url='http://172.20.10.5/get_data',samples=samples)
         print(ADC.read("AIN0"))
 
         temp_string = str(round(sensorF, 1))
