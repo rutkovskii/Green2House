@@ -1,4 +1,5 @@
 .DS_Store
 .idea
 /server/configs
-/server/FREQUENT.md
+/docs/FREQUENT.md
+docker
