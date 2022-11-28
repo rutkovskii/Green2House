@@ -25,7 +25,8 @@ def hello():
     return mes
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=80, debug=True)
+    #app.run(host="0.0.0.0", port=80, debug=True)
+    app.run(port=80)
 
     # To run with ngrok
     #  `ngrok http 80` and then start `sudo python3 flaskMain.py`
