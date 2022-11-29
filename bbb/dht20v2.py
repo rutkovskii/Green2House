@@ -5,7 +5,6 @@ from init_home import create_all
 from utils import isCommand, single_float_pt, getTempHum, dispOLED, sense_sample
 
 threshold = 80
-auto = True  # what is this for?
 user_id = 1
 dest_url = 'http://172.20.10.5/get_data'
 
