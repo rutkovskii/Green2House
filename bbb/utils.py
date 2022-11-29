@@ -19,6 +19,12 @@ def getTempHum(sensor):
     sensorH = sensor.relative_humidity
     return sensorF, sensorH
 
+def relayOn(pin):
+    GPIO.output(pin, GPIO.HIGH)
+
+def relayOff(pin):
+    GPIO.output(pin, GPIO.LOW)
+
 
 def dispOLED(oled, temp, hum, timestamp):
     oled.fill(0)

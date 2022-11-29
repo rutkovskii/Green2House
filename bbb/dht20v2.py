@@ -8,6 +8,8 @@ threshold = 80
 user_id = 1
 dest_url = 'http://172.20.10.5/get_data'
 
+relayPin = "P8_08"
+
 i2c, sensor, oled = create_all()
 
 
@@ -18,19 +20,7 @@ i2c, sensor, oled = create_all()
 # Created sense_sample() to create a sample
 # Modifed send_sample_data() to send_samples()
 
-# What is (above)? auto = True
-#############################
-
-
-def console(usr_cmd): #process user command
-
-    # sensorF = getTempHum(sensor)[0]
-    # sensorH = getTempHum(sensor)[1]
-
-    # temp_string = str(round(sensorF, 1))
-    # hum_string = str(sensorH)
-    # dataRow = [time.strftime('%m/%d/%Y %H:%M:%S'), temp_string[0:4], hum_string[0:4]]
-
+def console(): #process user command
     # file = "data.csv"
     # csv_file = open(file, 'a')
     # csv_write = csv.writer(csv_file)
@@ -52,6 +42,12 @@ def console(usr_cmd): #process user command
         # hum_string = str(sensorH)
         # dataRow = [time.strftime('%m/%d/%Y %H:%M:%S'), temp_string[0:4], hum_string[0:4]]
     
+    if(getTempHum(sensor)[0] < threshold):
+        relayOn(relayPin)
+
+    else:
+        relayOff(relayPin)
+
     # send_samples(url=dest_url,samples=samples)
 
     # if float(temp_string[0:4])<threshold:
@@ -66,7 +62,7 @@ def main():
     textIn = "/home/debian/greenhouse/command.txt"
 
     while True:
-        console("info")
+        console()
 
 
 if __name__ == "__main__":
