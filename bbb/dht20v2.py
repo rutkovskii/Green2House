@@ -1,8 +1,9 @@
 import time, os, csv, sys
+import Adafruit_BBIO.GPIO as GPIO
 
 from send_data import send_samples
 from init_home import create_all
-from utils import isCommand, single_float_pt, getTempHum, dispOLED, sense_sample
+import utils # import isCommand, single_float_pt, getTempHum, dispOLED, sense_sample, relayOn, relayOff
 
 threshold = 80
 user_id = 1
@@ -27,26 +28,26 @@ def console(): #process user command
     # csv_write.writerow(dataRow)
 
     if int(time.strftime('%S')) % 10 == 0: # sense data every 10 seconds
-        sensorF = getTempHum(sensor)[0]
-        sensorH = getTempHum(sensor)[1]
+        sensorF = utils.getTempHum(sensor)[0]
+        sensorH = utils.getTempHum(sensor)[1]
         #print(time.strftime('%S'))
         print("Temperature: %2.1f°F\nHumidity: %2.0f%%" %(sensorF, sensorH))
 
         # sample = sense_sample(user_id,sensorF,sensorH)
         # samples = [sample]
 
-        dispOLED(oled=oled, temp=str(sensorF)[0:4], hum=str(sensorH)[0:4], timestamp=time.strftime('%H:%M:%S'))
+        utils.dispOLED(oled=oled, temp=str(sensorF)[0:4], hum=str(sensorH)[0:4], timestamp=time.strftime('%H:%M:%S'))
         time.sleep(8)
 
         # temp_string = str(round(sensorF, 1))
         # hum_string = str(sensorH)
         # dataRow = [time.strftime('%m/%d/%Y %H:%M:%S'), temp_string[0:4], hum_string[0:4]]
     
-    if(getTempHum(sensor)[0] < threshold):
-        relayOn(relayPin)
+    if(utils.getTempHum(sensor)[0] < threshold):
+        utils.relayOn(GPIO, relayPin)
 
     else:
-        relayOff(relayPin)
+        utils.relayOff(GPIO, relayPin)
 
     # send_samples(url=dest_url,samples=samples)
 

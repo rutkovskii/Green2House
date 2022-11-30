@@ -3,7 +3,6 @@ from math import floor
 from datetime import datetime as dt
 
 
-
 def isCommand(file_path): #detect presence of commands
     if os.stat(file_path).st_size == 0:
         return False
@@ -19,10 +18,12 @@ def getTempHum(sensor):
     sensorH = sensor.relative_humidity
     return sensorF, sensorH
 
-def relayOn(pin):
+
+def relayOn(GPIO, pin):
     GPIO.output(pin, GPIO.HIGH)
 
-def relayOff(pin):
+
+def relayOff(GPIO, pin):
     GPIO.output(pin, GPIO.LOW)
 
 
