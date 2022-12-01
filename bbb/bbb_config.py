@@ -16,7 +16,7 @@ class BBB_CONFIG:
     # Pins
     pins_dict = {
         'humidity_relay_pin': "P8_10",
-        'temp_relay_pin': "_"
+        'temp_relay_pin': ""
     }
 
     # Variables

@@ -2,8 +2,8 @@ import time
 import Adafruit_BBIO.GPIO as GPIO
 
 from bbb_config import BBB_CONFIG as BC  # pins are here
-from bbb.scripts.init_home import create_all
-from bbb.scripts import utils
+from scripts.init_home import create_all
+from scripts import utils
 
 i2c, sensor, oled = create_all(BC.pins_dict)
 
