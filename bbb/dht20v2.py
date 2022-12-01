@@ -9,9 +9,9 @@ threshold = 80
 user_id = 1
 dest_url = 'http://172.20.10.5/get_data'
 
-relayPin = "P8_08"
+relayPin = "P8_10"
 
-i2c, sensor, oled = create_all()
+i2c, sensor, oled = create_all(relayPin)
 
 
 #############################
@@ -43,7 +43,7 @@ def console(): #process user command
         # hum_string = str(sensorH)
         # dataRow = [time.strftime('%m/%d/%Y %H:%M:%S'), temp_string[0:4], hum_string[0:4]]
     
-    if(utils.getTempHum(sensor)[0] < threshold):
+    if(int(utils.getTempHum(sensor)[0]) < threshold):
         utils.relayOn(GPIO, relayPin)
 
     else:
@@ -61,7 +61,9 @@ def console(): #process user command
 def main():
     # count = 0
     textIn = "/home/debian/greenhouse/command.txt"
-
+    print("before")
+    utils.relayOn(GPIO, relayPin)
+    print("after")
     while True:
         console()
 

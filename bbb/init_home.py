@@ -18,8 +18,8 @@ def init_oled(i2c):
     return adafruit_ssd1306.SSD1306_I2C(128, 64, i2c)
 
 
-def create_all():
-    GPIO.setup("P9_15", GPIO.OUT)
+def create_all(pin):
+    GPIO.setup(pin, GPIO.OUT)
 
     i2c = init_i2c()
     sensor = init_sensor(i2c)

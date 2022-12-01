@@ -21,10 +21,12 @@ def getTempHum(sensor):
 
 def relayOn(GPIO, pin):
     GPIO.output(pin, GPIO.HIGH)
+    return
 
 
 def relayOff(GPIO, pin):
     GPIO.output(pin, GPIO.LOW)
+    return
 
 
 def dispOLED(oled, temp, hum, timestamp):
