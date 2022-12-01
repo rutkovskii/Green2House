@@ -29,5 +29,7 @@ def send_samples(url,samples):
     r = requests.post(url, json=entries_json, headers=headers)
     print(f"Status Code: {r.status_code}, Response: {r.json()}")
 
+
 if __name__ == '__main__':
-    send_sample_data_example()
+    url = 'https://6cb1-2601-180-8200-a250-8579-d8a5-2d2d-b895.ngrok.io/get_data'
+    send_sample_data_example(url)

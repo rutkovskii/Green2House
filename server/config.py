@@ -4,7 +4,7 @@ import os
 class Config:
     # Locations
     SCRIPTS_DIR = os.path.abspath(os.path.dirname(__file__))
-    CONFIG_DIR = os.join.path(SCRIPTS_DIR,'configs')
+    CONFIG_DIR = os.path.join(SCRIPTS_DIR,'configs')
 
     # Keys and Secrets
     # FLASK_SECRET_KEY = os.getenv('FLASK_SECRET_KEY')

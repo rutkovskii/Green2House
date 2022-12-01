@@ -1,4 +1,4 @@
-import time, os, csv, sys
+import time, os, csv
 from datetime import datetime as dt
 from math import floor
 
@@ -6,9 +6,8 @@ import board
 import Adafruit_BBIO.GPIO as GPIO
 import Adafruit_BBIO.ADC as ADC
 import adafruit_ahtx0, adafruit_ssd1306
-import busio as io
 
-from send_data import send_sample_data
+from bbb.scripts.send_data import send_sample_data
 
 threshold = 80
 
