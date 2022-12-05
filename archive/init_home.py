@@ -17,26 +17,9 @@ def init_sensor(i2c):
 def init_oled(i2c):
     return adafruit_ssd1306.SSD1306_I2C(128, 64, i2c)
 
-def set_up_pins(pins_dict):
-    # Humidity Relay
-    if pins_dict['pump_relay_pin']:
-        GPIO.setup(pins_dict['pump_relay_pin'], GPIO.OUT)
-    else:
-        print("pump_relay_pin is None")
 
-    # Temperature Relay
-    if pins_dict['temp_relay_pin']:
-        GPIO.setup(pins_dict['temp_relay_pin'], GPIO.OUT)
-    else:
-        print("temp_relay_pin is None")
-    
-    #Button pin
-    if pins_dict['button_pin']:
-        GPIO.setup(pins_dict['button_pin'], GPIO.IN)
-
-
-def create_all(pins_dict):
-    set_up_pins(pins_dict)
+def create_all(pin):
+    GPIO.setup(pin, GPIO.OUT)
 
     i2c = init_i2c()
     sensor = init_sensor(i2c)

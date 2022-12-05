@@ -38,31 +38,19 @@ def console(): #process user command
         # samples = [sample]
 
         utils.dispOLED(oled=oled, temp=str(sensorF)[0:4], hum=str(sensorH)[0:4], timestamp=time.strftime('%H:%M:%S'))
-        time.sleep(1)
+        time.sleep(8)
 
         # temp_string = str(round(sensorF, 1))
         # hum_string = str(sensorH)
         # dataRow = [time.strftime('%m/%d/%Y %H:%M:%S'), temp_string[0:4], hum_string[0:4]]
 
     # Control Humidity Relay
-    if int(utils.getTempHum(sensor)[0]) >= BC.threshold:
-        utils.relayOn(GPIO, BC.pins_dict.get('temp_relay_pin'))
+    if int(utils.getTempHum(sensor)[0]) < BC.threshold:
+        utils.humidityRelayOn(GPIO, BC.pins_dict.get('humidity_relay_pin'))
 
-    elif int(utils.getTempHum(sensor)[0]) < BC.threshold: 
-        utils.relayOff(GPIO, BC.pins_dict.get('temp_relay_pin'))
+    else:
+        utils.humidityRelayOff(GPIO, BC.pins_dict.get('humidity_relay_pin'))
 
-    if not (utils.pumpOn(GPIO, BC.pins_dict.get('button_pin'))):
-        #print(BC.toggle)
-        BC.toggle = 1 - BC.toggle
-        time.sleep(0.5)
-        if BC.toggle == 1:
-            utils.relayOn(GPIO, BC.pins_dict.get('pump_relay_pin'))
-            print("pump relay on")
-
-        else:
-            utils.relayOff(GPIO, BC.pins_dict.get('pump_relay_pin'))
-            print("pump relay off")
-        
     # Control Temperature Relay
     # if float(temp_string[0:4])< BC.threshold:
     #     utils.tempRelayOn(GPIO, BC.pins_dict.get('temp_relay_pin'))
@@ -75,9 +63,13 @@ def console(): #process user command
     return
 
 def main():
+    # count = 0
+    textIn = "/home/debian/greenhouse/command.txt"
+    print("before")
+    utils.humidityRelayOn(GPIO, BC.pins_dict.get('humidity_relay_pin'))
+    print("after")
     while True:
         console()
-        #utils.relayOn(GPIO,BC.pins_dict.get('pump_relay_pin'))
 
 
 if __name__ == "__main__":
