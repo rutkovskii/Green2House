@@ -45,11 +45,11 @@ def console(): #process user command
         # dataRow = [time.strftime('%m/%d/%Y %H:%M:%S'), temp_string[0:4], hum_string[0:4]]
 
     # Control Humidity Relay
-    if int(utils.getTempHum(sensor)[0]) > BC.threshold:
-        utils.relayOn(GPIO, BC.pins_dict.get('humidity_relay_pin'))
+    if int(utils.getTempHum(sensor)[0]) < BC.threshold:
+        utils.humidityRelayOn(GPIO, BC.pins_dict.get('humidity_relay_pin'))
 
     else:
-        utils.relayOff(GPIO, BC.pins_dict.get('humidity_relay_pin'))
+        utils.humidityRelayOff(GPIO, BC.pins_dict.get('humidity_relay_pin'))
 
     # Control Temperature Relay
     # if float(temp_string[0:4])< BC.threshold:
@@ -66,7 +66,7 @@ def main():
     # count = 0
     textIn = "/home/debian/greenhouse/command.txt"
     print("before")
-    utils.relayOn(GPIO, BC.pins_dict.get('humidity_relay_pin'))
+    utils.humidityRelayOn(GPIO, BC.pins_dict.get('humidity_relay_pin'))
     print("after")
     while True:
         console()

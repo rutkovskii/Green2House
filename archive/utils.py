@@ -18,16 +18,6 @@ def getTempHum(sensor):
     sensorH = sensor.relative_humidity
     return sensorF, sensorH
 
-#Changed humidityRelayOn and tempRelayOn to just relayOn
-# def humidityRelayOn(GPIO, pin):
-#     GPIO.output(pin, GPIO.HIGH)
-#     return
-
-
-# def humidityRelayOff(GPIO, pin):
-#     GPIO.output(pin, GPIO.LOW)
-#     return
-
 
 def relayOn(GPIO, pin):
     GPIO.output(pin, GPIO.HIGH)
