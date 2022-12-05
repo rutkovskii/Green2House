@@ -19,16 +19,20 @@ def init_oled(i2c):
 
 def set_up_pins(pins_dict):
     # Humidity Relay
-    if pins_dict['humidity_relay_pin']:
-        GPIO.setup(pins_dict['humidity_relay_pin'], GPIO.OUT)
+    if pins_dict['pump_relay_pin']:
+        GPIO.setup(pins_dict['pump_relay_pin'], GPIO.OUT)
     else:
-        print("humidity_relay_pin is None")
+        print("pump_relay_pin is None")
 
     # Temperature Relay
     if pins_dict['temp_relay_pin']:
         GPIO.setup(pins_dict['temp_relay_pin'], GPIO.OUT)
     else:
         print("temp_relay_pin is None")
+    
+    #Button pin
+    if pins_dict['button_pin']:
+        GPIO.setup(pins_dict['button_pin'], GPIO.IN)
 
 
 def create_all(pins_dict):

@@ -15,12 +15,14 @@ class BBB_CONFIG:
 
     # Pins
     pins_dict = {
-        'humidity_relay_pin': "P8_10",
-        'temp_relay_pin': "P8_8"
+        'pump_relay_pin': "P8_8",
+        'temp_relay_pin': "P8_10",
+        'button_pin': "P8_14"
     }
 
     # Variables
     threshold = 80
+    toggle = 0
     user_id = 1
     server_url = 'http://172.20.10.5/get_data'
 

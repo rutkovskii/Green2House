@@ -38,6 +38,9 @@ def relayOff(GPIO, pin):
     GPIO.output(pin, GPIO.LOW)
     return
 
+def pumpOn(GPIO, pin):
+    return GPIO.input(pin)
+
 
 def dispOLED(oled, temp, hum, timestamp):
     oled.fill(0)
