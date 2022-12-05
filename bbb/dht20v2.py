@@ -4,6 +4,7 @@ import Adafruit_BBIO.GPIO as GPIO
 from bbb_config import BBB_CONFIG as BC  # pins are here
 from scripts.init_home import create_all
 from scripts import utils
+from scripts.send_data import send_samples
 
 i2c, sensor, oled = create_all(BC.pins_dict)
 
@@ -33,9 +34,12 @@ def console(): #process user command
         #print(time.strftime('%S'))
         print("Temperature: %2.1f°F\nHumidity: %2.0f%%" %(sensorF, sensorH))
 
-        # Create Sample to propagate to the database
-        # sample = sense_sample(BC.user_id,sensorF,sensorH)
-        # samples = [sample]
+        if BC.SEND_DATA:
+            # Create Sample to propagate to the database
+            sample = utils.sense_sample(BC.user_id,sensorF,sensorH)
+            samples = [sample]
+            # Send values to the server
+            send_samples(url=BC.server_url, samples=samples)
 
         utils.dispOLED(oled=oled, temp=str(sensorF)[0:4], hum=str(sensorH)[0:4], timestamp=time.strftime('%H:%M:%S'))
         time.sleep(1)
@@ -68,9 +72,6 @@ def console(): #process user command
     #     utils.tempRelayOn(GPIO, BC.pins_dict.get('temp_relay_pin'))
     # else:
     #     utils.tempRelayOff(GPIO, BC.pins_dict.get('temp_relay_pin'))
-
-    # Send values to the server
-    # send_samples(url=BC.server_url,samples=samples)
 
     return
 

@@ -2,7 +2,6 @@ import board
 import adafruit_ahtx0, adafruit_ssd1306
 import Adafruit_BBIO.GPIO as GPIO
 import Adafruit_BBIO.ADC as ADC
-# import busio as io
 
 
 def init_i2c():
@@ -17,8 +16,9 @@ def init_sensor(i2c):
 def init_oled(i2c):
     return adafruit_ssd1306.SSD1306_I2C(128, 64, i2c)
 
+
 def set_up_pins(pins_dict):
-    # Humidity Relay
+    # Pump Relay
     if pins_dict['pump_relay_pin']:
         GPIO.setup(pins_dict['pump_relay_pin'], GPIO.OUT)
     else:

@@ -24,5 +24,9 @@ class BBB_CONFIG:
     threshold = 80
     toggle = 0
     user_id = 1
-    server_url = 'http://172.20.10.5/get_data'
+
+    # change link based on ngrok
+    # must have internet connection
+    server_url = 'https://e3e6-128-119-202-230.ngrok.io/get_data'
+    SEND_DATA = True
 
