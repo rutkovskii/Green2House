@@ -28,5 +28,5 @@ class BBB_CONFIG:
     # change link based on ngrok
     # must have internet connection
     server_url = 'https://e3e6-128-119-202-230.ngrok.io/get_data'
-    SEND_DATA = True
+    SEND_DATA = False
 

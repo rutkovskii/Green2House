@@ -49,11 +49,11 @@ def console(): #process user command
         # dataRow = [time.strftime('%m/%d/%Y %H:%M:%S'), temp_string[0:4], hum_string[0:4]]
 
     # Control Humidity Relay
-    if int(utils.getTempHum(sensor)[0]) >= BC.threshold:
-        utils.relayOn(GPIO, BC.pins_dict.get('temp_relay_pin'))
+        if int(sensorF) >= BC.threshold:
+            utils.relayOn(GPIO, BC.pins_dict.get('temp_relay_pin'))
 
-    elif int(utils.getTempHum(sensor)[0]) < BC.threshold: 
-        utils.relayOff(GPIO, BC.pins_dict.get('temp_relay_pin'))
+        elif int(sensorF) < BC.threshold: 
+            utils.relayOff(GPIO, BC.pins_dict.get('temp_relay_pin'))
 
     if not (utils.pumpOn(GPIO, BC.pins_dict.get('button_pin'))):
         #print(BC.toggle)
