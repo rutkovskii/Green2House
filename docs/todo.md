@@ -1,7 +1,9 @@
-Next: 
-1. Basic Home Page for website
-2. Sqlite Database on BBB
-3. Keeping last transmitted result, and sending what has not been sent
+Next:
+0. Make Link more modular 
+1. Sqlite Database on BBB
+2. Keeping last transmitted result, and sending what has not been sent
+3. Create .env file with ENVIRONMENT
+4. Create code to start the system, keep it running, restart, turn off (.service,buttons)
 
 Pages:
 1. Sign In/Sing Up
