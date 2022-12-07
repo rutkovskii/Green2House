@@ -4,9 +4,9 @@
 `sudo iwlist wlan0 scan`
 
 ## To set SSID and Wi-Fi password:
-`wpa_passphrase your-ESSID your-wifi-passphrase | sudo tee -a /etc/wpa_supplicant/wpa_supplicant.conf`
+`wpa_passphrase your-ESSID your-wifi-passphrase | sudo tee -a /etc/wpa_supplicant.conf`
 
-`wpa_passphrase "Aleksei R" "98765432" | sudo tee -a /etc/wpa_supplicant/wpa_supplicant.conf`
+`wpa_passphrase "Aleksei R" "98765432" | sudo tee -a /etc/wpa_supplicant.conf`
 
 
 ## To connect to Wi-Fi (must have hotspot turned on):
