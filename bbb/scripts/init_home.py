@@ -1,5 +1,6 @@
 import board
-import adafruit_ahtx0, adafruit_ssd1306
+import adafruit_ahtx0#, adafruit_ssd1306
+import Adafruit_SSD1306 as adafruit_ssd1306
 import Adafruit_BBIO.GPIO as GPIO
 import Adafruit_BBIO.ADC as ADC
 
