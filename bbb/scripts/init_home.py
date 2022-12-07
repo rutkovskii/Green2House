@@ -1,6 +1,7 @@
 import board
 import adafruit_ahtx0#, adafruit_ssd1306
-import Adafruit_SSD1306 as adafruit_ssd1306
+#import Adafruit_SSD1306 as adafruit_ssd1306
+import adafruit_ssd1306
 import Adafruit_BBIO.GPIO as GPIO
 import Adafruit_BBIO.ADC as ADC
 
@@ -40,8 +41,8 @@ def create_all(pins_dict):
     set_up_pins(pins_dict)
 
     i2c = init_i2c()
-    sensor = init_sensor(i2c)
+    #sensor = init_sensor(i2c) #commented out for MDR fix
     oled = init_oled(i2c)
     ADC.setup()
 
-    return i2c, sensor, oled
+    return i2c, oled#sensor, oled
