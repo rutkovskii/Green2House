@@ -58,7 +58,7 @@ def console(): #process user command
     #     utils.tempRelayOff(GPIO, BC.pins_dict.get('temp_relay_pin'))
 
     # Send values to the server
-    # send_samples(url=BC.server_url,samples=samples)
+    # send_samples(url=BC.SERVER_GET_DATA_URL,samples=samples)
 
     return
 
