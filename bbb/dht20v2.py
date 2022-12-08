@@ -49,7 +49,7 @@ def console(): #process user command
             sample = utils.sense_sample(BC.user_id,sensorF,sensorH)
             samples = [sample]
             # Send values to the server
-            send_samples(url=BC.server_url, samples=samples)
+            send_samples(url=BC.SERVER_GET_DATA_URL, samples=samples)
 
         #utils.dispOLED(oled=oled, temp=str(sensorF)[0:4], hum=str(sensorH)[0:4], timestamp=time.strftime('%H:%M:%S'))
         utils.dispOLED(oled=oled, temp=str(sensorF)[0:4], hum="N/A", timestamp=time.strftime('%H:%M:%S'))
