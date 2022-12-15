@@ -9,8 +9,7 @@ import app.utils as u
 # When running database.py
 # from models import Base, User, DataSample
 # from admin.config import DATABASE_URI
-# import utils as u
-
+# import utils as u]
 
 
 engine = sqlalchemy.create_engine(DATABASE_URI)  #Server -> necessary for cron
