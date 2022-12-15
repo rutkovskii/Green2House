@@ -2,4 +2,5 @@
 .idea
 /server/configs
 /docs/FREQUENT.md
+/server/docker
 docker
