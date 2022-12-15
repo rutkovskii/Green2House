@@ -3,4 +3,5 @@
 /server/configs
 /docs/FREQUENT.md
 /server/docker
+/server/svenv
 docker
