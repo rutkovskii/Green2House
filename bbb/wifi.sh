@@ -9,7 +9,7 @@ WIFI_NAME="<Your WIFI Name>"
 WIFI_PASS="<Your WIFI Password>"
 
 echo "starting wifi"
-if ping -c 1 some_ip_here &> /dev/null
+if ping -c 1 google.com &> /dev/null
 then
     echo "internet is up"
 
