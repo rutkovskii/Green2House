@@ -3,7 +3,7 @@ Description=wifi runner for BBB
 After=network.target
 
 [Service]
-User=user
+User=root
 WorkingDirectory=/home/debian/bbb
 ExecStart=/usr/bin/sudo /home/debian/bbb/wifi.sh
 Restart=always
