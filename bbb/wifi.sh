@@ -5,9 +5,19 @@
 #:set ff=unix
 #:wq!
 
+WIFI_NAME="<Your WIFI Name>"
+WIFI_PASS="<Your WIFI Password>"
+
 echo "starting wifi"
-wpa_passphrase "<Your WIFI Name>" "<Your Password>" | tee -a /etc/wpa_supplicant.conf
-wpa_supplicant -B -c /etc/wpa_supplicant.conf -i wlan0
-dhclient wlan0
-echo "started wifi"
+if ping -c 1 some_ip_here &> /dev/null
+then
+    echo "internet is up"
+
+else
+    wpa_passphrase $WIFI_NAME $WIFI_PASS | tee -a /etc/wpa_supplicant.conf
+    wpa_supplicant -B -c /etc/wpa_supplicant.conf -i wlan0
+    dhclient wlan0
+    echo "started wifi"
+fi
+
 
