@@ -1,6 +1,6 @@
 import os
 
-DATABASE_URI = 'postgresql+psycopg2://ubuntu:ubuntu@0.0.0.0:5432/main_db'
+DATABASE_URI = 'postgresql+psycopg2://ubuntu:ubuntu@0.0.0.0:5455/postgresDB'
 
 ROOT_DIR = os.path.abspath(os.path.dirname(__file__))
 FLASK_DIR = os.path.join(ROOT_DIR, '../flask_content')

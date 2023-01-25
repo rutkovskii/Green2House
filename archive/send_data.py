@@ -6,7 +6,6 @@ from datetime import timedelta as td
 def send_sample_data_example(url):
     # Must change it to the actual IP address of the server
     # url = 'http://172.31.178.169/get_data'
-    # url = 'https://6cb1-2601-180-8200-a250-8579-d8a5-2d2d-b895.ngrok.io/get_data'
     print(int(round(dt.timestamp(dt.now()-td(minutes=5)))))
 
     # Example Samples

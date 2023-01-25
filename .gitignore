@@ -1,6 +1,8 @@
 .DS_Store
 .idea
 /server/configs
+**/__pycache__/
 /docs/FREQUENT.md
 /server/docker
+/server/svenv
 docker

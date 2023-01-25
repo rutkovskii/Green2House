@@ -1,0 +1,12 @@
+[Unit]
+Description=wifi runner for BBB
+After=network.target
+
+[Service]
+User=root
+WorkingDirectory=/home/debian/bbb
+ExecStart=/usr/bin/sudo /home/debian/bbb/wifi.sh
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

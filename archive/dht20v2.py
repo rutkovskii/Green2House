@@ -4,7 +4,6 @@ import Adafruit_BBIO.GPIO as GPIO
 from bbb_config import BBB_CONFIG as BC  # pins are here
 from scripts.init_home import create_all
 from scripts import utils
-from scripts.send_data import send_samples
 
 i2c, sensor, oled = create_all(BC.pins_dict)
 
@@ -34,51 +33,43 @@ def console(): #process user command
         #print(time.strftime('%S'))
         print("Temperature: %2.1f°F\nHumidity: %2.0f%%" %(sensorF, sensorH))
 
-        if BC.SEND_DATA:
-            # Create Sample to propagate to the database
-            sample = utils.sense_sample(BC.user_id,sensorF,sensorH)
-            samples = [sample]
-            # Send values to the server
-            send_samples(url=BC.SERVER_GET_DATA_URL, samples=samples)
+        # Create Sample to propagate to the database
+        # sample = sense_sample(BC.user_id,sensorF,sensorH)
+        # samples = [sample]
 
         utils.dispOLED(oled=oled, temp=str(sensorF)[0:4], hum=str(sensorH)[0:4], timestamp=time.strftime('%H:%M:%S'))
-        time.sleep(1)
+        time.sleep(8)
 
         # temp_string = str(round(sensorF, 1))
         # hum_string = str(sensorH)
         # dataRow = [time.strftime('%m/%d/%Y %H:%M:%S'), temp_string[0:4], hum_string[0:4]]
 
     # Control Humidity Relay
-        if int(sensorF) >= BC.threshold:
-            utils.relayOn(GPIO, BC.pins_dict.get('temp_relay_pin'))
+    if int(utils.getTempHum(sensor)[0]) < BC.threshold:
+        utils.humidityRelayOn(GPIO, BC.pins_dict.get('humidity_relay_pin'))
 
-        elif int(sensorF) < BC.threshold: 
-            utils.relayOff(GPIO, BC.pins_dict.get('temp_relay_pin'))
+    else:
+        utils.humidityRelayOff(GPIO, BC.pins_dict.get('humidity_relay_pin'))
 
-    if not (utils.pumpOn(GPIO, BC.pins_dict.get('button_pin'))):
-        #print(BC.toggle)
-        BC.toggle = 1 - BC.toggle
-        time.sleep(0.5)
-        if BC.toggle == 1:
-            utils.relayOn(GPIO, BC.pins_dict.get('pump_relay_pin'))
-            print("pump relay on")
-
-        else:
-            utils.relayOff(GPIO, BC.pins_dict.get('pump_relay_pin'))
-            print("pump relay off")
-        
     # Control Temperature Relay
     # if float(temp_string[0:4])< BC.threshold:
     #     utils.tempRelayOn(GPIO, BC.pins_dict.get('temp_relay_pin'))
     # else:
     #     utils.tempRelayOff(GPIO, BC.pins_dict.get('temp_relay_pin'))
 
+    # Send values to the server
+    # send_samples(url=BC.SERVER_GET_DATA_URL,samples=samples)
+
     return
 
 def main():
+    # count = 0
+    textIn = "/home/debian/greenhouse/command.txt"
+    print("before")
+    utils.humidityRelayOn(GPIO, BC.pins_dict.get('humidity_relay_pin'))
+    print("after")
     while True:
         console()
-        #utils.relayOn(GPIO,BC.pins_dict.get('pump_relay_pin'))
 
 
 if __name__ == "__main__":

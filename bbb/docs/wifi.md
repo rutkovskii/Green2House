@@ -3,10 +3,15 @@
 `sudo iwlist wlan0 scan | grep -i ssid`
 `sudo iwlist wlan0 scan`
 
-## To set SSID and Wi-Fi password:
-`wpa_passphrase your-ESSID your-wifi-passphrase | sudo tee -a /etc/wpa_supplicant/wpa_supplicant.conf`
 
-`wpa_passphrase "Aleksei R" "98765432" | sudo tee -a /etc/wpa_supplicant/wpa_supplicant.conf`
+## AUTOMATIC RECONNECTION TO WIFI (must be run in sudo)
+https://unix.stackexchange.com/questions/483678/debian-connect-to-wifi-automatically-when-in-range/612173#612173
+
+
+## To set SSID and Wi-Fi password:
+`wpa_passphrase your-ESSID your-wifi-passphrase | sudo tee -a /etc/wpa_supplicant.conf`
+
+`wpa_passphrase "Aleksei R" "98765432" | sudo tee -a /etc/wpa_supplicant.conf`
 
 
 ## To connect to Wi-Fi (must have hotspot turned on):

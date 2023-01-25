@@ -30,6 +30,8 @@ __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_framebuf.git"
 import os
 import struct
 
+from bbb_config import BBB_CONFIG as BC
+
 # Framebuf format constants:
 MVLSB = 0  # Single bit displays (like SSD1306 OLED)
 RGB565 = 1  # 16-bit color displays
@@ -380,7 +382,7 @@ class FrameBuffer:
             y += dt_y
 
     # pylint: disable=too-many-arguments
-    def text(self, string, x, y, color, *, font_name="font5x8.bin", size=1):
+    def text(self, string, x, y, color, *, font_name=BC.font_adafruit, size=1): # "font5x8.bin"
         """Place text on the screen in variables sizes. Breaks on \n to next line.
 
         Does not break on line going off screen.
@@ -453,7 +455,7 @@ class BitmapFont:
     file to display in a framebuffer. We use file access so we dont waste 1KB
     of RAM on a font!"""
 
-    def __init__(self, font_name="font5x8.bin"):
+    def __init__(self, font_name=BC.font_adafruit): # "font5x8.bin"
         # Specify the drawing area width and height, and the pixel function to
         # call when drawing pixels (should take an x and y param at least).
         # Optionally specify font_name to override the font file to use (default
