@@ -3,16 +3,16 @@ from sqlalchemy.orm import sessionmaker
 from contextlib import contextmanager
 # When running run.py
 from app.models import Base, User, DataSample
-from app.admin.config import DATABASE_URI
+from app.admin.config import SERVER_CONFIG
 import app.utils as u
 
 # When running database.py
 # from models import Base, User, DataSample
-# from admin.config import DATABASE_URI
+# from admin.config import SERVER_CONFIG.DATABASE_URI
 # import utils as u]
 
 
-engine = sqlalchemy.create_engine(DATABASE_URI)  #Server -> necessary for cron
+engine = sqlalchemy.create_engine(SERVER_CONFIG.DATABASE_URI)  #Server -> necessary for cron
 Session = sessionmaker(bind=engine)
 Base.metadata.create_all(engine)
 

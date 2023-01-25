@@ -4,16 +4,17 @@ from flask import request, render_template, Blueprint
 
 from app.models import User
 from app.database import Session
+from app.admin.config import SERVER_CONFIG
 
-admin_page_bp = Blueprint('admin_page_bp',__name__)
+admin_page_bp = Blueprint('admin_page_bp', __name__)
 
 
-@admin_page_bp.route('/admin')
+@admin_page_bp.route(SERVER_CONFIG.ADMIN_PAGE_ROUTE)
 def serve_admin_main():
     return render_template('/ADMIN_PAGE/admin_page_main.html', title='Admin Page')
 
 
-@admin_page_bp.route('/admin/all_users')
+@admin_page_bp.route(SERVER_CONFIG.ADMIN_PAGE_USERS_ROUTE)
 def serve_page_users():
     """
     Brings to the table with Haros
@@ -21,7 +22,7 @@ def serve_page_users():
     return render_template('/ADMIN_PAGE/users_table.html', title='Users')
 
 
-@admin_page_bp.route('/api/serve_users')
+@admin_page_bp.route(SERVER_CONFIG.ADMIN_PAGE_SERVE_USERS_ROUTE, methods=['GET'])
 def serve_users():
     """Sorts the table, returns searched data"""
     session = Session()
@@ -51,14 +52,14 @@ def serve_users():
         if col_index is None:
             break
         col_name = request.args.get(f'columns[{col_index}][data]')
-        if col_name not in ['phone_number','email','datetime_joined']:
+        if col_name not in ['phone_number', 'email', 'datetime_joined']:
             col_name = 'phone_number'
 
         # gets descending sorting
         descending = request.args.get(f'order[{i}][dir]') == 'desc'
-        desired_col = getattr(User,col_name)
+        desired_col = getattr(User, col_name)
 
-        #decending
+        # decending
         if descending:
             desired_col = desired_col.desc()
         order.append(desired_col)
