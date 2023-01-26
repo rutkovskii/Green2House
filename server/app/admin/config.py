@@ -1,5 +1,7 @@
 import os
+from dotenv import load_dotenv
 
+load_dotenv()
 
 class ServerConfig:
     DATABASE_URI = 'postgresql+psycopg2://ubuntu:ubuntu@0.0.0.0:5455/postgresDB'
@@ -15,3 +17,8 @@ class ServerConfig:
     ADMIN_PAGE_SERVE_USERS_ROUTE = '/api/serve-users'
     GET_DATA_ROUTE = '/get-data'
     ADMIN_DATA_SAMPLES_ROUTE = '/admin/all-data-records'
+
+    # Secrets
+    ADMINS = [os.getenv('ADMIN1'), os.getenv('ADMIN2')]
+    # Secret Key
+    SECRET_KEY = os.getenv('SECRET_KEY')

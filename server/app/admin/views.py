@@ -6,34 +6,35 @@ from flask_login import login_required
 from app.models import User
 from app.database import Session
 from app.admin.config import ServerConfig
+from app.admin.decorators import admin_required
 
-admin_page_bp = Blueprint('admin_page_bp', __name__)
-
-
-def is_admin():
-    return current_user.is_authenticated and current_user.is_admin
+admin_bp = Blueprint('admin_bp', __name__)
 
 
+@admin_bp.route(ServerConfig.ADMIN_DATA_SAMPLES_ROUTE, methods=['GET'])
 @login_required
-@admin_page_bp.route(ServerConfig.ADMIN_DATA_SAMPLES_ROUTE, methods=['GET'])
+@admin_required
 def serve_admin_data_samples():
     return render_template('/admin_data_records_table.html', title='Data Samples')
 
 
+@admin_bp.route(ServerConfig.ADMIN_PAGE_ROUTE)
 @login_required
-@admin_page_bp.route(ServerConfig.ADMIN_PAGE_ROUTE)
+@admin_required
 def serve_admin_main():
     return render_template('/admin_page_main.html', title='Admin Page')
 
 
+@admin_bp.route(ServerConfig.ADMIN_PAGE_USERS_ROUTE)
 @login_required
-@admin_page_bp.route(ServerConfig.ADMIN_PAGE_USERS_ROUTE)
+@admin_required
 def serve_page_users():
     return render_template('/admin_users_table.html', title='Users')
 
 
+@admin_bp.route(ServerConfig.ADMIN_PAGE_SERVE_USERS_ROUTE, methods=['GET'])
 @login_required
-@admin_page_bp.route(ServerConfig.ADMIN_PAGE_SERVE_USERS_ROUTE, methods=['GET'])
+@admin_required
 def serve_users():
     """Sorts the table, returns searched data"""
     session = Session()

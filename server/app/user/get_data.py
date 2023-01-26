@@ -11,8 +11,8 @@ import app.utils as u
 get_data_bp = Blueprint('get_data_bp', __name__)
 
 
-@login_required
 @get_data_bp.route(ServerConfig.GET_DATA_ROUTE, methods=['POST'])
+@login_required
 def get_data():
     if request.is_json:
 

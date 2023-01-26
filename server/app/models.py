@@ -1,5 +1,5 @@
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Integer, Float, String, DateTime, Date, Time
+from sqlalchemy import Column, Integer, Float, String, DateTime, Date, Time, Boolean
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
@@ -15,6 +15,7 @@ class User(Base, UserMixin):
     phone_number = Column(String, nullable=False)
     email = Column(String, nullable=False)
     password_hash = Column(String(150))
+    is_admin = Column(Boolean, nullable=False, default=False)
     datetime_joined = Column(String, nullable=False, default=datetime.now(
     ).strftime("%d-%m-%Y %H:%M:%S"))  # .isoformat(' ', 'seconds'))
 
@@ -23,6 +24,18 @@ class User(Base, UserMixin):
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
+
+    def get_id(self):
+        return self.id
+
+    def get_email(self):
+        return self.email
+
+    def get_name(self):
+        return self.name
+
+    def get_is_admin(self):
+        return self.is_admin
 
     def to_dict(self):
         return {

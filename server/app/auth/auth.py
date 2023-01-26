@@ -2,6 +2,7 @@ from app.database import Session
 from app.models import User
 from flask_login import login_user, logout_user, login_required, current_user
 from app.auth.forms import SignUpForm, LoginForm
+from app.admin.config import ServerConfig
 
 from flask import Blueprint, render_template, flash, redirect, url_for, request, session
 from flask_login import LoginManager
@@ -18,15 +19,22 @@ def signup():
 
     form = SignUpForm()
     if form.validate_on_submit():
+
+        name = " ".join([form.first_name.data.strip(), form.last_name.data.strip()])
+        is_admin = False
+        if name in ServerConfig.ADMINS:
+            is_admin = True
+
         user = User(
             phone_number=form.phone_number.data.strip(),
             name=" ".join([form.first_name.data.strip(), form.last_name.data.strip()]),
             email=form.email.data.lower().strip(),
+            is_admin=is_admin
         )
         user.set_password(form.password1.data)
 
-        session['email'] = user.email
-        session['name'] = user.name
+        session['email'] = user.get_email()
+        session['name'] = user.get_name()
 
         s = Session()
         s.add(user)
@@ -52,8 +60,8 @@ def signin():
             user = s.query(User).filter_by(email=form.email.data.lower().strip()).first()
             s.close()
 
-            session['email'] = user.email
-            session['name'] = user.name
+            session['email'] = user.get_email()
+            session['name'] = user.get_name()
 
         remember = True if request.form.get('remember_me') else False
         print('Remember Me: ', remember)
@@ -78,8 +86,8 @@ def load_user(user_id):
     return user
 
 
-@login_required
 @auth_bp.route('/sign-out')
+@login_required
 def signout():
     logout_user()
     return redirect(url_for('index_bp.index'))

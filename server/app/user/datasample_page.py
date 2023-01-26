@@ -1,7 +1,7 @@
 import sqlalchemy
 from sqlalchemy.sql import func
 from flask import request, render_template, Blueprint
-from flask_login import login_required
+from flask_login import login_required, current_user
 import json
 
 from app.user.config import UserConfig
@@ -11,14 +11,14 @@ from app.database import Session
 datasample_page_bp = Blueprint('datasample_page_bp', __name__)
 
 
-@login_required
 @datasample_page_bp.route(UserConfig.MY_DATA_SAMPLES_ROUTE, methods=['GET'])
+@login_required
 def serve_page_data_samples():
     return render_template('/user_data_records_table.html', title='My Data Samples')
 
 
-@login_required
 @datasample_page_bp.route(UserConfig.SERVE_DATA_SAMPLES_ROUTE, methods=['GET'])
+@login_required
 def serve_data_samples():
     """Sorts the table, returns searched data"""
     session = Session()
