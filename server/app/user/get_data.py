@@ -1,16 +1,18 @@
 from flask import request, Blueprint
+from flask_login import login_required
 import json
 
 from app.database import Session
 from app.models import DataSample
-from app.admin.config import SERVER_CONFIG
+from app.admin.config import ServerConfig
 import app.utils as u
 
 
 get_data_bp = Blueprint('get_data_bp', __name__)
 
 
-@get_data_bp.route(SERVER_CONFIG.GET_DATA_ROUTE, methods=['POST'])
+@login_required
+@get_data_bp.route(ServerConfig.GET_DATA_ROUTE, methods=['POST'])
 def get_data():
     if request.is_json:
 

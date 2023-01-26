@@ -1,28 +1,39 @@
 import sqlalchemy
 from sqlalchemy.sql import func
 from flask import request, render_template, Blueprint
+from flask_login import login_required
 
 from app.models import User
 from app.database import Session
-from app.admin.config import SERVER_CONFIG
+from app.admin.config import ServerConfig
 
 admin_page_bp = Blueprint('admin_page_bp', __name__)
 
 
-@admin_page_bp.route(SERVER_CONFIG.ADMIN_PAGE_ROUTE)
+def is_admin():
+    return current_user.is_authenticated and current_user.is_admin
+
+
+@login_required
+@admin_page_bp.route(ServerConfig.ADMIN_DATA_SAMPLES_ROUTE, methods=['GET'])
+def serve_admin_data_samples():
+    return render_template('/admin_data_records_table.html', title='Data Samples')
+
+
+@login_required
+@admin_page_bp.route(ServerConfig.ADMIN_PAGE_ROUTE)
 def serve_admin_main():
-    return render_template('/ADMIN_PAGE/admin_page_main.html', title='Admin Page')
+    return render_template('/admin_page_main.html', title='Admin Page')
 
 
-@admin_page_bp.route(SERVER_CONFIG.ADMIN_PAGE_USERS_ROUTE)
+@login_required
+@admin_page_bp.route(ServerConfig.ADMIN_PAGE_USERS_ROUTE)
 def serve_page_users():
-    """
-    Brings to the table with Haros
-    """
-    return render_template('/ADMIN_PAGE/users_table.html', title='Users')
+    return render_template('/admin_users_table.html', title='Users')
 
 
-@admin_page_bp.route(SERVER_CONFIG.ADMIN_PAGE_SERVE_USERS_ROUTE, methods=['GET'])
+@login_required
+@admin_page_bp.route(ServerConfig.ADMIN_PAGE_SERVE_USERS_ROUTE, methods=['GET'])
 def serve_users():
     """Sorts the table, returns searched data"""
     session = Session()
@@ -36,6 +47,7 @@ def serve_users():
 
     if search:
         query = query.filter(sqlalchemy.or_(
+            User.name.like(f'%{search}%'),
             User.phone_number.like(f'%{search}%'),
             User.email.like(f'%{search}%'),
             User.datetime_joined.like(f'%{search}%')
@@ -52,7 +64,7 @@ def serve_users():
         if col_index is None:
             break
         col_name = request.args.get(f'columns[{col_index}][data]')
-        if col_name not in ['phone_number', 'email', 'datetime_joined']:
+        if col_name not in ['name', 'phone_number', 'email', 'datetime_joined']:
             col_name = 'phone_number'
 
         # gets descending sorting

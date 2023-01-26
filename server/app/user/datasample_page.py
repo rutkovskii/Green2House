@@ -1,24 +1,24 @@
 import sqlalchemy
 from sqlalchemy.sql import func
 from flask import request, render_template, Blueprint
+from flask_login import login_required
 import json
 
-from app.admin.config import SERVER_CONFIG
+from app.user.config import UserConfig
 from app.models import DataSample
 from app.database import Session
 
 datasample_page_bp = Blueprint('datasample_page_bp', __name__)
 
 
-@datasample_page_bp.route(SERVER_CONFIG.ALL_DATS_SAMPLES_ROUTE)
+@login_required
+@datasample_page_bp.route(UserConfig.MY_DATA_SAMPLES_ROUTE, methods=['GET'])
 def serve_page_data_samples():
-    """
-    Brings to the table with Haros
-    """
-    return render_template('/DATASAMPLES_PAGE/data_sample_table.html', title='Data Samples')
+    return render_template('/user_data_records_table.html', title='My Data Samples')
 
 
-@datasample_page_bp.route(SERVER_CONFIG.SERVE_DATA_SAMPLES_ROUTE, methods=['GET'])
+@login_required
+@datasample_page_bp.route(UserConfig.SERVE_DATA_SAMPLES_ROUTE, methods=['GET'])
 def serve_data_samples():
     """Sorts the table, returns searched data"""
     session = Session()
@@ -71,7 +71,7 @@ def serve_data_samples():
     length = request.args.get('length', type=int)
     query = query.offset(start).limit(length)
 
-    # print([sample.to_dict() for sample in query])
+    print([sample.to_dict() for sample in query])
     # print()
     # print(json.dumps([sample.to_dict() for sample in query],default=str))
 

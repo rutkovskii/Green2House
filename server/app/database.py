@@ -1,46 +1,45 @@
 import sqlalchemy
 from sqlalchemy.orm import sessionmaker
 from contextlib import contextmanager
+
 # When running run.py
 from app.models import Base, User, DataSample
-from app.admin.config import SERVER_CONFIG
+from app.admin.config import ServerConfig
 import app.utils as u
 
 # When running database.py
 # from models import Base, User, DataSample
-# from admin.config import SERVER_CONFIG.DATABASE_URI
-# import utils as u]
+# from admin.config import ServerConfig
+# import utils as u
 
 
-engine = sqlalchemy.create_engine(SERVER_CONFIG.DATABASE_URI)  #Server -> necessary for cron
+engine = sqlalchemy.create_engine(
+    ServerConfig.DATABASE_URI)  # Server -> necessary for cron
 Session = sessionmaker(bind=engine)
 Base.metadata.create_all(engine)
 
-#print(engine)
-
-tm1=1667351400
-tm2=1667279700
-tm3=1667279500
-tm4=1667279800
+tm1 = 1667351400
+tm2 = 1667279700
+tm3 = 1667279500
+tm4 = 1667279800
 
 
 def add_sample_users():
     s = Session()
     bulk_list = [
-        User(phone_number='+55555',email='arutkovskii@umass.edu'),
-        User(phone_number='+11111',email='smorelli@umass.edu')
+        User(name='Mike Vash', phone_number='+55555', email='mike@umass.edu'),
+        User(name='Rob Bobert', phone_number='+44444', email='rob@umass.edu')
     ]
     s.bulk_save_objects(bulk_list)
     s.commit()
     s.close()
 
 
-
 def add_example_datasamples():
     s = Session()
     bulk_list = [
-        DataSample(user_id=1,temperature=78.3, humidity=43.2, timestamp=u.dt_ts2dt_obj(tm1),
-                   date=u.dt_ts2date(tm1),time=u.dt_ts2time(tm1)
+        DataSample(user_id=1, temperature=78.3, humidity=43.2, timestamp=u.dt_ts2dt_obj(tm1),
+                   date=u.dt_ts2date(tm1), time=u.dt_ts2time(tm1)
                    ),
         DataSample(user_id=1, temperature=78.7, humidity=61.5, timestamp=u.dt_ts2dt_obj(tm2),
                    date=u.dt_ts2date(tm2), time=u.dt_ts2time(tm2)
@@ -76,13 +75,13 @@ def session_scope():
 
 
 #    with session_scope() as s:
-        #s.add(book)
+        # s.add(book)
 
 
 if __name__ == "__main__":
     # When running database.py
-    # recreate_database()
-    # add_sample_users()
-    # add_example_datasamples()
+    recreate_database()
+    add_sample_users()
+    add_example_datasamples()
 
     pass

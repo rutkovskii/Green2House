@@ -1,10 +1,9 @@
-{% extends "table_base.html" %}
+{% extends "user_table_base.html" %}
 
 {% block content %}
 <table id="all_data_samples" class="table table-striped">
     <thead>
     <tr>
-        <th>User Id</th>
         <th>Temperature</th>
         <th>Humidity</th>
         <th>Date (Y/M/D)</th>
@@ -21,14 +20,13 @@
     $(document).ready(function () {
         var table = $('#all_data_samples').DataTable({
             order: [],
-            ajax: {url:"/api/serve-data-samples",},
+            ajax: {url:"/api/serve-data-records",},
             serverSide: true,
             columns: [
-                {data: "user_id", width: "20%"},
-                {data: 'temperature', width: "20%"},
-                {data: 'humidity', width: "20%"},
-                {data: 'date', width: "20%"},
-                {data: 'time', width: "20%"},
+                {data: 'temperature', width: "25%"},
+                {data: 'humidity', width: "25%"},
+                {data: 'date', width: "25%"},
+                {data: 'time', width: "25%"},
             ]
         });
 
