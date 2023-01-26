@@ -1,9 +1,10 @@
-{% extends "table_base.html" %}
+{% extends "admin_table_base.html" %}
 
 {% block content %}
   <table id="all_users" class="table table-striped">
     <thead>
       <tr>
+        <th>Name</th>
         <th>Phone Number</th>
         <th>Email</th>
         <th>Date and Time Joined</th>
@@ -21,12 +22,17 @@ $(document).ready(function () {
       order: [],
       ajax: {
         url:"/api/serve-users",
+        method:"GET",
+        data: {
+            'token' : '{{ current_user.get_auth_token() }}'
+        }
       },
       serverSide: true,
       columns: [
-        {data: 'phone_number', width: "30%"},
-        {data: 'email', width: "35%"},
-        {data: 'datetime_joined', width: "35%"}
+        {data: 'name', width: "20%"},
+        {data: 'phone_number', width: "20%"},
+        {data: 'email', width: "30%"},
+        {data: 'datetime_joined', width: "30%"}
       ]
     });
 
