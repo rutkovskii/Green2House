@@ -1,15 +1,18 @@
 from flask import request, Blueprint
+from flask_login import login_required
 import json
 
 from app.database import Session
 from app.models import DataSample
+from app.admin.config import ServerConfig
 import app.utils as u
 
 
-get_data_bp = Blueprint('get_data_bp',__name__)
+get_data_bp = Blueprint('get_data_bp', __name__)
 
 
-@get_data_bp.route('/get_data', methods=['POST'])
+@get_data_bp.route(ServerConfig.GET_DATA_ROUTE, methods=['POST'])
+@login_required
 def get_data():
     if request.is_json:
 
@@ -23,7 +26,7 @@ def get_data():
                     timestamp=u.dt_ts2dt_obj(sample['timestamp']),
                     date=u.dt_ts2date(sample['timestamp']),
                     time=u.dt_ts2time(sample['timestamp'])
-               )
+                )
             )
 
         s = Session()

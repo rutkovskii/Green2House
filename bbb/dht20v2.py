@@ -1,4 +1,5 @@
 import time
+import Adafruit_BBIO.ADC as ADC
 import Adafruit_BBIO.GPIO as GPIO
 
 from bbb_config import BBB_CONFIG as BC  # pins are here
@@ -6,8 +7,10 @@ from scripts.init_home import create_all
 from scripts import utils
 from scripts.send_data import send_samples
 
-i2c, sensor, oled = create_all(BC.pins_dict)
+i2c, oled = create_all(BC.pins_dict)
+#sensor should be included in the above function but because it isn't working I have removed it temporarily
 
+#Do not heavily modify code or BB before MDR
 
 #############################
 # Created utils.py — with sensing functions
@@ -29,10 +32,17 @@ def console(): #process user command
     # csv_write.writerow(dataRow)
 
     if int(time.strftime('%S')) % 10 == 0: # sense data every 10 seconds
-        sensorF = utils.getTempHum(sensor)[0]
-        sensorH = utils.getTempHum(sensor)[1]
+        ###COMMENTED OUT FOR MDR###
+        #sensorF = utils.getTempHum(sensor)[0]
+        #sensorH = utils.getTempHum(sensor)[1]
+        
+        #sensorF = 0
+        print("Reading:",ADC.read("AIN0"))
+        sensorC = (ADC.read("AIN0")*1800 - 500)/10
+        sensorF = sensorC*9/5 + 32
         #print(time.strftime('%S'))
-        print("Temperature: %2.1f°F\nHumidity: %2.0f%%" %(sensorF, sensorH))
+        
+        # print("Temperature: %2.1f°F\nHumidity: %2.0f%%" %(sensorF, sensorH))
 
         if BC.SEND_DATA:
             # Create Sample to propagate to the database
@@ -41,7 +51,8 @@ def console(): #process user command
             # Send values to the server
             send_samples(url=BC.SERVER_GET_DATA_URL, samples=samples)
 
-        utils.dispOLED(oled=oled, temp=str(sensorF)[0:4], hum=str(sensorH)[0:4], timestamp=time.strftime('%H:%M:%S'))
+        #utils.dispOLED(oled=oled, temp=str(sensorF)[0:4], hum=str(sensorH)[0:4], timestamp=time.strftime('%H:%M:%S'))
+        utils.dispOLED(oled=oled, temp=str(sensorF)[0:4], hum="N/A", timestamp=time.strftime('%H:%M:%S'))
         time.sleep(1)
 
         # temp_string = str(round(sensorF, 1))
@@ -49,10 +60,10 @@ def console(): #process user command
         # dataRow = [time.strftime('%m/%d/%Y %H:%M:%S'), temp_string[0:4], hum_string[0:4]]
 
     # Control Humidity Relay
-        if int(sensorF) >= BC.threshold:
+        if int(sensorF) >= BC.threshold + BC.variance:
             utils.relayOn(GPIO, BC.pins_dict.get('temp_relay_pin'))
 
-        elif int(sensorF) < BC.threshold: 
+        elif int(sensorF) < BC.threshold: #- BC.variance: 
             utils.relayOff(GPIO, BC.pins_dict.get('temp_relay_pin'))
 
     if not (utils.pumpOn(GPIO, BC.pins_dict.get('button_pin'))):
