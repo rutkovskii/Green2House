@@ -1,4 +1,4 @@
-{% extends "table_base.html" %}
+{% extends "admin_table_base.html" %}
 
 {% block content %}
 <table id="all_data_samples" class="table table-striped">
@@ -21,7 +21,13 @@
     $(document).ready(function () {
         var table = $('#all_data_samples').DataTable({
             order: [],
-            ajax: {url:"/api/serve_data_samples",},
+            ajax: {
+                url:"/api/serve-data-records",
+                method:"GET",
+                data: {
+                    'token' : '{{ current_user.get_auth_token() }}'
+                }
+            },
             serverSide: true,
             columns: [
                 {data: "user_id", width: "20%"},

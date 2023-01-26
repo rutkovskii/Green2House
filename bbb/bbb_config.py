@@ -32,5 +32,3 @@ class BBB_CONFIG:
     SERVER_GET_DATA_URL = SERVER_URL + "/get_data"
     SEND_DATA = False
 
-    SEND_DATA = False
-

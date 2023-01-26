@@ -16,7 +16,28 @@ Create Volume:
 
 Create Postgres Instance:
 
-```docker run --name G2H -e POSTGRES_USER=ubuntu -e POSTGRES_PASSWORD=ubuntu -p 5432:5432 -v /<path-to-docker>/docker/postgres/volumes:/var/lib/postgresql/data -d postgres```
+```
+docker run \
+    --name G2H \
+    -e POSTGRES_USER=ubuntu \
+    -e POSTGRES_PASSWORD=ubuntu \
+    -e POSTGRES_DB=postgresDB \
+    -p 5455:5432 \
+    -v /<path-to-docker-folder>/docker/postgres/volumes:/var/lib/postgresql/data \
+    -d postgres 
+```
+
+Real local example:
+
+    docker run \
+        --name G2H \
+        -e POSTGRES_USER=ubuntu \
+        -e POSTGRES_PASSWORD=ubuntu \
+        -e POSTGRES_DB=postgresDB \
+        -p 5455:5432 \
+        -v /Users/rutkovskii/Code/GitHub/Green2House/server/docker/postgres/volumes:/var/lib/postgresql/data \
+        -d postgres
+
 
 To see running containers:
 
@@ -36,11 +57,11 @@ Connect to Postgres:
 
 Create Database:
 
-```CREATE DATABASE main_db;```
+```CREATE DATABASE postgresDB;```
 
 Connect to Database:
 
-```\c main_db;```
+```\c postgresDB;```
 
 Create Table:
 
@@ -70,6 +91,6 @@ Inside of Postgres:
 
 ### Postgres SQL Connection:
 ```
-POSTGRES_DATABASE_URI = 'postgresql://ubuntu:ubuntu@0.0.0.0:5432/main_db'
+POSTGRES_DATABASE_URI = 'postgresql://ubuntu:ubuntu@0.0.0.0:5455/postgresDB'
 ```
 Example: `postgresql://user:secret@localhost:5432/DB_NAME`
