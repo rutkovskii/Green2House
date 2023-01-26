@@ -1,46 +1,29 @@
 import sqlalchemy
 from sqlalchemy.sql import func
-from flask import request, render_template, Blueprint, abort
-from flask_login import login_required
+from flask import request, render_template, Blueprint
 
 from app.models import User
 from app.database import Session
-from app.admin.config import ServerConfig
-from app.admin.decorators import admin_required
 
-admin_bp = Blueprint('admin_bp', __name__)
+admin_page_bp = Blueprint('admin_page_bp',__name__)
 
 
-@admin_bp.route(ServerConfig.ADMIN_DATA_SAMPLES_ROUTE, methods=['GET'])
-@login_required
-@admin_required
-def serve_admin_data_samples():
-    return render_template('/admin_data_records_table.html', title='Data Samples')
-
-
-@admin_bp.route(ServerConfig.ADMIN_PAGE_ROUTE)
-@login_required
-@admin_required
+@admin_page_bp.route('/admin')
 def serve_admin_main():
-    return render_template('/admin_page_main.html', title='Admin Page')
+    return render_template('/ADMIN_PAGE/admin_page_main.html', title='Admin Page')
 
 
-@admin_bp.route(ServerConfig.ADMIN_PAGE_USERS_ROUTE)
-@login_required
-@admin_required
+@admin_page_bp.route('/admin/all_users')
 def serve_page_users():
-    return render_template('/admin_users_table.html', title='Users')
+    """
+    Brings to the table with Haros
+    """
+    return render_template('/ADMIN_PAGE/users_table.html', title='Users')
 
 
-@admin_bp.route(ServerConfig.ADMIN_PAGE_SERVE_USERS_ROUTE, methods=['GET'])
-@login_required
-@admin_required
+@admin_page_bp.route('/api/serve_users')
 def serve_users():
     """Sorts the table, returns searched data"""
-
-    if not request.args.get('token'):
-        return abort(403)
-
     session = Session()
     query = session.query(User)
     session.close()
@@ -52,7 +35,6 @@ def serve_users():
 
     if search:
         query = query.filter(sqlalchemy.or_(
-            User.name.like(f'%{search}%'),
             User.phone_number.like(f'%{search}%'),
             User.email.like(f'%{search}%'),
             User.datetime_joined.like(f'%{search}%')
@@ -69,14 +51,14 @@ def serve_users():
         if col_index is None:
             break
         col_name = request.args.get(f'columns[{col_index}][data]')
-        if col_name not in ['name', 'phone_number', 'email', 'datetime_joined']:
+        if col_name not in ['phone_number','email','datetime_joined']:
             col_name = 'phone_number'
 
         # gets descending sorting
         descending = request.args.get(f'order[{i}][dir]') == 'desc'
-        desired_col = getattr(User, col_name)
+        desired_col = getattr(User,col_name)
 
-        # decending
+        #decending
         if descending:
             desired_col = desired_col.desc()
         order.append(desired_col)

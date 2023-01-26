@@ -21,10 +21,9 @@ class BBB_CONFIG:
     }
 
     # Variables
-    threshold = 75
+    threshold = 80
     toggle = 0
     user_id = 1
-    variance = 1
 
     # change link based on ngrok
     # must have internet connection

@@ -1,7 +1,6 @@
 import os
 # from dotenv import load_dotenv
 
-
 class Config:
     # Locations
     SCRIPTS_DIR = os.path.abspath(os.path.dirname(__file__))
