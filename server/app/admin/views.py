@@ -1,6 +1,6 @@
 import sqlalchemy
 from sqlalchemy.sql import func
-from flask import request, render_template, Blueprint
+from flask import request, render_template, Blueprint, abort
 from flask_login import login_required
 
 from app.models import User
@@ -37,6 +37,10 @@ def serve_page_users():
 @admin_required
 def serve_users():
     """Sorts the table, returns searched data"""
+
+    if not request.args.get('token'):
+        return abort(403)
+
     session = Session()
     query = session.query(User)
     session.close()

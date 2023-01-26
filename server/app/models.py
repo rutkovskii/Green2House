@@ -16,6 +16,7 @@ class User(Base, UserMixin):
     email = Column(String, nullable=False)
     password_hash = Column(String(150))
     is_admin = Column(Boolean, nullable=False, default=False)
+    auth_token = Column(String, nullable=False)
     datetime_joined = Column(String, nullable=False, default=datetime.now(
     ).strftime("%d-%m-%Y %H:%M:%S"))  # .isoformat(' ', 'seconds'))
 
@@ -24,6 +25,12 @@ class User(Base, UserMixin):
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
+
+    def check_token(self, token):
+        return self.auth_token == token
+
+    def get_auth_token(self):
+        return self.auth_token
 
     def get_id(self):
         return self.id

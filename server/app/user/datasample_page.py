@@ -1,7 +1,7 @@
 import sqlalchemy
 from sqlalchemy.sql import func
-from flask import request, render_template, Blueprint
-from flask_login import login_required, current_user
+from flask import request, render_template, Blueprint, abort
+from flask_login import login_required
 import json
 
 from app.user.config import UserConfig
@@ -17,13 +17,25 @@ def serve_page_data_samples():
     return render_template('/user_data_records_table.html', title='My Data Samples')
 
 
-@datasample_page_bp.route(UserConfig.SERVE_DATA_SAMPLES_ROUTE, methods=['GET'])
+@datasample_page_bp.route(UserConfig.SERVE_DATA_SAMPLES_ROUTE, methods=['GET', 'POST'])
 @login_required
 def serve_data_samples():
     """Sorts the table, returns searched data"""
-    session = Session()
-    query = session.query(DataSample).order_by(DataSample.id.desc())
-    session.close()
+
+    user_id = request.args.get('user_id')
+
+    if not request.args.get('token'):
+        return abort(403)
+
+    if user_id:
+        session = Session()
+        query = session.query(DataSample).filter(DataSample.user_id == user_id)
+        session.close()
+
+    else:
+        session = Session()
+        query = session.query(DataSample).order_by(DataSample.id.desc())
+        session.close()
 
     func.to_char()
 
@@ -71,7 +83,7 @@ def serve_data_samples():
     length = request.args.get('length', type=int)
     query = query.offset(start).limit(length)
 
-    print([sample.to_dict() for sample in query])
+    # print([sample.to_dict() for sample in query])
     # print()
     # print(json.dumps([sample.to_dict() for sample in query],default=str))
 

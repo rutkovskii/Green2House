@@ -1,14 +1,26 @@
 from app.database import Session
 from app.models import User
-from flask_login import login_user, logout_user, login_required, current_user
+
 from app.auth.forms import SignUpForm, LoginForm
 from app.admin.config import ServerConfig
 
 from flask import Blueprint, render_template, flash, redirect, url_for, request, session
-from flask_login import LoginManager
+from flask_login import login_user, logout_user, login_required, current_user, LoginManager
+import jwt
+from datetime import datetime, timedelta
+import secrets
 
 login_manager = LoginManager()
 auth_bp = Blueprint('auth_bp', __name__)
+
+
+def __generate_rand_int():
+    """Create a random int for the timedelta"""
+    sr = secrets.SystemRandom()
+    return sr.randrange(10001, 99999)
+
+def generate_token(secret, payload):
+    return jwt.encode(payload, secret, algorithm='HS256')
 
 
 @auth_bp.route('/sign-up', methods=['GET', 'POST'])
@@ -25,16 +37,19 @@ def signup():
         if name in ServerConfig.ADMINS:
             is_admin = True
 
+        now = datetime.utcnow() + timedelta(seconds=__generate_rand_int())
+        payload = {
+            'val': now.strftime("%Y-%m-%d %H:%M:%S"),
+        }
+
         user = User(
             phone_number=form.phone_number.data.strip(),
             name=" ".join([form.first_name.data.strip(), form.last_name.data.strip()]),
             email=form.email.data.lower().strip(),
-            is_admin=is_admin
+            is_admin=is_admin,
+            auth_token=generate_token(ServerConfig.SECRET_KEY, payload)
         )
         user.set_password(form.password1.data)
-
-        session['email'] = user.get_email()
-        session['name'] = user.get_name()
 
         s = Session()
         s.add(user)

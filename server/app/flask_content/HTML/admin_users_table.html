@@ -22,6 +22,10 @@ $(document).ready(function () {
       order: [],
       ajax: {
         url:"/api/serve-users",
+        method:"GET",
+        data: {
+            'token' : '{{ current_user.get_auth_token() }}'
+        }
       },
       serverSide: true,
       columns: [
