@@ -1,1 +1,0 @@
-1. [Admin Decorator](https://www.programcreek.com/python/?code=hackathons-ftw%2Fdribdat%2Fdribdat-master%2Fdribdat%2Fpublic%2Fviews.py#)
