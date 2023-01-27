@@ -28,14 +28,14 @@ def serve_data_samples():
         return abort(403)
 
     if user_id:
-        session = Session()
-        query = session.query(DataSample).filter(DataSample.user_id == user_id)
-        session.close()
+        s = Session()
+        query = s.query(DataSample).filter(DataSample.user_id == user_id)
+        s.close()
 
     else:
-        session = Session()
-        query = session.query(DataSample).order_by(DataSample.id.desc())
-        session.close()
+        s = Session()
+        query = s.query(DataSample).order_by(DataSample.id.desc())
+        s.close()
 
     func.to_char()
 
