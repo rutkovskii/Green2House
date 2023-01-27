@@ -6,4 +6,3 @@
 /server/docker
 /server/svenv
 docker
-server/.env

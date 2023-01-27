@@ -1,24 +1,24 @@
 import sqlalchemy
 from sqlalchemy.sql import func
-from flask import request, render_template, Blueprint, abort
-from flask_login import login_required
+from flask import request, render_template, Blueprint
+
 import json
 
-from app.user.config import UserConfig
 from app.models import DataSample
 from app.database import Session
 
-datasample_page_bp = Blueprint('datasample_page_bp', __name__)
+datasample_page_bp = Blueprint('datasample_page_bp',__name__)
 
 
-@datasample_page_bp.route(UserConfig.MY_DATA_SAMPLES_ROUTE, methods=['GET'])
-@login_required
+@datasample_page_bp.route('/all_data_samples')
 def serve_page_data_samples():
-    return render_template('/user_data_records_table.html', title='My Data Samples')
+    """
+    Brings to the table with Haros
+    """
+    return render_template('/DATASAMPLES_PAGE/data_sample_table.html', title='Data Samples')
 
 
-@datasample_page_bp.route(UserConfig.SERVE_DATA_SAMPLES_ROUTE, methods=['GET', 'POST'])
-@login_required
+@datasample_page_bp.route('/api/serve_data_samples')
 def serve_data_samples():
     """Sorts the table, returns searched data"""
 
@@ -51,6 +51,7 @@ def serve_data_samples():
 
     total_filtered = query.count()
 
+
     # sorting
     order = []
     i = 0
@@ -60,14 +61,14 @@ def serve_data_samples():
         if col_index is None:
             break
         col_name = request.args.get(f'columns[{col_index}][data]')
-        if col_name not in ['user_id', 'time', 'date']:
+        if col_name not in ['user_id','time','date']:
             col_name = 'date'
 
         # gets descending sorting
         descending = request.args.get(f'order[{i}][dir]') == 'desc'
-        desired_col = getattr(DataSample, col_name)
+        desired_col = getattr(DataSample,col_name)
 
-        # decending
+        #decending
         if descending:
             desired_col = desired_col.desc()
         order.append(desired_col)
@@ -94,4 +95,4 @@ def serve_data_samples():
             'recordsFiltered': total_filtered,
             'recordsTotal': query.count(),
             'draw': request.args.get('draw', type=int),
-        }, default=str)
+        },default=str)
