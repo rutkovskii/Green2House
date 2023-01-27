@@ -20,5 +20,4 @@ class ServerConfig:
 
     # Secrets
     ADMINS = [os.getenv('ADMIN1'), os.getenv('ADMIN2')]
-    # Secret Key
     SECRET_KEY = os.getenv('SECRET_KEY')
