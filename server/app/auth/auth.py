@@ -82,7 +82,7 @@ def signin():
         print('Remember Me: ', remember)
         if user and not user.check_password(form.password.data.strip()):
             flash('Invalid password.')
-            return redirect(url_for('login'))
+            return redirect(url_for('auth_bp.signin'))
 
         if login_user(user, remember=remember):
             return redirect(url_for('home_bp.home'))
