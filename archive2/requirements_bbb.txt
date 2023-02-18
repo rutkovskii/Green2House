@@ -1,0 +1,17 @@
+Adafruit-BBIO==1.2.0
+Adafruit-Blinka==8.9.0
+adafruit-circuitpython-ahtx0==1.0.17
+adafruit-circuitpython-busdevice==5.2.3
+adafruit-circuitpython-register==1.9.15
+adafruit-circuitpython-requests==1.12.11
+adafruit-circuitpython-typing==1.8.3
+Adafruit-GPIO==1.0.3
+Adafruit-PlatformDetect==3.37.0
+Adafruit-PureIO==1.1.9
+Adafruit-SSD1306==1.6.2
+pkg-resources==0.0.0
+pyftdi==0.54.0
+pyserial==3.5
+pyusb==1.2.1
+spidev==3.6
+typing-extensions==4.4.0

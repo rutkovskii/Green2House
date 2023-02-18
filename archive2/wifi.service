@@ -1,0 +1,12 @@
+[Unit]
+Description=wifi runner for BBB
+After=network.target
+
+[Service]
+User=debian
+WorkingDirectory=/home/debian/bbb
+ExecStart=/home/ubuntu/lightyear/wifi.sh
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
