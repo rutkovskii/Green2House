@@ -1,0 +1,53 @@
+{% extends "user_signedin_base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h3>Welcome to Green2House</h3>
+    </div>
+</div>
+<div class="container">
+    <form method="POST">
+        <div class="container">
+            <label for="temp-slider">Temperature:</label>
+            <input type="range" min="0" max="100" step="1" name="temperature" id="temp-slider"
+                   oninput="updateTemperatureValue(this.value)">
+            <span id="temp-slider-value"></span>
+            <br>
+            <label for="temp-field">Temperature Value:</label>
+            <input type="text" name="temperature_value" id="temp-field" value="50">
+        </div>
+        <br> <br> <br>
+        <div class="container">
+            <label for="humidity-slider">Humidity:</label>
+            <input type="range" min="0" max="100" step="1" name="humidity" id="humidity-slider"
+                   oninput="updateHumidityValue(this.value)">
+            <span id="humidity-slider-value"></span>
+            <br>
+            <label for="humidity-field">Humidity Value:</label>
+            <input type="text" name="humidity_value" id="humidity-field" value="50">
+        </div>
+        <br> <br> <br>
+        <div class="container">
+            <label for="times-per-day">Watering (Times per Day):</label>
+            <select name="times_per_day" id="times-per-day">
+                {{ times_per_day_options | safe }}
+            </select>
+        </div>
+        <br> <br> <br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <script>
+        function updateTemperatureValue(val) {
+            document.getElementById('temp-slider-value').textContent = val;
+            document.getElementById('temp-field').value = val;
+        }
+
+        function updateHumidityValue(val) {
+            document.getElementById('humidity-slider-value').textContent = val;
+            document.getElementById('humidity-field').value = val;
+        }
+    </script>
+</div>
+{% endblock content %}

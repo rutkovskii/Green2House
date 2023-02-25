@@ -4,6 +4,7 @@ from flask import Flask
 from flask_bootstrap import Bootstrap
 import os
 
+from app.user.env_page import env_page_bp
 from app.user.datasample_page import datasample_page_bp
 from app.user.get_data import get_data_bp
 from app.user.home_page import home_page_bp
@@ -23,10 +24,10 @@ def register_blueprints(app):
     app.register_blueprint(home_page_bp)
     app.register_blueprint(auth_bp)
     app.register_blueprint(index_bp)
+    app.register_blueprint(env_page_bp)
 
 def add_configs(app):
     app.config['SECRET_KEY'] = ServerConfig.SECRET_KEY
-
     return app
 
 
