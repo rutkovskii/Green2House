@@ -19,6 +19,7 @@ def __generate_rand_int():
     sr = secrets.SystemRandom()
     return sr.randrange(10001, 99999)
 
+
 def generate_token(secret, payload):
     return jwt.encode(payload, secret, algorithm='HS256')
 
@@ -32,7 +33,8 @@ def signup():
     form = SignUpForm()
     if form.validate_on_submit():
 
-        name = " ".join([form.first_name.data.strip(), form.last_name.data.strip()])
+        name = " ".join([form.first_name.data.strip(),
+                        form.last_name.data.strip()])
         is_admin = False
         if name in ServerConfig.ADMINS:
             is_admin = True
@@ -44,7 +46,8 @@ def signup():
 
         user = User(
             phone_number=form.phone_number.data.strip(),
-            name=" ".join([form.first_name.data.strip(), form.last_name.data.strip()]),
+            name=" ".join([form.first_name.data.strip(),
+                          form.last_name.data.strip()]),
             email=form.email.data.lower().strip(),
             is_admin=is_admin,
             auth_token=generate_token(ServerConfig.SECRET_KEY, payload)
@@ -72,11 +75,13 @@ def signin():
         user = None
         if "@" in form.email.data:
             s = Session()
-            user = s.query(User).filter_by(email=form.email.data.lower().strip()).first()
+            user = s.query(User).filter_by(
+                email=form.email.data.lower().strip()).first()
             s.close()
 
             session['email'] = user.get_email()
             session['name'] = user.get_name()
+            session['user_id'] = user.get_id()
 
         remember = True if request.form.get('remember_me') else False
         print('Remember Me: ', remember)
