@@ -8,7 +8,7 @@
 
 <div class="container">
   <div class="page-header">
-    <h3>Welcome to Green2House</h3>
+    <h3>Set Environment for Your Green2House</h3>
   </div>
 </div>
 <div class="container">
@@ -21,59 +21,87 @@
         type="hidden"
         id="temp-slider-min"
         name="temperature_min"
-        value="32"
+        value="64"
       />
       <input
         type="hidden"
         id="temp-slider-max"
         name="temperature_max"
-        value="86"
+        value="75"
       />
       <br />
-      <span id="temp-min-slider-value"> 44 </span> -
-      <span id="temp-max-slider-value"> 64 </span> ºF
+      <span id="temp-min-slider-value"> 64 </span> -
+      <span id="temp-max-slider-value"> 75 </span> ºF
     </div>
     <br />
     <br />
 
     <div class="container">
-      <label for="humidity-slider">Humidity:</label>
+      <label for="humidity-slider">Relative Humidity:</label>
       <div id="humidity-slider"></div>
       <input
         type="hidden"
         id="humidity-slider-min"
         name="humidity_min"
-        value="50"
+        value="40"
       />
       <input
         type="hidden"
         id="humidity-slider-max"
         name="humidity_max"
-        value="100"
+        value="50"
       />
       <br />
-      <span id="humidity-min-slider-value"> 65 </span> -
-      <span id="humidity-max-slider-value"> 85 </span> %
+      <span id="humidity-min-slider-value"> 40 </span> -
+      <span id="humidity-max-slider-value"> 50 </span> %
     </div>
     <br />
     <br />
     <div class="container">
-      <label for="times-per-day">Watering (Times per Day):</label>
-      <select name="times_per_day" id="times-per-day">
-        {{ times_per_day_options | safe }}
+      <label for="daily-water-freq">Daily Watering Frequency:</label>
+      <select
+        name="daily_water_freq"
+        id="daily-water-freq"
+        onchange="updateTotalDailyWaterAmount()"
+      >
+        {{ daily_water_freq_options | safe }}
       </select>
+      <br />
+      <br />
+      <label for="water-amount-per-freq"
+        >Water Amount per Watering (in mL):</label
+      >
+      <select
+        name="water_amount_per_freq"
+        id="water-amount-per-freq"
+        onchange="updateTotalDailyWaterAmount()"
+      >
+        {{ water_amount_per_freq_options | safe }}
+      </select>
+      <br />
+      <br />
+      <label for="total-daily-water-amount">Total Daily Water Amount:</label>
+      <span id="total-daily-water-amount"> 50 </span> mL
     </div>
     <br />
-    <br />
-    <br />
-    <button type="submit">Submit</button>
+    <div class="container">
+      <button type="submit">Submit</button>
+    </div>
   </form>
   <script>
+    function updateTotalDailyWaterAmount() {
+      var daily_water_freq = $("#daily-water-freq").val();
+      var water_amount_per_freq = $("#water-amount-per-freq").val();
+      var total_daily_water_amount = daily_water_freq * water_amount_per_freq;
+      document.getElementById("total-daily-water-amount").innerHTML =
+        total_daily_water_amount;
+    }
+
     $("#temp-slider").slider({
       range: true,
       min: 32,
       max: 86,
-      values: [44, 64],
+      values: [64, 75],
       slide: function (event, ui) {
         var min = ui.values[0];
         var max = ui.values[1];
@@ -95,9 +123,9 @@
 
     $("#humidity-slider").slider({
       range: true,
-      min: 50,
+      min: 35,
       max: 100,
-      values: [65, 85],
+      values: [40, 50],
       slide: function (event, ui) {
         var min = ui.values[0];
         var max = ui.values[1];
