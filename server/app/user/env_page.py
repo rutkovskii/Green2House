@@ -14,13 +14,29 @@ url = f'{bbb}/instructions'
 @login_required
 def set_environment():
     if request.method == 'POST':
-        temperature = request.form['temperature']
-        humidity = request.form['humidity']
+        # temperature = request.form['temperature']
+        # humidity = request.form['humidity']
         times_per_day = request.form['times_per_day']
         timestamp = str(round(dt.timestamp(dt.now())))
 
-        body = json.dumps({'user_id': session['user_id'], 'temperature': temperature,
-                          'humidity': humidity, 'times_per_day': times_per_day, 'timestamp': timestamp})
+        min_temperature = request.form['temperature_min']
+        max_temperature = request.form['temperature_max']
+        min_humidity = request.form['humidity_min']
+        max_humidity = request.form['humidity_max']
+        print(min_temperature, max_temperature)
+        print(min_humidity, max_humidity)
+
+        body = json.dumps(
+            {
+                'user_id': session['user_id'],
+                'min_temperature': request.form['temperature_min'],
+                'max_temperature': request.form['temperature_max'],
+                'min_humidity': request.form['humidity_min'],
+                'max_humidity': request.form['humidity_max'],
+                'times_per_day': times_per_day,
+                'timestamp': timestamp
+            }
+        )
         headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
         r = requests.post(url, json=body, headers=headers)
         print(f"Status Code: {r.status_code}, Response: {r.json()}")
