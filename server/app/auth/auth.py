@@ -1,4 +1,4 @@
-from app.database import Session
+from app.database import session_scope
 from app.models import User
 
 from app.auth.forms import SignUpForm, LoginForm
@@ -9,6 +9,7 @@ from flask_login import login_user, logout_user, login_required, current_user, L
 import jwt
 from datetime import datetime, timedelta
 import secrets
+
 
 login_manager = LoginManager()
 auth_bp = Blueprint('auth_bp', __name__)
@@ -54,10 +55,8 @@ def signup():
         )
         user.set_password(form.password1.data)
 
-        s = Session()
-        s.add(user)
-        s.commit()
-        s.close()
+        with session_scope() as s:
+            s.add(user)
 
         return redirect(url_for('auth_bp.signin'))
 
@@ -74,10 +73,10 @@ def signin():
     if form.validate_on_submit():
         user = None
         if "@" in form.email.data:
-            s = Session()
-            user = s.query(User).filter_by(
-                email=form.email.data.lower().strip()).first()
-            s.close()
+            with session_scope() as s:
+                user = s.query(User).filter_by(
+                    email=form.email.data.lower().strip()).first()
+                s.expunge(user)
 
             session['email'] = user.get_email()
             session['name'] = user.get_name()
@@ -100,9 +99,9 @@ def signin():
 
 @login_manager.user_loader
 def load_user(user_id):
-    s = Session()
-    user = s.query(User).filter_by(id=user_id).first()
-    s.close()
+    with session_scope() as s:
+        user = s.query(User).filter_by(id=user_id).first()
+        s.expunge(user)
     return user
 
 

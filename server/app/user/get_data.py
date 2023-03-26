@@ -2,7 +2,7 @@ from flask import request, Blueprint
 from flask_login import login_required
 import json
 
-from app.database import Session
+from app.database import session_scope
 from app.models import DataSample
 from app.admin.config import ServerConfig
 import app.utils as u
@@ -29,10 +29,8 @@ def get_data():
                 )
             )
 
-        s = Session()
-        s.bulk_save_objects(bulk_list)
-        s.commit()
-        s.close()
+        with session_scope() as s:
+            s.bulk_save_objects(bulk_list)
 
         return {"message": "JSON received"}, 200
 

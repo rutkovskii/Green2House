@@ -1,0 +1,26 @@
+{% extends "user_signedin_base.html" %} {% block content %}
+
+<div class="container">
+  <div class="page-header">
+    <h3>Current Environment Data</h3>
+  </div>
+  <p>
+    <strong>Minimum Temperature:</strong> {{ instructions.min_temperature }}
+  </p>
+  <p>
+    <strong>Maximum Temperature:</strong> {{ instructions.max_temperature }}
+  </p>
+  <p><strong>Minimum Humidity:</strong> {{ instructions.min_humidity }}</p>
+  <p><strong>Maximum Humidity:</strong> {{ instructions.max_humidity }}</p>
+  <p>
+    <strong>Daily Water Frequency:</strong> {{ instructions.daily_water_freq }}
+  </p>
+  <p>
+    <strong>Water Amount Per Frequency:</strong> {{
+    instructions.water_amount_per_freq }}
+  </p>
+  <p><strong>Date:</strong> {{ instructions.date }}</p>
+  <p><strong>Time:</strong> {{ instructions.time }}</p>
+</div>
+
+{% endblock %}

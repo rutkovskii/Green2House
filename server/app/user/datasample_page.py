@@ -6,7 +6,7 @@ import json
 
 from app.user.config import UserConfig
 from app.models import DataSample
-from app.database import Session
+from app.database import session_scope
 
 datasample_page_bp = Blueprint('datasample_page_bp', __name__)
 
@@ -28,14 +28,13 @@ def serve_data_samples():
         return abort(403)
 
     if user_id:
-        session = Session()
-        query = session.query(DataSample).filter(DataSample.user_id == user_id)
-        session.close()
+        with session_scope() as s:
+            query = s.query(DataSample).filter(
+                DataSample.user_id == user_id)
 
     else:
-        session = Session()
-        query = session.query(DataSample).order_by(DataSample.id.desc())
-        session.close()
+        with session_scope() as s:
+            query = s.query(DataSample).order_by(DataSample.id.desc())
 
     func.to_char()
 

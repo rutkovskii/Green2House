@@ -5,27 +5,26 @@ import phonenumbers
 
 
 from app.models import User
-from app.database import Session
-
+from app.database import session_scope
 
 
 class SignUpForm(FlaskForm):
     """Constructor for the Register Page"""
     first_name = StringField('First Name',
-                       validators=[DataRequired(),
-                                   Length(
-                                       1, 30, message="Please provide a valid name"),
-                                   Regexp(
-                           "^[A-Za-z][A-Za-z0-9_.]*$", 0,
-                           "Names must have only letters, numbers, dots or underscores",
-                       )
-                       ])
+                             validators=[DataRequired(),
+                                         Length(
+                                 1, 30, message="Please provide a valid name"),
+                                 Regexp(
+                                 "^[A-Za-z][A-Za-z0-9_.]*$", 0,
+                                 "Names must have only letters, numbers, dots or underscores",
+                             )
+                             ])
 
     last_name = StringField('Last Name',
-                          validators=[DataRequired(),
+                            validators=[DataRequired(),
                                         Length(
-                                            1, 30, message="Please provide a valid name"),
-                                        Regexp(
+                                1, 30, message="Please provide a valid name"),
+                                Regexp(
                                 "^[A-Za-z][A-Za-z0-9_.]*$", 0,
                                 "Names must have only letters, numbers, dots or underscores",
                             )
@@ -35,7 +34,7 @@ class SignUpForm(FlaskForm):
                         DataRequired(), Email(), Length(1, 64)])
 
     phone_number = StringField('Phone Number', validators=[
-                        DataRequired(), Length(1, 64)])
+        DataRequired(), Length(1, 64)])
 
     password1 = PasswordField('Password', validators=[
                               DataRequired(), Length(6, 72)])
@@ -44,9 +43,12 @@ class SignUpForm(FlaskForm):
     submit = SubmitField('Register')
 
     def validate_email(self, email):
-        s = Session()
-        query = s.query(User).filter_by(email=email.data.lower().strip()).first()
-        s.close()
+        query = None
+        with session_scope() as s:
+            query = s.query(User).filter_by(
+                email=email.data.lower().strip()).first()
+            s.expunge(query)
+
         if query:
             raise ValidationError('Email already exists.')
 
@@ -70,9 +72,11 @@ class LoginForm(FlaskForm):
     def validate_email(self, email):
         email = email.data.lower().strip()
         if "@" in email:
-            s = Session()
-            query = s.query(User).filter_by(email=email).first()
-            s.close()
+            query = None
+            with session_scope() as s:
+                query = s.query(User).filter_by(email=email).first()
+                s.expunge(query)
+
             if not query:
                 raise ValidationError('This email is not registered.')
         else:
