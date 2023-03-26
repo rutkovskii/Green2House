@@ -81,3 +81,32 @@ class DataSample(Base):
     def __repr__(self):
         return "<DataSample(user_id='{}',temperature='{}', humidity='{}', timestamp='{}', date='{}', time='{}')>"\
             .format(self.user_id, self.temperature, self.humidity, self.timestamp, self.date, self.time)
+
+
+class Instructions(Base):
+    __tablename__ = 'Instructions'
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, nullable=False)
+    min_temperature = Column(Float, nullable=False)
+    max_temperature = Column(Float, nullable=False)
+    min_humidity = Column(Float, nullable=False)
+    max_humidity = Column(Float, nullable=False)
+    daily_water_freq = Column(Integer, nullable=False)
+    water_amount_per_freq = Column(Integer, nullable=False)
+    timestamp = Column(DateTime(timezone=True), nullable=False)
+
+    def to_dict(self):
+        return {
+            'user_id': self.user_id,
+            'min_temperature': self.min_temperature,
+            'max_temperature': self.max_temperature,
+            'min_humidity': self.min_humidity,
+            'max_humidity': self.max_humidity,
+            'daily_water_freq': self.daily_water_freq,
+            'water_amount_per_freq': self.water_amount_per_freq,
+            'timestamp': self.timestamp
+        }
+
+    def __repr__(self):
+        return "<Instructions(user_id='{}', min_temperature='{}', max_temperature='{}', min_humidity='{}', max_humidity='{}', daily_water_freq='{}', water_amount_per_freq='{}', timestamp='{}')>"\
+            .format(self.user_id, self.min_temperature, self.max_temperature, self.min_humidity, self.max_humidity, self.daily_water_freq, self.water_amount_per_freq, self.timestamp)
