@@ -16,5 +16,10 @@ def instructions():
     return {"error": "Request must be JSON"}, 415
 
 
+@app.route('/hello-from-bbb', methods=['GET'])
+def hello():
+    return "Hello from BBB"
+
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
