@@ -38,7 +38,7 @@ def main():
             sensorF, sensorH = utils.getTempHum(sensor)
             #measurements = measureValues()
             utils.dispOLED(oled=oled, temp=str(sensorF)[0:4], hum=str(sensorH)[0:4], moisture=soil, timestamp=time.strftime('%H:%M:%S'))
-            utils.
+            #utils.
 
             if BC.SEND_DATA:
                 sample = utils.sense_sample(BC.user_id, sensorF, sensorH)
