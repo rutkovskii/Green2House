@@ -6,6 +6,7 @@ import os
 
 from app.user.env_page import env_page_bp
 from app.user.current_env_data_page import current_env_data_page_bp
+
 from app.user.datasample_page import datasample_page_bp
 from app.user.get_data import get_data_bp
 from app.user.home_page import home_page_bp
