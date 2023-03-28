@@ -1,9 +1,10 @@
-from flask import request, Blueprint, render_template, session
+from flask import request, Blueprint, render_template, session, flash
 from flask_login import login_required
 from datetime import datetime as dt
 import requests
 import json
-
+from app.models import Instructions
+from app.database import session_scope
 
 env_page_bp = Blueprint('env_page_bp', __name__)
 
@@ -15,21 +16,43 @@ url = f'{bbb}/instructions'
 @login_required
 def set_environment():
     if request.method == 'POST':
+        # now = round(dt.timestamp(dt.now()))
+        now = dt.now()
         body = json.dumps(
             {
                 'user_id': session['user_id'],
-                'min_temperature': request.form['temperature_min'],
-                'max_temperature': request.form['temperature_max'],
-                'min_humidity': request.form['humidity_min'],
-                'max_humidity': request.form['humidity_max'],
-                'daily_water_freq': request.form['daily_water_freq'],
-                'water_amount_per_freq': request.form['water_amount_per_freq'],
-                'timestamp': str(round(dt.timestamp(dt.now())))
+                'min_temperature': request.form.get('temperature_min'),
+                'max_temperature': request.form.get('temperature_max'),
+                'min_humidity': request.form.get('humidity_min'),
+                'max_humidity': request.form.get('humidity_max'),
+                'daily_water_freq': request.form.get('daily_water_freq'),
+                'water_amount_per_freq': request.form.get('water_amount_per_freq'),
+                'timestamp': now.isoformat()  # str(now)
             }
         )
         headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
         r = requests.post(url, json=body, headers=headers)
-        print(f"Status Code: {r.status_code}, Response: {r.json()}")
+
+        instructions = Instructions(
+            user_id=session['user_id'],
+            min_temperature=request.form.get('temperature_min'),
+            max_temperature=request.form.get('temperature_max'),
+            min_humidity=request.form.get('humidity_min'),
+            max_humidity=request.form.get('humidity_max'),
+            daily_water_freq=request.form.get('daily_water_freq'),
+            water_amount_per_freq=request.form.get('water_amount_per_freq'),
+            timestamp=now  # dt.fromtimestamp(now)
+        )
+
+        with session_scope() as s:
+            s.add(instructions)
+
+        if r.status_code == 200:
+            flash('Environment settings updated successfully', 'success')
+        else:
+            flash('Environment settings could not be updated', 'danger')
+
+        # print(f"Status Code: {r.status_code}, Response: {r.json()}")
 
     # generate options for the times per day dropdown
     daily_water_freq_options = ''

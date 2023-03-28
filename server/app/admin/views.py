@@ -4,7 +4,7 @@ from flask import request, render_template, Blueprint, abort
 from flask_login import login_required
 
 from app.models import User
-from app.database import Session
+from app.database import session_scope
 from app.admin.config import ServerConfig
 from app.admin.decorators import admin_required
 
@@ -41,9 +41,8 @@ def serve_users():
     if not request.args.get('token'):
         return abort(403)
 
-    session = Session()
-    query = session.query(User)
-    session.close()
+    with session_scope() as s:
+        query = s.query(User)
 
     func.to_char()
 

@@ -1,7 +1,6 @@
 import board
-import adafruit_ahtx0#, adafruit_ssd1306
+import adafruit_ahtx0, adafruit_ssd1306
 #import Adafruit_SSD1306 as adafruit_ssd1306
-import adafruit_ssd1306
 import Adafruit_BBIO.GPIO as GPIO
 import Adafruit_BBIO.ADC as ADC
 
@@ -27,22 +26,24 @@ def set_up_pins(pins_dict):
         print("pump_relay_pin is None")
 
     # Temperature Relay
-    if pins_dict['temp_relay_pin']:
-        GPIO.setup(pins_dict['temp_relay_pin'], GPIO.OUT)
+    if pins_dict['fan_relay_pin']:
+        GPIO.setup(pins_dict['fan_relay_pin'], GPIO.OUT)
     else:
-        print("temp_relay_pin is None")
+        print("fan_relay_pin is None")
     
     #Button pin
-    if pins_dict['button_pin']:
-        GPIO.setup(pins_dict['button_pin'], GPIO.IN)
+    if pins_dict['heater_relay_pin']:
+        GPIO.setup(pins_dict['heater_relay_pin'], GPIO.OUT)
+    else:
+        print("heater_relay_pin is None")
 
 
 def create_all(pins_dict):
     set_up_pins(pins_dict)
 
     i2c = init_i2c()
-    #sensor = init_sensor(i2c) #commented out for MDR fix
+    sensor = init_sensor(i2c)
     oled = init_oled(i2c)
     ADC.setup()
 
-    return i2c, oled#sensor, oled
+    return i2c, sensor, oled
