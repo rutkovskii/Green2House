@@ -1,6 +1,6 @@
 from flask import request, Blueprint
 from flask_login import login_required
-import json
+# import json
 
 from app.database import session_scope
 from app.models import DataSample
@@ -17,15 +17,16 @@ def get_data():
     if request.is_json:
 
         bulk_list = []
-        for sample in json.loads(request.get_json()):
+        # for sample in json.loads(request.get_json()):
+        for sample in request.get_json():
             bulk_list.append(
                 DataSample(
-                    user_id=sample['user_id'],
-                    temperature=sample['temperature'],
-                    humidity=sample['humidity'],
-                    timestamp=u.dt_ts2dt_obj(sample['timestamp']),
-                    date=u.dt_ts2date(sample['timestamp']),
-                    time=u.dt_ts2time(sample['timestamp'])
+                    user_id=sample.get('user_id'),
+                    temperature=sample.get('temperature'),
+                    humidity=sample.get('humidity'),
+                    timestamp=u.dt_ts2dt_obj(sample.get('timestamp')),
+                    date=u.dt_ts2date(sample.get('timestamp')),
+                    time=u.dt_ts2time(sample.get('timestamp'))
                 )
             )
 

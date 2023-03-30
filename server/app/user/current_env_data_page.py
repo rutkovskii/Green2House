@@ -3,11 +3,12 @@ from flask_login import login_required
 from datetime import datetime as dt
 from app.models import Instructions
 from app.database import session_scope
+from app.user.config import UserConfig
 
 current_env_data_page_bp = Blueprint('current_env_data_page_bp', __name__)
 
 
-@current_env_data_page_bp.route('/current-environment', methods=['GET'])
+@current_env_data_page_bp.route(UserConfig.CURRENT_ENV_DATA_ROUTE, methods=['GET'])
 @login_required
 def current_env_data_page():
     """Returns the current environment settings page."""

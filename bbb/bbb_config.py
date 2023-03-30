@@ -2,17 +2,17 @@ import os
 # from dotenv import load_dotenv
 
 
-class BBB_CONFIG:
+class BBB_Config:
     # Locations
     BBB_DIR = os.path.abspath(os.path.dirname(__file__))
     FILES_DIR = os.path.join(BBB_DIR, 'files')
-    # CONFIG_DIR = os.path.join(SCRIPTS_DIR,'configs')
+    CONFIG_DIR = os.path.join(BBB_DIR, 'configs')
     # DATA_DIR = os.path.join(SCRIPTS_DIR,'data')
     # LOG_DIR = os.path.join(SCRIPTS_DIR,'logs')
 
     # Files
-    #font_adafruit = os.path.join(FILES_DIR, 'font5x8.bin')
-    #print(font_adafruit)
+    # font_adafruit = os.path.join(FILES_DIR, 'font5x8.bin')
+    # print(font_adafruit)
 
     # Pins
     pins_dict = {
@@ -25,16 +25,15 @@ class BBB_CONFIG:
     }
 
     # Variables
-    threshold = 75 #desired temperature in degrees F
-    desiredHum = 50 #desired humidity in percentage RH
+    threshold = 75  # desired temperature in degrees F
+    desiredHum = 50  # desired humidity in percentage RH
     toggle = 0
     user_id = 1
     variance = 1
 
-    #minADC = wet, maxADC = dry
-    minADC = 1450 #the lowest value I measured with the soil moisture sensor
-    maxADC = 3250 #the highest value I measured with the soil moisture sensor
-
+    # minADC = wet, maxADC = dry
+    minADC = 1450  # the lowest value I measured with the soil moisture sensor
+    maxADC = 3250  # the highest value I measured with the soil moisture sensor
 
     # change link based on ngrok
     # must have internet connection
@@ -42,3 +41,7 @@ class BBB_CONFIG:
     SERVER_GET_DATA_URL = SERVER_URL + "/get_data"
     SEND_DATA = False
 
+    # Database
+    DATABASE_LOCATION = os.path.join(BBB_DIR, 'database.sqlite')
+    DATABASE_URI = f'sqlite:///{DATABASE_LOCATION}'
+    print(DATABASE_LOCATION)
