@@ -30,7 +30,7 @@ __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_framebuf.git"
 import os
 import struct
 
-from bbb_config import BBB_CONFIG as BC
+from bbb_config import BBB_Config as BC
 
 # Framebuf format constants:
 MVLSB = 0  # Single bit displays (like SSD1306 OLED)
@@ -136,9 +136,9 @@ class RGB888Format:
         """Set a given pixel to a color."""
         index = (y * framebuf.stride + x) * 3
         if isinstance(color, tuple):
-            framebuf.buf[index : index + 3] = bytes(color)
+            framebuf.buf[index: index + 3] = bytes(color)
         else:
-            framebuf.buf[index : index + 3] = bytes(
+            framebuf.buf[index: index + 3] = bytes(
                 ((color >> 16) & 255, (color >> 8) & 255, color & 255)
             )
 
@@ -157,7 +157,7 @@ class RGB888Format:
         """completely fill/clear the buffer with a color"""
         fill = (color >> 16) & 255, (color >> 8) & 255, color & 255
         for i in range(0, len(framebuf.buf), 3):
-            framebuf.buf[i : i + 3] = bytes(fill)
+            framebuf.buf[i: i + 3] = bytes(fill)
 
     @staticmethod
     def fill_rect(framebuf, x, y, width, height, color):
@@ -168,7 +168,7 @@ class RGB888Format:
         for _x in range(x, x + width):
             for _y in range(y, y + height):
                 index = (_y * framebuf.stride + _x) * 3
-                framebuf.buf[index : index + 3] = bytes(fill)
+                framebuf.buf[index: index + 3] = bytes(fill)
 
 
 class FrameBuffer:
@@ -315,7 +315,8 @@ class FrameBuffer:
         x = max(x, 0)
         y = max(y, 0)
         if fill:
-            self.format.fill_rect(self, x, y, x_end - x + 1, y_end - y + 1, color)
+            self.format.fill_rect(self, x, y, x_end -
+                                  x + 1, y_end - y + 1, color)
         else:
             self.format.fill_rect(self, x, y, x_end - x + 1, 1, color)
             self.format.fill_rect(self, x, y, 1, y_end - y + 1, color)
@@ -376,13 +377,14 @@ class FrameBuffer:
             x = shift_x
             while x != xend:
                 self.format.set_pixel(
-                    self, x, y, self.format.get_pixel(self, x - delta_x, y - delta_y)
+                    self, x, y, self.format.get_pixel(
+                        self, x - delta_x, y - delta_y)
                 )
                 x += dt_x
             y += dt_y
 
     # pylint: disable=too-many-arguments
-    def text(self, string, x, y, color, *, font_name=BC.font_adafruit, size=1): # "font5x8.bin"
+    def text(self, string, x, y, color, *, font_name=BC.font_adafruit, size=1):  # "font5x8.bin"
         """Place text on the screen in variables sizes. Breaks on \n to next line.
 
         Does not break on line going off screen.
@@ -407,7 +409,8 @@ class FrameBuffer:
                     and y + (height * size) > 0
                     and y < frame_height
                 ):
-                    self._font.draw_char(char, char_x, y, self, color, size=size)
+                    self._font.draw_char(
+                        char, char_x, y, self, color, size=size)
             y += height * size
 
     # pylint: enable=too-many-arguments
@@ -440,7 +443,7 @@ class FrameBuffer:
             self.buf[i] = 0
         # Iterate through the pixels
         for x in range(width):  # yes this double loop is slow,
-            for y in range(height):  #  but these displays are small!
+            for y in range(height):  # but these displays are small!
                 if img.mode == "RGB":
                     self.pixel(x, y, pixels[(x, y)])
                 elif pixels[(x, y)]:
@@ -455,7 +458,7 @@ class BitmapFont:
     file to display in a framebuffer. We use file access so we dont waste 1KB
     of RAM on a font!"""
 
-    def __init__(self, font_name=BC.font_adafruit): # "font5x8.bin"
+    def __init__(self, font_name=BC.font_adafruit):  # "font5x8.bin"
         # Specify the drawing area width and height, and the pixel function to
         # call when drawing pixels (should take an x and y param at least).
         # Optionally specify font_name to override the font file to use (default
@@ -474,7 +477,8 @@ class BitmapFont:
             self._font = open(  # pylint: disable=consider-using-with
                 self.font_name, "rb"
             )
-            self.font_width, self.font_height = struct.unpack("BB", self._font.read(2))
+            self.font_width, self.font_height = struct.unpack(
+                "BB", self._font.read(2))
             # simple font file validation check based on expected file size
             if 2 + 256 * self.font_width != os.stat(font_name)[6]:
                 raise RuntimeError("Invalid font file: " + font_name)

@@ -81,7 +81,7 @@
       <br />
       <br />
       <label for="total-daily-water-amount">Total Daily Water Amount:</label>
-      <span id="total-daily-water-amount"> 50 </span> mL
+      <span id="total-daily-water-amount"> 10 </span> mL
     </div>
     <br />
     <div class="container">
@@ -100,7 +100,7 @@
     $("#temp-slider").slider({
       range: true,
       min: 32,
-      max: 86,
+      max: 100,
       values: [64, 75],
       slide: function (event, ui) {
         var min = ui.values[0];
@@ -123,7 +123,7 @@
 
     $("#humidity-slider").slider({
       range: true,
-      min: 35,
+      min: 0,
       max: 100,
       values: [40, 50],
       slide: function (event, ui) {

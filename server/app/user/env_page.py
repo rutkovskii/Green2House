@@ -1,18 +1,59 @@
-from flask import request, Blueprint, render_template, session, flash
+from flask import request, Blueprint, render_template, session, flash, jsonify
 from flask_login import login_required
 from datetime import datetime as dt
 import requests
 import json
 from app.models import Instructions
 from app.database import session_scope
+from app.user.config import UserConfig
 
 env_page_bp = Blueprint('env_page_bp', __name__)
 
-bbb = 'http://172.27.122.183:5000'
-url = f'{bbb}/instructions'
+
+@env_page_bp.route(UserConfig.WATER_ROUTE, methods=['GET', 'POST'])
+@login_required
+def water_plant():
+    """Water the plant."""
+
+    if request.method == 'POST':
+        data = request.get_json()
+        is_pressed = data.get('is_pressed', False)
+        print(f'Button is now: {"pressed" if is_pressed else "not pressed"}')
+
+        if is_pressed:
+            body = json.dumps(
+                {
+                    'user_id': session.get('user_id'),
+                    'water': True
+                }
+            )
+        else:
+            body = json.dumps(
+                {
+                    'user_id': session.get('user_id'),
+                    'water': False
+                }
+            )
+
+        headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+
+        try:
+            r = requests.post(UserConfig.WATER_URL, json=body, headers=headers)
+        except requests.exceptions.ConnectionError as e:
+            print(e)
+            return jsonify({'success': False})
+
+        print(f"Status Code: {r.status_code}, Response: {r.json()}")
+
+        # Flash a message to the user
+        flash('Watering the plant...', 'success')
+
+        return jsonify({'success': True})
+
+    return render_template('/water.html', title='Water Plant')
 
 
-@env_page_bp.route('/environment', methods=['GET', 'POST'])
+@env_page_bp.route(UserConfig.ENV_ROUTE, methods=['GET', 'POST'])
 @login_required
 def set_environment():
     if request.method == 'POST':
@@ -20,7 +61,7 @@ def set_environment():
         now = dt.now()
         body = json.dumps(
             {
-                'user_id': session['user_id'],
+                'user_id': session.get('user_id'),
                 'min_temperature': request.form.get('temperature_min'),
                 'max_temperature': request.form.get('temperature_max'),
                 'min_humidity': request.form.get('humidity_min'),
@@ -31,10 +72,11 @@ def set_environment():
             }
         )
         headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
-        r = requests.post(url, json=body, headers=headers)
+        r = requests.post(UserConfig.INSTRUCTIONS_URL,
+                          json=body, headers=headers)
 
         instructions = Instructions(
-            user_id=session['user_id'],
+            user_id=session.get('user_id'),
             min_temperature=request.form.get('temperature_min'),
             max_temperature=request.form.get('temperature_max'),
             min_humidity=request.form.get('humidity_min'),
@@ -61,7 +103,7 @@ def set_environment():
 
     # generate options for the water amount dropdown
     water_amount_per_freq_options = ''
-    for j in range(50, 501, 50):
+    for j in range(10, 501, 10):
         water_amount_per_freq_options += f'<option value="{j}">{j}</option>'
 
     # render the template with the options for the dropdown
