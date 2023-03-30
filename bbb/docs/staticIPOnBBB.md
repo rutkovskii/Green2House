@@ -40,7 +40,7 @@ iface eth0 inet static
 5. Restart the networking service to apply the changes:
 
 ```
-$ sudo service networking restart`
+$ sudo service networking restart
 ```
 
 ### Not Sure if this is needed

@@ -4,8 +4,8 @@ from wtforms.validators import DataRequired, Email, EqualTo, ValidationError, Le
 import phonenumbers
 
 
-from app.models import User
-from app.database import session_scope
+from app.database.models import User
+from app.database.database import session_scope
 
 
 class SignUpForm(FlaskForm):

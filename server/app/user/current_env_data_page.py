@@ -1,8 +1,8 @@
 from flask import request, Blueprint, render_template, session, flash
 from flask_login import login_required
 from datetime import datetime as dt
-from app.models import Instructions
-from app.database import session_scope
+from app.database.models import Instructions
+from app.database.database import session_scope
 from app.user.config import UserConfig
 
 current_env_data_page_bp = Blueprint('current_env_data_page_bp', __name__)

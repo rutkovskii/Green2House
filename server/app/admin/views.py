@@ -3,8 +3,8 @@ from sqlalchemy.sql import func
 from flask import request, render_template, Blueprint, abort
 from flask_login import login_required
 
-from app.models import User
-from app.database import session_scope
+from app.database.models import User
+from app.database.database import session_scope
 from app.admin.config import ServerConfig
 from app.admin.decorators import admin_required
 

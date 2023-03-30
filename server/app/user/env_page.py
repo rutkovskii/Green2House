@@ -3,8 +3,8 @@ from flask_login import login_required
 from datetime import datetime as dt
 import requests
 import json
-from app.models import Instructions
-from app.database import session_scope
+from app.database.models import Instructions
+from app.database.database import session_scope
 from app.user.config import UserConfig
 
 env_page_bp = Blueprint('env_page_bp', __name__)

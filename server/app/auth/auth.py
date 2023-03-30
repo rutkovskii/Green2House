@@ -1,5 +1,5 @@
-from app.database import session_scope
-from app.models import User
+from app.database.database import session_scope
+from app.database.models import User
 
 from app.auth.forms import SignUpForm, LoginForm
 from app.admin.config import ServerConfig

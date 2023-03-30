@@ -42,7 +42,6 @@ def main():
             # measurements = measureValues()
             utils.dispOLED(oled=oled, temp=str(sensorF)[0:4], hum=str(sensorH)[
                            0:4], moisture=soil, timestamp=time.strftime('%H:%M:%S'))
-            # utils.
 
             # Sensing and Adding Sample to database
             sample = utils.sense_sample_db(BC.user_id, sensorF, sensorH)

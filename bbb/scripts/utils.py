@@ -1,9 +1,9 @@
 import os
+import time
 from math import floor
 from datetime import datetime as dt
 from bbb_config import BBB_Config as BC
 import Adafruit_BBIO.GPIO as GPIO
-import time
 import Adafruit_BBIO.ADC as ADC
 
 from database.models import DataSample
@@ -103,7 +103,9 @@ def sense_sample(user_id, sensorF, sensorH):
 
 
 def sense_sample_db(sensorF, sensorH):
+    soil_percent, soil = getSoilMoisture()
     return DataSample(user_id=BC.user_id,
                       temperature=single_float_pt(sensorF),
-                      humidity=single_float_pt(sensorH)
+                      humidity=single_float_pt(sensorH),
+                      soil_percent=single_float_pt(soil_percent),
                       )

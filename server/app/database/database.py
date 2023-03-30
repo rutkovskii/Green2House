@@ -3,7 +3,7 @@ from sqlalchemy.orm import sessionmaker
 from contextlib import contextmanager
 
 # When running run.py
-from app.models import Base, User, DataSample
+from app.database.models import Base, User, DataSample
 from app.admin.config import ServerConfig
 
 # When running database.py

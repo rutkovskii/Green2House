@@ -4,15 +4,17 @@ from flask import Flask
 from flask_bootstrap import Bootstrap
 import os
 
+from app.admin.config import ServerConfig
+
 from app.user.env_page import env_page_bp
 from app.user.current_env_data_page import current_env_data_page_bp
 
 from app.user.datasample_page import datasample_page_bp
 from app.user.get_data import get_data_bp
 from app.user.home_page import home_page_bp
+from app.user.receive_ip import receive_ip_bp
 from app.admin.views import admin_bp
 from app.auth.auth import auth_bp, login_manager
-from app.admin.config import ServerConfig
 from app.index import index_bp
 
 
@@ -29,6 +31,7 @@ def register_blueprints(app):
     app.register_blueprint(index_bp)
     app.register_blueprint(env_page_bp)
     app.register_blueprint(current_env_data_page_bp)
+    app.register_blueprint(receive_ip_bp)
 
 
 def add_configs(app):

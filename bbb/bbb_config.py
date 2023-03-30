@@ -44,4 +44,3 @@ class BBB_Config:
     # Database
     DATABASE_LOCATION = os.path.join(BBB_DIR, 'database.sqlite')
     DATABASE_URI = f'sqlite:///{DATABASE_LOCATION}'
-    print(DATABASE_LOCATION)

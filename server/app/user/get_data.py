@@ -2,8 +2,8 @@ from flask import request, Blueprint
 from flask_login import login_required
 # import json
 
-from app.database import session_scope
-from app.models import DataSample
+from app.database.database import session_scope
+from app.database.models import DataSample
 from app.admin.config import ServerConfig
 import app.utils as u
 

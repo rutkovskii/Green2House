@@ -11,6 +11,7 @@ class DataSample(Base):
     user_id = Column(Integer, nullable=False)
     temperature = Column(Float, nullable=False)
     humidity = Column(Float, nullable=False)
+    soil_percent = Column(Float, nullable=False)
     timestamp = Column(DateTime(timezone=True),
                        nullable=False, default=func.now())
     date = Column(Date, nullable=False, default=datetime.utcnow().date)
@@ -22,14 +23,15 @@ class DataSample(Base):
             'user_id': self.user_id,
             'temperature': self.temperature,
             'humidity': self.humidity,
+            'soil_percent': self.soil_percent,
             'timestamp': self.timestamp,
             'date': self.date,
             'time': self.time
         }
 
     def __repr__(self):
-        return "<DataSample(user_id='{}',temperature='{}', humidity='{}', timestamp='{}', date='{}', time='{}', sent='{}')>"\
-            .format(self.user_id, self.temperature, self.humidity, self.timestamp, self.date, self.time, self.sent)
+        return "<DataSample(user_id='{}',temperature='{}', humidity='{}', soil_percent='{}', timestamp='{}', date='{}', time='{}', sent='{}')>"\
+            .format(self.user_id, self.temperature, self.humidity, self.soil_percent, self.timestamp, self.date, self.time, self.sent)
 
 
 class Instructions(Base):
