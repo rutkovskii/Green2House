@@ -390,6 +390,7 @@ class FrameBuffer:
         Does not break on line going off screen.
         """
         # determine our effective width/height, taking rotation into account
+        #print(font_name)
         frame_width = self.width
         frame_height = self.height
         if self.rotation in (1, 3):
@@ -470,6 +471,7 @@ class BitmapFont:
         #            Each character should have a byte for each pixel column of
         #            data (i.e. a 5x8 font has 5 bytes per character).
         self.font_name = font_name
+        print(font_name)
 
         # Open the font file and grab the character width and height values.
         # Note that only fonts up to 8 pixels tall are currently supported.
