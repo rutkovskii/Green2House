@@ -29,8 +29,13 @@ class BBB_Config:
     desiredTemp = 75  # desired temperature in degrees F
     desiredHum = 50  # desired humidity in percentage RH
     toggle = 0
-    user_id = 1
+    user_id = 6
     tempVariance = 1
+
+    min_temperature = 73
+    max_temperature = 75
+    min_humidity = 20
+    max_humidity = 50
 
     # minADC = wet, maxADC = dry
     minADC = 1450  # the lowest value I measured with the soil moisture sensor
@@ -38,7 +43,7 @@ class BBB_Config:
 
     # change link based on ngrok
     # must have internet connection
-    SERVER_URL = "https://b5f3-128-119-202-76.ngrok.io"
+    SERVER_URL = "https://365f-2600-387-f-5f16-00-5.ngrok.io"
     SERVER_GET_DATA_URL = SERVER_URL + "/get-data"
     SEND_DATA = True
 

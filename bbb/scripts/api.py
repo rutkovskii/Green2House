@@ -15,7 +15,8 @@ latest_instructions = {
     'max_humidity': None,
     'daily_water_freq': None,
     'water_amount_per_freq': None,
-    'timestamp': None
+    'timestamp': None,
+    'updated': False
 }
 
 
@@ -25,7 +26,7 @@ def water_plant():
         body = json.loads(request.get_json())
 
         global latest_instructions
-        latest_instructions['water_plant'] = body['water']
+        latest_instructions['water'] = body['water']
 
         print(body)
 
@@ -53,6 +54,8 @@ def instructions():
         latest_instructions['max_temperature'] = data['max_temperature']
         latest_instructions['min_humidity'] = data['min_humidity']
         latest_instructions['max_humidity'] = data['max_humidity']
+
+        latest_instructions['updated'] = True
 
         instructions = Instructions(
             user_id=data.get('user_id'),

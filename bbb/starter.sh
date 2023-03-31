@@ -14,6 +14,8 @@ sudo mv /home/debian/bbb/configs/api.service /etc/systemd/system/api.service
 # exports PYTHONPATH, removes all api.py active instances, and runs api.py
 chmod +x /home/debian/bbb/scripts/start_api.sh 
 
+# chmod +x /home/debian/bbb/run.sh
+
 sudo systemctl daemon-reload
 sudo systemctl enable api.service
 sudo systemctl start api.service

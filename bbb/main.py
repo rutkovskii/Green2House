@@ -40,27 +40,29 @@ def main():
             # make appropriate environment changes based on temp and hum
             utils.controlTempHum(sensorF, sensorH)
 
+            print(latest_instructions.get('water'))
             if latest_instructions.get('water'):
                 print("Watering plant")
                 utils.relayOn(GPIO, BC.pins_dict.get('pump_relay_pin'))
-                time.sleep(5)  # Keep the relay on for 5 seconds
+                time.sleep(10)  # Keep the relay on for 5 seconds
                 utils.relayOff(GPIO, BC.pins_dict.get('pump_relay_pin'))
                 latest_instructions['water'] = False
 
-            if latest_instructions.get('min_temperature') or latest_instructions.get('max_temperature') or latest_instructions.get('min_humidity') or latest_instructions.get('max_humidity'):
-                # Read the latest instructions
-                min_temperature = latest_instructions.get('min_temperature')
-                max_temperature = latest_instructions.get('max_temperature')
-                min_humidity = latest_instructions.get('min_humidity')
-                max_humidity = latest_instructions.get('max_humidity')
+            if latest_instructions.get('updated'):
+                if latest_instructions.get('min_temperature') or latest_instructions.get('max_temperature') or latest_instructions.get('min_humidity') or latest_instructions.get('max_humidity'):
+                    # Read the latest instructions
+                    BC.min_temperature = float(latest_instructions.get('min_temperature'))
+                    BC.max_temperature = float(latest_instructions.get('max_temperature'))
+                    BC.min_humidity = float(latest_instructions.get('min_humidity'))
+                    BC.max_humidity = float(latest_instructions.get('max_humidity'))
 
-                print('min_temperature: ', min_temperature)
-                print('max_temperature: ', max_temperature)
-                print('min_humidity: ', min_humidity)
-                print('max_humidity: ', max_humidity)
+                    print("Min Temperature: ", BC.min_temperature)
+                    print("Max Temperature: ", BC.max_temperature)
+                    print("Min Humidity: ", BC.min_humidity)
+                    print("Max Humidity: ", BC.max_humidity)
 
-
-
+                    latest_instructions['updated'] = False
+                
             # Sensing and Adding Sample to database
             sample = utils.sense_sample_db(sensorF, sensorH)
             with session_scope() as session:
