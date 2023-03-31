@@ -8,8 +8,7 @@ class UserConfig:
     WATER_ROUTE = '/water-plant'
 
     # URL for the BBB
-    # BBB_URL = 'http://192.168.6.3:5000'
-    BBB_URL = 'http://192.168.1.100:5000'
+    BBB_URL = 'http://192.168.6.2:5000'
 
     INSTRUCTIONS_URL = f'{BBB_URL}/instructions'
     WATER_URL = f'{BBB_URL}/water-plant'

@@ -10,27 +10,35 @@ from database.database import session_scope, get_unsent_samples, mark_samples_as
 def send_samples_db():
     """Send the unsent samples to the server."""
     # Define the server URL
-    server_url = Config.SERVER_URL
+    server_url = Config.SERVER_GET_DATA_URL
 
     # Get the unsent samples from the database
     with session_scope() as s:
         unsent_samples = get_unsent_samples(s)
+        
+        # If there are unsent samples, send them to the server
+        if unsent_samples:
+            # Convert the samples to a JSON payload
+            payload = json.dumps([sample.to_dict() for sample in unsent_samples])
 
-    # Convert the samples to a JSON payload
-    payload = [sample.to_dict() for sample in unsent_samples]
+            # Send the samples to the server in JSON format
+            response = requests.post(server_url, json=payload)
 
-    # Send the samples to the server in JSON format
-    response = requests.post(server_url, json=payload)
+                # If the server responds with a 200 status code, mark the samples as sent in the database
+            if response.status_code == 200:
+                with session_scope() as s:
+                    mark_samples_as_sent(s, unsent_samples)
+            
+            # If the server responds with a 400 status code or if no response is received,
+            # do not mark the samples as sent in the database
+            elif response.status_code == 400 or response.status_code is None:
+                pass
+        
+        else:
+            # If there are no unsent samples, do not send anything to the server
+            response = None
 
-    # If the server responds with a 200 status code, mark the samples as sent in the database
-    if response.status_code == 200:
-        with session_scope() as s:
-            mark_samples_as_sent(s, unsent_samples)
 
-    # If the server responds with a 400 status code or if no response is received,
-    # do not mark the samples as sent in the database
-    elif response.status_code == 400 or response.status_code is None:
-        pass
 
 
 def send_sample_data_example(url):

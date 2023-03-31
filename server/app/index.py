@@ -10,3 +10,5 @@ def index():
         return redirect(url_for('home_bp.home'))
 
     return render_template('index.html', title='Green2House')
+
+

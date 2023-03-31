@@ -3,13 +3,9 @@ from sqlalchemy.orm import sessionmaker
 from contextlib import contextmanager
 
 # When running run.py
-from app.database.models import Base, User, DataSample
+from app.database.models import Base
 from app.admin.config import ServerConfig
-
-# When running database.py
-# from models import Base, User, DataSample
-# from admin.config import ServerConfig
-# from database_prefills import prefill_users, prefill_samples
+from app.database.database_prefills import prefill_users, prefill_samples
 
 
 engine = sqlalchemy.create_engine(
@@ -47,8 +43,6 @@ def recreate_database():
     Base.metadata.create_all(engine)
 
 
-if __name__ == "__main__":
-    # When running database.py
-    recreate_database()
-    add_sample_users()
-    add_example_datasamples()
+# recreate_database()
+# add_sample_users()
+# add_example_datasamples()

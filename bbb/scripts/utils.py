@@ -25,36 +25,53 @@ def getTempHum(sensor):
     return sensorF, sensorH
 
 
-def getSoilMoisture(pin):  # accepts an ADC pin eg. "AIN0"
+def getSoilMoisture(pin): #accepts an ADC pin eg. "AIN0"
     readADC = ADC.read_raw(pin)
+    #print(readADC)
     soilPercent = 1 - (readADC - BC.minADC) / (BC.maxADC - BC.minADC)
-    # print % moisture to console window
-    print("Soil moisture: " + str(round(soilPercent*100, 2)) + "%")
-    if readADC >= 2900:  # general soil values
+    print("Soil moisture: " + str(round(soilPercent*100,2)) + "%") #print % moisture to console window
+    if readADC >= 2900: #general soil values
         soil = "dry"
+        relayOn(GPIO, BC.pins_dict.get('pump_relay_pin'))
 
     elif 2500 <= readADC < 2900:
         soil = "moist"
+        relayOff(GPIO, BC.pins_dict.get('pump_relay_pin'))
+
 
     elif 1800 < readADC < 2500:
         soil = "wet"
-
+        relayOff(GPIO, BC.pins_dict.get('pump_relay_pin'))
+    
     elif 1450 <= readADC <= 1800:
         soil = "soaked"
+        relayOff(GPIO, BC.pins_dict.get('pump_relay_pin'))
 
     else:
         soil = "Out of Range"
-    return soilPercent, soil  # give both percent and general reading
+        relayOff(GPIO, BC.pins_dict.get('pump_relay_pin'))
+    return soilPercent, soil #give both percent and general reading
 
 
-def controlTemp(sensorF):
-    if int(sensorF) <= BC.threshold - BC.variance:  # too cold
+def controlTempHum(sensorF, sensorH):
+    #print(int(sensorH))
+    if round(sensorF, 1) <= BC.desiredTemp - BC.tempVariance: #too cold
+        closeGH()
         relayOn(GPIO, BC.pins_dict.get('heater_relay_pin'))
-        relayOff(GPIO, BC.pins_dict.get('fan_relay_pin'))
-
-    elif int(sensorF) >= BC.threshold + BC.variance:  # too hot
+        if int(sensorH) <= BC.desiredHum: #if humidity is low, allow fans to turn off
+            relayOff(GPIO, BC.pins_dict.get('fan_relay_pin'))
+    
+    elif round(sensorF, 1) >= BC.desiredTemp + BC.tempVariance: #too hot
+        openGH()
         relayOff(GPIO, BC.pins_dict.get('heater_relay_pin'))
+        #Humidity 
         relayOn(GPIO, BC.pins_dict.get('fan_relay_pin'))
+
+    if int(sensorH) > BC.desiredHum:
+        relayOn(GPIO, BC.pins_dict.get('fan_relay_pin'))
+    
+    elif int(sensorH) <= BC.desiredHum and round(sensorF, 2) <= BC.desiredTemp - BC.tempVariance:
+        relayOff(GPIO, BC.pins_dict.get('fan_relay_pin'))
 
 
 def openGH():
@@ -103,7 +120,7 @@ def sense_sample(user_id, sensorF, sensorH):
 
 
 def sense_sample_db(sensorF, sensorH):
-    soil_percent, soil = getSoilMoisture()
+    soil_percent, soil = getSoilMoisture(BC.pins_dict.get('adc_pin'))
     return DataSample(user_id=BC.user_id,
                       temperature=single_float_pt(sensorF),
                       humidity=single_float_pt(sensorH),

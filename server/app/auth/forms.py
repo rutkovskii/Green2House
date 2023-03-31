@@ -47,7 +47,6 @@ class SignUpForm(FlaskForm):
         with session_scope() as s:
             query = s.query(User).filter_by(
                 email=email.data.lower().strip()).first()
-            s.expunge(query)
 
         if query:
             raise ValidationError('Email already exists.')
@@ -75,7 +74,6 @@ class LoginForm(FlaskForm):
             query = None
             with session_scope() as s:
                 query = s.query(User).filter_by(email=email).first()
-                s.expunge(query)
 
             if not query:
                 raise ValidationError('This email is not registered.')

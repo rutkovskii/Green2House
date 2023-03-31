@@ -45,9 +45,6 @@ def water_plant():
 
         print(f"Status Code: {r.status_code}, Response: {r.json()}")
 
-        # Flash a message to the user
-        flash('Watering the plant...', 'success')
-
         return jsonify({'success': True})
 
     return render_template('/water.html', title='Water Plant')
@@ -68,7 +65,7 @@ def set_environment():
                 'max_humidity': request.form.get('humidity_max'),
                 'daily_water_freq': request.form.get('daily_water_freq'),
                 'water_amount_per_freq': request.form.get('water_amount_per_freq'),
-                'timestamp': now.isoformat()  # str(now)
+                'timestamp': str(now)  # .isoformat()  # str(now)
             }
         )
         headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
@@ -85,6 +82,8 @@ def set_environment():
             water_amount_per_freq=request.form.get('water_amount_per_freq'),
             timestamp=now  # dt.fromtimestamp(now)
         )
+
+        print(now)
 
         with session_scope() as s:
             s.add(instructions)

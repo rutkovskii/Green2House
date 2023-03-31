@@ -110,22 +110,3 @@ class Instructions(Base):
     def __repr__(self):
         return "<Instructions(user_id='{}', min_temperature='{}', max_temperature='{}', min_humidity='{}', max_humidity='{}', daily_water_freq='{}', water_amount_per_freq='{}', timestamp='{}')>"\
             .format(self.user_id, self.min_temperature, self.max_temperature, self.min_humidity, self.max_humidity, self.daily_water_freq, self.water_amount_per_freq, self.timestamp)
-
-
-class BBBIPAddress(Base):
-    __tablename__ = 'BBBIPAddress'
-    id = Column(Integer, primary_key=True)
-    user_id = Column(Integer, nullable=False)
-    ip_address = Column(String, nullable=False)
-    timestamp = Column(DateTime(timezone=True), nullable=False)
-
-    def to_dict(self):
-        return {
-            'user_id': self.user_id,
-            'ip_address': self.ip_address,
-            'timestamp': self.timestamp
-        }
-
-    def __repr__(self):
-        return "<BBBIPAddress(user_id='{}', ip_address='{}', timestamp='{}')>"\
-            .format(self.user_id, self.ip_address, self.timestamp)

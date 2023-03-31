@@ -15,6 +15,12 @@ def current_env_data_page():
     with session_scope() as s:
         instructions = s.query(Instructions).filter(
             Instructions.user_id == session['user_id']).order_by(Instructions.id.desc()).first()
+
+        print(instructions)
+
+        if not instructions:
+            return render_template('/user_current_env_data_page.html', title='Current Environment Data', instructions=None)
+
         s.expunge(instructions)
 
         date = instructions.timestamp.strftime('%Y-%m-%d')

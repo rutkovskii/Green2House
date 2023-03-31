@@ -76,14 +76,21 @@ def signin():
             with session_scope() as s:
                 user = s.query(User).filter_by(
                     email=form.email.data.lower().strip()).first()
+
                 s.expunge(user)
 
-            session['email'] = user.get_email()
-            session['name'] = user.get_name()
-            session['user_id'] = user.get_id()
+                if user is not None:
+                    email = user.get_email()
+                    name = user.get_name()
+                    user_id = user.get_id()
+
+                    session['email'] = email
+                    session['name'] = name
+                    session['user_id'] = user_id
 
         remember = True if request.form.get('remember_me') else False
         print('Remember Me: ', remember)
+        print('User: ', user)
         if user and not user.check_password(form.password.data.strip()):
             flash('Invalid password.')
             return redirect(url_for('auth_bp.signin'))
@@ -101,7 +108,8 @@ def signin():
 def load_user(user_id):
     with session_scope() as s:
         user = s.query(User).filter_by(id=user_id).first()
-        s.expunge(user)
+        if user is not None:
+            s.expunge(user)
     return user
 
 

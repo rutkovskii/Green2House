@@ -7,7 +7,9 @@ from scripts.init_home import create_all
 from scripts import utils
 from scripts.send_data import send_samples_db
 
-from database.database import session_scope
+from scripts.api import app, latest_instructions
+
+from database.database import session_scope, get_last_instruction
 
 i2c, sensor, oled = create_all(BC.pins_dict)
 ADC.setup()
@@ -20,31 +22,47 @@ ADC.setup()
 # PURE WATER: 1450
 
 
-# def measureValues():
-#     #soil moisture
-#     soilPercent, soil = utils.getSoilMoisture()
-#     #DHT20 Temp/Hum
-#     sensorF, sensorH = utils.getTempHum(sensor)[0], utils.getTempHum(sensor)[1]
-#     values = [soil, sensorF, sensorH]
-
-#     return values
-
-
 def main():
+    utils.relayOff(GPIO, BC.pins_dict.get('heater_relay_pin'))
+    utils.relayOff(GPIO, BC.pins_dict.get('fan_relay_pin'))
     # soilPercent is not used but still collected just in case
-    soilPercent, soil = utils.getSoilMoisture()
-    sensorF, sensorH = utils.getTempHum(sensor)  # measure initial values
+    # soilPercent, soil = utils.getSoilMoisture(BC.pins_dict.get('adc_pin'))
+    # sensorF, sensorH = utils.getTempHum(sensor)  # measure initial values
     while True:
-        if int(time.strftime('%S')) % 2 == 0:  # measure value every x seconds
+        if int(time.strftime('%S')) % 5 == 0:  # measure value every x seconds
             # print(measureValues()[0])
-            soilPercent, soil = utils.getSoilMoisture()
+            soilPercent, soil = utils.getSoilMoisture(BC.pins_dict.get('adc_pin'))
             sensorF, sensorH = utils.getTempHum(sensor)
             # measurements = measureValues()
             utils.dispOLED(oled=oled, temp=str(sensorF)[0:4], hum=str(sensorH)[
                            0:4], moisture=soil, timestamp=time.strftime('%H:%M:%S'))
 
+            # make appropriate environment changes based on temp and hum
+            utils.controlTempHum(sensorF, sensorH)
+
+            if latest_instructions.get('water'):
+                print("Watering plant")
+                utils.relayOn(GPIO, BC.pins_dict.get('pump_relay_pin'))
+                time.sleep(5)  # Keep the relay on for 5 seconds
+                utils.relayOff(GPIO, BC.pins_dict.get('pump_relay_pin'))
+                latest_instructions['water'] = False
+
+            if latest_instructions.get('min_temperature') or latest_instructions.get('max_temperature') or latest_instructions.get('min_humidity') or latest_instructions.get('max_humidity'):
+                # Read the latest instructions
+                min_temperature = latest_instructions.get('min_temperature')
+                max_temperature = latest_instructions.get('max_temperature')
+                min_humidity = latest_instructions.get('min_humidity')
+                max_humidity = latest_instructions.get('max_humidity')
+
+                print('min_temperature: ', min_temperature)
+                print('max_temperature: ', max_temperature)
+                print('min_humidity: ', min_humidity)
+                print('max_humidity: ', max_humidity)
+
+
+
             # Sensing and Adding Sample to database
-            sample = utils.sense_sample_db(BC.user_id, sensorF, sensorH)
+            sample = utils.sense_sample_db(sensorF, sensorH)
             with session_scope() as session:
                 session.add(sample)
 
@@ -56,4 +74,9 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    import threading
+
+    main_thread = threading.Thread(target=main)
+    main_thread.start()
+
+    app.run(host='0.0.0.0', port=5000, debug=True)

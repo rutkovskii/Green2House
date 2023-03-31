@@ -24,9 +24,9 @@ class DataSample(Base):
             'temperature': self.temperature,
             'humidity': self.humidity,
             'soil_percent': self.soil_percent,
-            'timestamp': self.timestamp,
-            'date': self.date,
-            'time': self.time
+            'timestamp': str(self.timestamp),
+            'date': str(self.date),
+            'time': str(self.time)
         }
 
     def __repr__(self):
@@ -44,7 +44,7 @@ class Instructions(Base):
     max_humidity = Column(Float, nullable=False)
     daily_water_freq = Column(Integer, nullable=False)
     water_amount_per_freq = Column(Integer, nullable=False)
-    timestamp = Column(DateTime(timezone=True), nullable=False)
+    timestamp = Column(Integer, nullable=False)
 
     def to_dict(self):
         return {

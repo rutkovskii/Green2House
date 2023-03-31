@@ -21,15 +21,16 @@ class BBB_Config:
         'pump_relay_pin': "P8_16",
         'fan_relay_pin': "P8_18",
         'heater_relay_pin': "P8_26",
-        'adc_pin': "AIN0",
+        'adc_pin': "AIN6",
+        'button_pin': "P9_15"
     }
 
     # Variables
-    threshold = 75  # desired temperature in degrees F
+    desiredTemp = 75  # desired temperature in degrees F
     desiredHum = 50  # desired humidity in percentage RH
     toggle = 0
     user_id = 1
-    variance = 1
+    tempVariance = 1
 
     # minADC = wet, maxADC = dry
     minADC = 1450  # the lowest value I measured with the soil moisture sensor
@@ -37,9 +38,9 @@ class BBB_Config:
 
     # change link based on ngrok
     # must have internet connection
-    SERVER_URL = "https://e3e6-128-119-202-230.ngrok.io"
-    SERVER_GET_DATA_URL = SERVER_URL + "/get_data"
-    SEND_DATA = False
+    SERVER_URL = "https://b5f3-128-119-202-76.ngrok.io"
+    SERVER_GET_DATA_URL = SERVER_URL + "/get-data"
+    SEND_DATA = True
 
     # Database
     DATABASE_LOCATION = os.path.join(BBB_DIR, 'database.sqlite')
