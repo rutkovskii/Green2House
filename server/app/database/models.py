@@ -99,8 +99,8 @@ class Instructions(Base):
     max_temperature = Column(Float, nullable=False)
     min_humidity = Column(Float, nullable=False)
     max_humidity = Column(Float, nullable=False)
-    watering_time = Column(Integer, nullable=False)
-    watering_amount = Column(Integer, nullable=False)
+    watering_time = Column(String, nullable=False)
+    watering_duration = Column(Integer, nullable=False)
     timestamp = Column(DateTime(timezone=True), nullable=False)
 
     def to_dict(self):
@@ -111,18 +111,18 @@ class Instructions(Base):
             "min_humidity": self.min_humidity,
             "max_humidity": self.max_humidity,
             "watering_time": self.watering_time,
-            "watering_amount": self.watering_amount,
+            "watering_duration": self.watering_duration,
             "timestamp": self.timestamp,
         }
 
     def __repr__(self):
-        return "<Instructions(user_id='{}', min_temperature='{}', max_temperature='{}', min_humidity='{}', max_humidity='{}', watering_time='{}', watering_amount='{}', timestamp='{}')>".format(
+        return "<Instructions(user_id='{}', min_temperature='{}', max_temperature='{}', min_humidity='{}', max_humidity='{}', watering_time='{}', watering_duration='{}', timestamp='{}')>".format(
             self.user_id,
             self.min_temperature,
             self.max_temperature,
             self.min_humidity,
             self.max_humidity,
             self.watering_time,
-            self.watering_amount,
+            self.watering_duration,
             self.timestamp,
         )

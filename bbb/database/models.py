@@ -1,4 +1,14 @@
-from sqlalchemy import Column, Boolean, Integer, Float, DateTime, Date, Time, func
+from sqlalchemy import (
+    Column,
+    Boolean,
+    Integer,
+    Float,
+    DateTime,
+    Date,
+    Time,
+    func,
+    String,
+)
 from sqlalchemy.ext.declarative import declarative_base
 from datetime import datetime
 
@@ -49,7 +59,7 @@ class Instructions(Base):
     max_temperature = Column(Float, nullable=False)
     min_humidity = Column(Float, nullable=False)
     max_humidity = Column(Float, nullable=False)
-    watering_time = Column(Integer, nullable=False)
+    watering_time = Column(String, nullable=False)
     watering_duration = Column(Integer, nullable=False)
     timestamp = Column(Integer, nullable=False)
 

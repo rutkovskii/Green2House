@@ -47,7 +47,7 @@ def waterSchedule(hour, min, duration):
             time.sleep((60 - currentTime.tm_min) * 60)  # sleep for the rest of the hour
 
         hour = BC.watering_hour
-        min = BC.watering_min
+        min = BC.watering_minute
         duration = BC.watering_duration
 
 
