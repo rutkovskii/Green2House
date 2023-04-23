@@ -16,91 +16,95 @@ def isCommand(file_path):  # detect presence of commands
 
 
 def single_float_pt(number):
-    return floor(number*10)/10
+    return floor(number * 10) / 10
 
 
 def getTempHum(sensor):
-    sensorF = sensor.temperature*9/5 + 32  # temp in Fahrenheit
+    sensorF = sensor.temperature * 9 / 5 + 32  # temp in Fahrenheit
     sensorH = sensor.relative_humidity
     return sensorF, sensorH
 
 
-def getSoilMoisture(pin): #accepts an ADC pin eg. "AIN0"
+def getSoilMoisture(pin):  # accepts an ADC pin eg. "AIN0"
     readADC = ADC.read_raw(pin)
-    #print(readADC)
+    # print(readADC)
     soilPercent = 1 - (readADC - BC.minADC) / (BC.maxADC - BC.minADC)
-    print("Soil moisture: " + str(round(soilPercent*100,2)) + "%") #print % moisture to console window
-    if readADC >= 2900: #general soil values
+    print(
+        "Soil moisture: " + str(round(soilPercent * 100, 2)) + "%"
+    )  # print % moisture to console window
+    if readADC >= 2900:  # general soil values
         soil = "dry"
-        #relayOn(GPIO, BC.pins_dict.get('pump_relay_pin'))
+        # relayOn(GPIO, BC.pins_dict.get('pump_relay_pin'))
 
     elif 2500 <= readADC < 2900:
         soil = "moist"
-        #relayOff(GPIO, BC.pins_dict.get('pump_relay_pin'))
-
+        # relayOff(GPIO, BC.pins_dict.get('pump_relay_pin'))
 
     elif 1800 < readADC < 2500:
         soil = "wet"
-        #relayOff(GPIO, BC.pins_dict.get('pump_relay_pin'))
-    
+        # relayOff(GPIO, BC.pins_dict.get('pump_relay_pin'))
+
     elif 1450 <= readADC <= 1800:
         soil = "soaked"
-        #relayOff(GPIO, BC.pins_dict.get('pump_relay_pin'))
+        # relayOff(GPIO, BC.pins_dict.get('pump_relay_pin'))
 
     else:
         soil = "Out of Range"
-        #relayOff(GPIO, BC.pins_dict.get('pump_relay_pin'))
-    return soilPercent, soil #give both percent and general reading
+        # relayOff(GPIO, BC.pins_dict.get('pump_relay_pin'))
+    return soilPercent, soil  # give both percent and general reading
 
 
 def controlTempHum(sensorF, sensorH):
-    #print(int(sensorH))
+    # print(int(sensorH))
     # if round(sensorF, 1) <= BC.desiredTemp - BC.tempVariance: #too cold
     if BC.min_temperature and BC.max_temperature:
-        if round(sensorF, 1) <= BC.min_temperature: #too cold
+        if round(sensorF, 1) <= BC.min_temperature:  # too cold
             close = threading.Thread(target=closeGH)
             close.start()
-            relayOn(GPIO, BC.pins_dict.get('heater_relay_pin'))
-            if int(sensorH) <= BC.desiredHum: #if humidity is low, allow fans to turn off
-                relayOff(GPIO, BC.pins_dict.get('fan_relay_pin'))
-    
+            relayOn(GPIO, BC.pins_dict.get("heater_relay_pin"))
+            if (
+                int(sensorH) <= BC.desiredHum
+            ):  # if humidity is low, allow fans to turn off
+                relayOff(GPIO, BC.pins_dict.get("fan_relay_pin"))
+
         # elif round(sensorF, 1) >= BC.desiredTemp + BC.tempVariance: #too hot
-        elif round(sensorF, 1) >= BC.max_temperature: #too hot
+        elif round(sensorF, 1) >= BC.max_temperature:  # too hot
             open = threading.Thread(target=openGH)
             open.start()
-            relayOff(GPIO, BC.pins_dict.get('heater_relay_pin'))
-            #Humidity 
-            relayOn(GPIO, BC.pins_dict.get('fan_relay_pin'))
+            relayOff(GPIO, BC.pins_dict.get("heater_relay_pin"))
+            # Humidity
+            relayOn(GPIO, BC.pins_dict.get("fan_relay_pin"))
 
     if BC.min_humidity and BC.max_humidity:
         # if int(sensorH) > BC.desiredHum:
         if int(sensorH) > BC.max_humidity:
-            relayOn(GPIO, BC.pins_dict.get('fan_relay_pin'))
-            relayOff(GPIO, BC.pins_dict.get('mist_relay_pin'))
+            relayOn(GPIO, BC.pins_dict.get("fan_relay_pin"))
+            relayOff(GPIO, BC.pins_dict.get("mist_relay_pin"))
             print("mist sprayer off")
-            
-            #turn off water pump only if watering is not happening
-            if GPIO.output(BC.pins_dict.get('water_relay_pin')) == GPIO.LOW:
-                relayOff(GPIO, BC.pins_dict.get('pump_relay_pin'))
+
+            # turn off water pump only if watering is not happening
+            if GPIO.output(BC.pins_dict.get("water_relay_pin")) == GPIO.LOW:
+                relayOff(GPIO, BC.pins_dict.get("pump_relay_pin"))
                 print("pump off")
 
-        
-        elif int(sensorH) <= BC.min_humidity and round(sensorF, 2) <= BC.min_temperature:
-            relayOff(GPIO, BC.pins_dict.get('fan_relay_pin'))
-            relayOn(GPIO, BC.pins_dict.get('mist_relay_pin'))
+        elif (
+            int(sensorH) <= BC.min_humidity and round(sensorF, 2) <= BC.min_temperature
+        ):
+            relayOff(GPIO, BC.pins_dict.get("fan_relay_pin"))
+            relayOn(GPIO, BC.pins_dict.get("mist_relay_pin"))
             print("mist sprayers on")
 
 
 def openGH():
-    relayOn(GPIO, BC.pins_dict.get('h_bridge1'))
+    relayOn(GPIO, BC.pins_dict.get("h_bridge1"))
     time.sleep(5)
-    relayOff(GPIO, BC.pins_dict.get('h_bridge1'))
+    relayOff(GPIO, BC.pins_dict.get("h_bridge1"))
 
 
 def closeGH():
-    relayOn(GPIO, BC.pins_dict.get('h_bridge2'))
+    relayOn(GPIO, BC.pins_dict.get("h_bridge2"))
     time.sleep(5)
-    relayOff(GPIO, BC.pins_dict.get('h_bridge2'))
+    relayOff(GPIO, BC.pins_dict.get("h_bridge2"))
 
 
 def relayOn(GPIO, pin):
@@ -119,27 +123,29 @@ def pumpOn(GPIO, pin):
 
 def dispOLED(oled, temp, hum, moisture, timestamp):
     oled.fill(0)
-    oled.text("Temperature: "+temp+"F", 0, 0, color=1)
-    oled.text("Humidity: "+hum+"%", 0, 10, color=1)
-    oled.text("Soil is "+moisture, 0, 20, color=1)
+    oled.text("Temperature: " + temp + "F", 0, 0, color=1)
+    oled.text("Humidity: " + hum + "%", 0, 10, color=1)
+    oled.text("Soil is " + moisture, 0, 20, color=1)
     oled.text(timestamp, 0, 30, color=1)
     oled.show()
     return
 
 
 def sense_sample(user_id, sensorF, sensorH):
-    return {'user_id': user_id,
-            'temperature': single_float_pt(sensorF),
-            'humidity': single_float_pt(sensorH),
-            # 'soil moisture': #single_float_pt
-            'timestamp': int(round(dt.timestamp(dt.now())))
-            }
+    return {
+        "user_id": user_id,
+        "temperature": single_float_pt(sensorF),
+        "humidity": single_float_pt(sensorH),
+        # 'soil moisture': #single_float_pt
+        "timestamp": int(round(dt.timestamp(dt.now()))),
+    }
 
 
 def sense_sample_db(sensorF, sensorH):
-    soil_percent, soil = getSoilMoisture(BC.pins_dict.get('adc_pin'))
-    return DataSample(user_id=BC.user_id,
-                      temperature=single_float_pt(sensorF),
-                      humidity=single_float_pt(sensorH),
-                      soil_percent=single_float_pt(soil_percent),
-                      )
+    soil_percent, soil = getSoilMoisture(BC.pins_dict.get("adc_pin"))
+    return DataSample(
+        user_id=BC.user_id,
+        temperature=single_float_pt(sensorF),
+        humidity=single_float_pt(sensorH),
+        soil_percent=single_float_pt(soil_percent),
+    )

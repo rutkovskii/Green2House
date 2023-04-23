@@ -1,12 +1,13 @@
 import os
+
 # from dotenv import load_dotenv
 
 
 class BBB_Config:
     # Locations
     BBB_DIR = os.path.abspath(os.path.dirname(__file__))
-    FILES_DIR = os.path.join(BBB_DIR, 'files')
-    CONFIG_DIR = os.path.join(BBB_DIR, 'configs')
+    FILES_DIR = os.path.join(BBB_DIR, "files")
+    CONFIG_DIR = os.path.join(BBB_DIR, "configs")
     # DATA_DIR = os.path.join(SCRIPTS_DIR,'data')
     # LOG_DIR = os.path.join(SCRIPTS_DIR,'logs')
 
@@ -16,23 +17,22 @@ class BBB_Config:
 
     # Pins
     pins_dict = {
-        'h_bridge1': "P8_12",
-        'h_bridge2': "P8_14",
-        'pump_relay_pin': "P8_16",
-        'fan_relay_pin': "P8_18",
-        'heater_relay_pin': "P8_26",
-        'adc_pin': "AIN6",
-        'adc2_pin': "AIN2",
-        'adc3_pin': "AIN3",
-        'button_pin': "P9_15", #outdated?
-        #new pins for FPR, leave some pins commented out until final PCB arrives
-        'mist_relay_pin': "P8_12",
-        'water_relay_pin': "P8_14",
+        "h_bridge1": "P8_12",
+        "h_bridge2": "P8_14",
+        "pump_relay_pin": "P8_16",
+        "fan_relay_pin": "P8_18",
+        "heater_relay_pin": "P8_26",
+        "adc_pin": "AIN6",
+        "adc2_pin": "AIN2",
+        "adc3_pin": "AIN3",
+        "button_pin": "P9_15",  # outdated?
+        # new pins for FPR, leave some pins commented out until final PCB arrives
+        "mist_relay_pin": "P8_12",
+        "water_relay_pin": "P8_14",
         #'h_bridge1': "P8_15",
         #'h_bridge2': "P8_17",
-        #pump_relay_pin, fan_relay_pin stay the same
-        #adc_pin renamed to adc1_pin, adc2_pin, etc
-
+        # pump_relay_pin, fan_relay_pin stay the same
+        # adc_pin renamed to adc1_pin, adc2_pin, etc
     }
 
     # Variables
@@ -42,9 +42,9 @@ class BBB_Config:
     user_id = 6
     tempVariance = 1
 
-    waterHour = 15
-    waterMin = 15
-    waterDuration = 0.1
+    watering_hour = 15
+    watering_minute = 15
+    watering_duration = 0.1
 
     min_temperature = 73
     max_temperature = 75
@@ -57,10 +57,10 @@ class BBB_Config:
 
     # change link based on ngrok
     # must have internet connection
-    SERVER_URL = "https://365f-2600-387-f-5f16-00-5.ngrok.io"
+    SERVER_URL = "https://2c33-128-119-202-59.ngrok-free.app"
     SERVER_GET_DATA_URL = SERVER_URL + "/get-data"
     SEND_DATA = True
 
     # Database
-    DATABASE_LOCATION = os.path.join(BBB_DIR, 'database.sqlite')
-    DATABASE_URI = f'sqlite:///{DATABASE_LOCATION}'
+    DATABASE_LOCATION = os.path.join(BBB_DIR, "database.sqlite")
+    DATABASE_URI = f"sqlite:///{DATABASE_LOCATION}"
