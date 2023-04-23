@@ -68,45 +68,26 @@
     <br />
     <br />
     <div class="container">
-      <label for="daily-water-freq">Daily Watering Frequency:</label>
-      <select
-        name="daily_water_freq"
-        id="daily-water-freq"
-        onchange="updateTotalDailyWaterAmount()"
-      >
-        {{ daily_water_freq_options | safe }}
+      <label for="watering-time">Watering Time:</label>
+      <select name="watering_time" id="watering-time">
+        {{ watering_time_options | safe }}
       </select>
       <br />
       <br />
-      <label for="water-amount-per-freq"
-        >Water Amount per Watering (in mL):</label
-      >
-      <select
-        name="water_amount_per_freq"
-        id="water-amount-per-freq"
-        onchange="updateTotalDailyWaterAmount()"
-      >
-        {{ water_amount_per_freq_options | safe }}
+      <label for="watering-duration">Watering Duration:</label>
+      <select name="watering_duration" id="watering-duration">
+        {{ watering_duration_options | safe }}
       </select>
       <br />
       <br />
-      <label for="total-daily-water-amount">Total Daily Water Amount:</label>
-      <span id="total-daily-water-amount"> 10 </span> mL
     </div>
+
     <br />
     <div class="container">
       <button type="submit" class="btn btn-primary btn-lg">Submit</button>
     </div>
   </form>
   <script>
-    function updateTotalDailyWaterAmount() {
-      var daily_water_freq = $("#daily-water-freq").val();
-      var water_amount_per_freq = $("#water-amount-per-freq").val();
-      var total_daily_water_amount = daily_water_freq * water_amount_per_freq;
-      document.getElementById("total-daily-water-amount").innerHTML =
-        total_daily_water_amount;
-    }
-
     $("#temp-slider").slider({
       range: true,
       min: 32,
