@@ -80,6 +80,8 @@ def set_environment():
         if r.status_code == 200:
             flash("Environment settings updated successfully", "success")
         else:
+            print(r.status_code)
+            print(r)
             flash("Environment settings could not be updated", "danger")
 
     # generate options for the watering_time dropdown

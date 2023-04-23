@@ -38,6 +38,7 @@ def water_plant():
 @app.route("/instructions", methods=["POST"])
 def instructions():
     if request.method == "POST":
+        print("instructions")
         data = json.loads(request.get_json())
         print(data)
         date_string = data["timestamp"]

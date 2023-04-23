@@ -9,7 +9,8 @@ from app.database.database_prefills import prefill_users, prefill_samples
 
 
 engine = sqlalchemy.create_engine(
-    ServerConfig.DATABASE_URI)  # Server -> necessary for cron
+    ServerConfig.DATABASE_URI
+)  # Server -> necessary for cron
 Session = sessionmaker(bind=engine)
 Base.metadata.create_all(engine)
 
