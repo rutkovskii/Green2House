@@ -118,6 +118,8 @@ def main():
                     print("Max Temperature: ", BC.max_temperature)
                     print("Min Humidity: ", BC.min_humidity)
                     print("Max Humidity: ", BC.max_humidity)
+                    print("Watering Time: ", BC.watering_hour, ":", BC.watering_minute)
+                    print("Watering Duration: ", BC.watering_duration)
 
                     latest_instructions["updated"] = False
 

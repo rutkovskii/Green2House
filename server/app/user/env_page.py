@@ -45,6 +45,9 @@ def water_plant():
 def set_environment():
     if request.method == "POST":
         now = dt.now()
+        print(request.form.get("watering_time"))
+        print(request.form.get("watering_duration"))
+
         body = json.dumps(
             {
                 "user_id": session.get("user_id"),
