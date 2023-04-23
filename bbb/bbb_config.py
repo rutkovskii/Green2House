@@ -22,7 +22,17 @@ class BBB_Config:
         'fan_relay_pin': "P8_18",
         'heater_relay_pin': "P8_26",
         'adc_pin': "AIN6",
-        'button_pin': "P9_15"
+        'adc2_pin': "AIN2",
+        'adc3_pin': "AIN3",
+        'button_pin': "P9_15", #outdated?
+        #new pins for FPR, leave some pins commented out until final PCB arrives
+        'mist_relay_pin': "P8_12",
+        'water_relay_pin': "P8_14",
+        #'h_bridge1': "P8_15",
+        #'h_bridge2': "P8_17",
+        #pump_relay_pin, fan_relay_pin stay the same
+        #adc_pin renamed to adc1_pin, adc2_pin, etc
+
     }
 
     # Variables
@@ -31,6 +41,10 @@ class BBB_Config:
     toggle = 0
     user_id = 6
     tempVariance = 1
+
+    waterHour = 15
+    waterMin = 15
+    waterDuration = 0.1
 
     min_temperature = 73
     max_temperature = 75

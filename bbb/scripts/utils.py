@@ -5,7 +5,7 @@ from datetime import datetime as dt
 from bbb_config import BBB_Config as BC
 import Adafruit_BBIO.GPIO as GPIO
 import Adafruit_BBIO.ADC as ADC
-
+import threading
 from database.models import DataSample
 
 
@@ -58,15 +58,16 @@ def controlTempHum(sensorF, sensorH):
     # if round(sensorF, 1) <= BC.desiredTemp - BC.tempVariance: #too cold
     if BC.min_temperature and BC.max_temperature:
         if round(sensorF, 1) <= BC.min_temperature: #too cold
-            closeGH()
+            close = threading.Thread(target=closeGH)
+            close.start()
             relayOn(GPIO, BC.pins_dict.get('heater_relay_pin'))
             if int(sensorH) <= BC.desiredHum: #if humidity is low, allow fans to turn off
                 relayOff(GPIO, BC.pins_dict.get('fan_relay_pin'))
     
         # elif round(sensorF, 1) >= BC.desiredTemp + BC.tempVariance: #too hot
         elif round(sensorF, 1) >= BC.max_temperature: #too hot
-
-            openGH()
+            open = threading.Thread(target=openGH)
+            open.start()
             relayOff(GPIO, BC.pins_dict.get('heater_relay_pin'))
             #Humidity 
             relayOn(GPIO, BC.pins_dict.get('fan_relay_pin'))
@@ -75,20 +76,30 @@ def controlTempHum(sensorF, sensorH):
         # if int(sensorH) > BC.desiredHum:
         if int(sensorH) > BC.max_humidity:
             relayOn(GPIO, BC.pins_dict.get('fan_relay_pin'))
+            relayOff(GPIO, BC.pins_dict.get('mist_relay_pin'))
+            print("mist sprayer off")
+            
+            #turn off water pump only if watering is not happening
+            if GPIO.output(BC.pins_dict.get('water_relay_pin')) == GPIO.LOW:
+                relayOff(GPIO, BC.pins_dict.get('pump_relay_pin'))
+                print("pump off")
+
         
         elif int(sensorH) <= BC.min_humidity and round(sensorF, 2) <= BC.min_temperature:
             relayOff(GPIO, BC.pins_dict.get('fan_relay_pin'))
+            relayOn(GPIO, BC.pins_dict.get('mist_relay_pin'))
+            print("mist sprayers on")
 
 
 def openGH():
     relayOn(GPIO, BC.pins_dict.get('h_bridge1'))
-    time.sleep(3)
+    time.sleep(5)
     relayOff(GPIO, BC.pins_dict.get('h_bridge1'))
 
 
 def closeGH():
     relayOn(GPIO, BC.pins_dict.get('h_bridge2'))
-    time.sleep(3)
+    time.sleep(5)
     relayOff(GPIO, BC.pins_dict.get('h_bridge2'))
 
 

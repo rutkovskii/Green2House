@@ -22,9 +22,41 @@ ADC.setup()
 # PURE WATER: 1450
 
 
+def waterSchedule(hour, min, duration):
+    while True:
+        currentTime = time.localtime()
+        if currentTime.tm_hour == hour and currentTime.tm_min == min:
+            print("water on")
+            utils.relayOn(GPIO, BC.pins_dict.get('water_relay_pin'))
+            time.sleep(2)
+            utils.relayOn(GPIO, BC.pins_dict.get('pump_relay_pin'))
+            time.sleep(duration*60)
+
+            #turn off pump only if mist sprayers not running
+            if GPIO.output(BC.pins_dict.get('mist_relay_pin')) == GPIO.LOW:
+                utils.relayOff(GPIO, BC.pins_dict.get('pump_relay_pin'))
+            utils.relayOff(GPIO, BC.pins_dict.get('water_relay_pin'))
+            #turn off water solenoid after pump
+            print("water off")
+            time.sleep(3600)
+
+        elif currentTime.tm_hour == hour:
+            time.sleep(60) #wait until the next minute to check
+            
+        else:
+            time.sleep( (60 - currentTime.tm_min) * 60) #sleep for the rest of the hour
+        
+        hour = BC.waterHour
+        min = BC.waterMin
+        duration = BC.waterDuration
+
 def main():
     utils.relayOff(GPIO, BC.pins_dict.get('heater_relay_pin'))
     utils.relayOff(GPIO, BC.pins_dict.get('fan_relay_pin'))
+    utils.relayOff(GPIO, BC.pins_dict.get('water_relay_pin'))
+    utils.relayOff(GPIO, BC.pins_dict.get('pump_relay_pin'))
+    utils.relayOff(GPIO, BC.pins_dict.get('mist_relay_pin'))
+    
     # soilPercent is not used but still collected just in case
     # soilPercent, soil = utils.getSoilMoisture(BC.pins_dict.get('adc_pin'))
     # sensorF, sensorH = utils.getTempHum(sensor)  # measure initial values
@@ -33,9 +65,9 @@ def main():
             # print(measureValues()[0])
             soilPercent, soil = utils.getSoilMoisture(BC.pins_dict.get('adc_pin'))
             sensorF, sensorH = utils.getTempHum(sensor)
+            time.sleep(1)
             # measurements = measureValues()
-            utils.dispOLED(oled=oled, temp=str(sensorF)[0:4], hum=str(sensorH)[
-                           0:4], moisture=soil, timestamp=time.strftime('%H:%M:%S'))
+            utils.dispOLED(oled=oled, temp=str(sensorF)[0:4], hum=str(sensorH)[0:4], moisture=soil, timestamp=time.strftime('%H:%M:%S'))
 
             # make appropriate environment changes based on temp and hum
             utils.controlTempHum(sensorF, sensorH)
@@ -55,6 +87,11 @@ def main():
                     BC.max_temperature = float(latest_instructions.get('max_temperature'))
                     BC.min_humidity = float(latest_instructions.get('min_humidity'))
                     BC.max_humidity = float(latest_instructions.get('max_humidity'))
+
+                    #to be added
+                    #BC.scheduleHour = float(latest_instructions.get('waterHour')
+                    #BC.scheduleMin = float(latest_instructions.get('waterMin')
+                    #BC.scheduleDuration = float(latest_instructions.get('waterDuration')
 
                     print("Min Temperature: ", BC.min_temperature)
                     print("Max Temperature: ", BC.max_temperature)
@@ -76,9 +113,17 @@ def main():
 
 
 if __name__ == "__main__":
-    import threading
+    print("Time: "+str(time.localtime().tm_hour)+":"+str(time.localtime().tm_min))
+    print("Time of next watering: "+str(BC.waterHour)+":"+str(BC.waterMin))
 
+    import threading
+    print("starting")
     main_thread = threading.Thread(target=main)
     main_thread.start()
+    print("main thread started")
+    #connect code here
+    scheduleThread = threading.Thread(target=waterSchedule, args=(BC.waterHour, BC.waterMin, BC.waterDuration))
+    scheduleThread.start()
+    print("schedule thread started")
 
     app.run(host='0.0.0.0', port=5000, debug=True)
