@@ -5,7 +5,7 @@ After=network.target
 [Service]
 User=debian
 WorkingDirectory=/home/debian/bbb
-ExecStart=/bin/bash /home/debian/bbb/scripts/start_api.sh
+ExecStart=/bin/bash /home/debian/bbb/system_runner_2.sh
 Restart=always
 RestartSec=10
 
