@@ -8,7 +8,7 @@ source ~/.bashrc
 pip3 install -r requirements_bbb.txt
 
 # Setting up the service for the API on beaglebone black
-sudo mv /home/debian/bbb/configs/api.service /etc/systemd/system/api.service
+sudo mv /home/debian/bbb/configs/bbb_system.service /etc/systemd/system/bbb_system.service
 
 # Makes the system_runner_2.sh executable
 # system_runner_2.sh — Exports PYTHONPATH, removes all main.py active instances, and runs main.py
@@ -16,15 +16,15 @@ chmod +x /home/debian/bbb/system_runner_2.sh
 
 # Reloads the daemon, enables the service, and starts the service
 sudo systemctl daemon-reload
-sudo systemctl enable api.service
-sudo systemctl start api.service
+sudo systemctl enable bbb_system.service
+sudo systemctl start bbb_system.service
 
 
 
 # Helpful commands:
     # Check the status of the service
-    # sudo systemctl status api.service
+    # sudo systemctl status bbb_system.service
 
     # Check the logs of the service
-    # sudo journalctl -u api.service --no-pager --reverse | head -n 20
-    # sudo journalctl -u api.service --no-pager | tail -n 20
+    # sudo journalctl -u bbb_system.service --no-pager --reverse | head -n 20
+    # sudo journalctl -u bbb_system.service --no-pager | tail -n 20
