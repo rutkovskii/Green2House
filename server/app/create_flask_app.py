@@ -33,13 +33,16 @@ def register_blueprints(app):
 
 
 def add_configs(app):
-    app.config['SECRET_KEY'] = ServerConfig.SECRET_KEY
+    app.config["SECRET_KEY"] = ServerConfig.SECRET_KEY
     return app
 
 
 def create_app():
-    FlaskApp = Flask(__name__, template_folder=os.path.abspath(
-        ServerConfig.FLASK_HTML_DIR))
+    FlaskApp = Flask(
+        __name__,
+        template_folder=os.path.abspath(ServerConfig.FLASK_HTML_DIR),
+        static_folder=os.path.abspath(ServerConfig.FLASK_STATIC_DIR),
+    )
     FlaskApp = add_configs(FlaskApp)
     bootstrap.init_app(FlaskApp)
     login_manager.init_app(FlaskApp)

@@ -1,45 +1,39 @@
-{% extends "bootstrap/base.html" %}
-{% import "bootstrap/wtf.html" as wtf %}
-{% block navbar %}
+{% extends "bootstrap/base.html" %} {% import "bootstrap/wtf.html" as wtf %} {%
+block navbar %}
 
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title>{{ title }}</title>
-
-        <style>
-            .navbar{
-                background-color: #222222;
-                font-size:14px;
-            }
-            .navbar-nav {
-                min-width:360px;
-                float: left;
-            }
-            .navbar-nav>li {
-                float: left;
-            }
-
-            .navbar-nav>li>a {
-                color:#fff
-            }
-        </style>
-    </head>
-    <body>
-
-    <nav class="navbar navbar-expand navbar-dark bg-dark">
-       <div class="container-fluid">
-          <nav class="navbar-expand">
-             <ul class=" nav navbar-nav horizontal">
-                <li class="nav-item"> <a class="nav-link active" href="/admin">Main Admin Page</a> </li>
-                <li class="nav-item"> <a class="nav-link active" href="/admin/all-users">All Users</a> </li>
-                <li class="nav-item"> <a class="nav-link active" href="/admin/all-data-records">All Data Records</a> </li>
-                <li class="nav-item"> <a  class="nav-link active" href="/sign-out">Sign Out</a> </li>
-             </ul>
-          </nav>
-       </div>
+  <head>
+    <title>{{ title }}</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/styles.css') }}"
+    />
+  </head>
+  <body>
+    <nav class="navbar navbar-expand navbar-dark">
+      <div class="container-fluid">
+        <nav class="navbar-expand">
+          <ul class="nav navbar-nav horizontal">
+            <li class="nav-item">
+              <a class="nav-link active" href="/admin">Main Admin Page</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="/admin/all-users">All Users</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="/admin/all-data-records"
+                >All Data Records</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="/sign-out">Sign Out</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
     </nav>
-    </body>
+  </body>
 </html>
 
 {% endblock %}

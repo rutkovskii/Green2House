@@ -8,29 +8,32 @@ from app.user.config import UserConfig
 from app.database.models import DataSample
 from app.database.database import session_scope
 
-datasample_page_bp = Blueprint('datasample_page_bp', __name__)
+datasample_page_bp = Blueprint("datasample_page_bp", __name__)
 
 
-@datasample_page_bp.route(UserConfig.MY_DATA_SAMPLES_ROUTE, methods=['GET'])
+@datasample_page_bp.route(UserConfig.MY_DATA_SAMPLES_ROUTE, methods=["GET"])
 @login_required
 def serve_page_data_samples():
-    return render_template('/user_data_records_table.html', title='My Data Samples')
+    return render_template("/user_data_records_table.html", title="My Data Samples")
 
 
-@datasample_page_bp.route(UserConfig.SERVE_DATA_SAMPLES_ROUTE, methods=['GET', 'POST'])
+@datasample_page_bp.route(UserConfig.SERVE_DATA_SAMPLES_ROUTE, methods=["GET", "POST"])
 @login_required
 def serve_data_samples():
     """Sorts the table, returns searched data"""
 
-    user_id = request.args.get('user_id')
+    user_id = request.args.get("user_id")
 
-    if not request.args.get('token'):
+    if not request.args.get("token"):
         return abort(403)
 
     if user_id:
         with session_scope() as s:
-            query = s.query(DataSample).filter(
-                DataSample.user_id == user_id)
+            query = (
+                s.query(DataSample)
+                .filter(DataSample.user_id == user_id)
+                .order_by(DataSample.id.desc())
+            )
 
     else:
         with session_scope() as s:
@@ -39,14 +42,16 @@ def serve_data_samples():
     func.to_char()
 
     # search filter
-    search = request.args.get('search[value]')
+    search = request.args.get("search[value]")
 
     if search:
-        query = query.filter(sqlalchemy.or_(
-            DataSample.user_id.like(f'%{search}%'),
-            DataSample.time.like(f'%{search}%'),
-            DataSample.date.like(f'%{search}%')
-        ))
+        query = query.filter(
+            sqlalchemy.or_(
+                DataSample.user_id.like(f"%{search}%"),
+                DataSample.time.like(f"%{search}%"),
+                DataSample.date.like(f"%{search}%"),
+            )
+        )
 
     total_filtered = query.count()
 
@@ -54,16 +59,15 @@ def serve_data_samples():
     order = []
     i = 0
     while True:
-
-        col_index = request.args.get(f'order[{i}][column]')
+        col_index = request.args.get(f"order[{i}][column]")
         if col_index is None:
             break
-        col_name = request.args.get(f'columns[{col_index}][data]')
-        if col_name not in ['user_id', 'time', 'date']:
-            col_name = 'date'
+        col_name = request.args.get(f"columns[{col_index}][data]")
+        if col_name not in ["user_id", "time", "date"]:
+            col_name = "date"
 
         # gets descending sorting
-        descending = request.args.get(f'order[{i}][dir]') == 'desc'
+        descending = request.args.get(f"order[{i}][dir]") == "desc"
         desired_col = getattr(DataSample, col_name)
 
         # decending
@@ -78,8 +82,8 @@ def serve_data_samples():
         query = query.order_by(*order)
 
     # pagination
-    start = request.args.get('start', type=int)
-    length = request.args.get('length', type=int)
+    start = request.args.get("start", type=int)
+    length = request.args.get("length", type=int)
     query = query.offset(start).limit(length)
 
     # print([sample.to_dict() for sample in query])
@@ -89,8 +93,10 @@ def serve_data_samples():
     # response to be shown on HTML side
     return json.dumps(
         {
-            'data': [sample.to_dict() for sample in query],
-            'recordsFiltered': total_filtered,
-            'recordsTotal': query.count(),
-            'draw': request.args.get('draw', type=int),
-        }, default=str)
+            "data": [sample.to_dict() for sample in query],
+            "recordsFiltered": total_filtered,
+            "recordsTotal": query.count(),
+            "draw": request.args.get("draw", type=int),
+        },
+        default=str,
+    )

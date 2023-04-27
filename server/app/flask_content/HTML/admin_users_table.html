@@ -1,6 +1,5 @@
-{% extends "admin_table_base.html" %}
-
-{% block content %}
+{% extends "admin_table_base.html" %} {% block content %}
+<div class="table-reponsive">
   <table id="all_users" class="table table-striped">
     <thead>
       <tr>
@@ -12,42 +11,41 @@
     </thead>
     <tbody></tbody>
   </table>
-{% endblock %}
-
-{% block scripts %}
+</div>
+{% endblock %} {% block scripts %}
 <script>
-
-$(document).ready(function () {
-    var table = $('#all_users').DataTable({
+  $(document).ready(function () {
+    var table = $("#all_users").DataTable({
       order: [],
+      autoWidth: false,
+      reponsive: true,
       ajax: {
-        url:"/api/serve-users",
-        method:"GET",
+        url: "/api/serve-users",
+        method: "GET",
         data: {
-            'token' : '{{ current_user.get_auth_token() }}'
-        }
+          token: "{{ current_user.get_auth_token() }}",
+        },
       },
       serverSide: true,
       columns: [
-        {data: 'name', width: "20%"},
-        {data: 'phone_number', width: "20%"},
-        {data: 'email', width: "30%"},
-        {data: 'datetime_joined', width: "30%"}
-      ]
+        { data: "name", width: "20%" },
+        { data: "phone_number", width: "20%" },
+        { data: "email", width: "30%" },
+        { data: "datetime_joined", width: "30%" },
+      ],
     });
 
-      // Switching with left and right keyboard buttons
-    $(document).keydown( function(e) {
+    // Switching with left and right keyboard buttons
+    $(document).keydown(function (e) {
       // left arrow
       if ((e.keyCode || e.which) === 37) {
-        $( "#data_previous" ).click();
+        $("#data_previous").click();
       }
       // right arrow
       if ((e.keyCode || e.which) === 39) {
-        $( "#data_next" ).click();
+        $("#data_next").click();
       }
-    })
-});
-
-  </script>
+    });
+  });
+</script>
 {% endblock %}

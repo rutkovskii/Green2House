@@ -3,12 +3,18 @@
   rel="stylesheet"
   href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"
 />
+
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/styles.css') }}"
+/>
+
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
 
 <div class="container">
   <div class="page-header">
-    <h3>Set Environment for Your Green2House</h3>
+    <h3>Set Environment in Your Green2House</h3>
   </div>
 </div>
 
@@ -84,9 +90,14 @@
 
     <br />
     <div class="container">
-      <button type="submit" class="btn btn-primary btn-lg">Submit</button>
+      <div class="submit-btn-container">
+        <button type="submit" class="btn btn-primary btn-lg large-btn">
+          Submit
+        </button>
+      </div>
     </div>
   </form>
+
   <script>
     $("#temp-slider").slider({
       range: true,
@@ -136,16 +147,5 @@
       },
     });
   </script>
-  <style>
-    #temp-slider {
-      width: 75%;
-    }
-    #humidity-slider {
-      width: 75%;
-    }
-    .ui-slider-range {
-      background-color: #444;
-    }
-  </style>
 </div>
 {% endblock content %}

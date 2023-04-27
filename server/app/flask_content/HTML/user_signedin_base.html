@@ -5,27 +5,14 @@ block navbar %}
 <html lang="en">
   <head>
     <title>{{ title }}</title>
-
-    <style>
-      .navbar {
-        background-color: #222222;
-        font-size: 14px;
-      }
-      .navbar-nav {
-        min-width: 360px;
-        float: left;
-      }
-      .navbar-nav > li {
-        float: left;
-      }
-
-      .navbar-nav > li > a {
-        color: #fff;
-      }
-    </style>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='css/styles.css') }}"
+    />
   </head>
   <body>
-    <nav class="navbar navbar-expand navbar-dark bg-dark">
+    <nav class="navbar navbar-expand navbar-dark">
       <div class="container-fluid">
         <nav class="navbar-expand">
           <ul class="nav navbar-nav horizontal">
