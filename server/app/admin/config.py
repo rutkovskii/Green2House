@@ -5,7 +5,9 @@ load_dotenv()
 
 
 class ServerConfig:
-    DATABASE_URI = "postgresql+psycopg2://ubuntu:ubuntu@0.0.0.0:5455/postgresDB"
+    DATABASE_URI = "postgresql+psycopg2://ubuntu:ubuntu@postgres:5432/postgresDB"
+
+    ENVIRONMENT = os.getenv("ENVIRONMENT")
 
     ADMIN_DIR = os.path.abspath(os.path.dirname(__file__))
     ROOT_DIR = os.path.dirname(ADMIN_DIR)

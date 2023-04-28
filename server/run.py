@@ -1,10 +1,9 @@
-from app.create_flask_app import FlaskApp, register_blueprints
+from app.create_flask_app import FlaskApp
 from flask import url_for
 
 if __name__ == "__main__":
     # app.run(host="0.0.0.0", port=80, debug=True) # host='0.0.0.0', port=80, debug=False, threaded=True
     # app.run(host="0.0.0.0", port=80
-    register_blueprints(FlaskApp)
     FlaskApp.run(host="0.0.0.0", port=80, debug=True)
 
     # To run with ngrok

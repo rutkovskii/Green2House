@@ -9,6 +9,7 @@ docker
 server/.env
 docs/BeaverConnection.png
 .vscode
+server/volumes
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

@@ -1,0 +1,17 @@
+docker
+*/__pycache__/
+*/.pytest_cache/
+*/.mypy_cache/
+*/.tox/
+*/.venv/
+*/.eggs/
+*/.git/
+*/.hg/
+*/.svn/
+*/.DS_Store
+*/.env
+*/.venv
+.dockerignore
+docker-compose.yml
+Dockerfile
+svenv
