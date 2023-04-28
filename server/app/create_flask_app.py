@@ -50,4 +50,6 @@ def create_app():
     return FlaskApp
 
 
-FlaskApp = create_app()
+if ServerConfig.ENVIRONMENT == "development":
+    FlaskApp = create_app()
+    register_blueprints(FlaskApp)
