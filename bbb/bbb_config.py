@@ -17,8 +17,6 @@ class BBB_Config:
 
     # Pins
     pins_dict = {
-        "h_bridge1": "P8_12",
-        "h_bridge2": "P8_14",
         "pump_relay_pin": "P8_16",
         "fan_relay_pin": "P8_18",
         "heater_relay_pin": "P8_26",
@@ -29,15 +27,13 @@ class BBB_Config:
         # new pins for FPR, leave some pins commented out until final PCB arrives
         "mist_relay_pin": "P8_12",
         "water_relay_pin": "P8_14",
-        #'h_bridge1': "P8_15",
-        #'h_bridge2': "P8_17",
+        'h_bridge1': "P8_17",
+        'h_bridge2': "P8_15",
         # pump_relay_pin, fan_relay_pin stay the same
         # adc_pin renamed to adc1_pin, adc2_pin, etc
     }
 
     # Variables
-    desiredTemp = 75  # desired temperature in degrees F
-    desiredHum = 50  # desired humidity in percentage RH
     toggle = 0
     user_id = 6
     tempVariance = 1
@@ -46,14 +42,21 @@ class BBB_Config:
     watering_minute = 15
     watering_duration = 0.1
 
-    min_temperature = 73
-    max_temperature = 75
+    min_temperature = 50
+    max_temperature = 65
     min_humidity = 20
-    max_humidity = 50
+    max_humidity = 70
+
+    pump_status = "off" #waterp pump
+    fan_status = "off" #fan
+    heater_status = "off" #heater
+    mist_status = "off" #mist sprayer
+    water_status = "off" #soil watering
+    roof_status = "closed"
 
     # minADC = wet, maxADC = dry
     minADC = 1450  # the lowest value I measured with the soil moisture sensor
-    maxADC = 3250  # the highest value I measured with the soil moisture sensor
+    maxADC = 3300  # the highest value I measured with the soil moisture sensor
 
     # change link based on ngrok
     # must have internet connection

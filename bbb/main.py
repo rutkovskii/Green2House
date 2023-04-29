@@ -1,6 +1,7 @@
 import time
 import Adafruit_BBIO.ADC as ADC
 import Adafruit_BBIO.GPIO as GPIO
+import threading
 
 from bbb_config import BBB_Config as BC  # pins are here
 from scripts.init_home import create_all
@@ -57,17 +58,33 @@ def main():
     utils.relayOff(GPIO, BC.pins_dict.get("water_relay_pin"))
     utils.relayOff(GPIO, BC.pins_dict.get("pump_relay_pin"))
     utils.relayOff(GPIO, BC.pins_dict.get("mist_relay_pin"))
+    close = threading.Thread(target=utils.closeGH) #close greenhouse upon startup
+    close.start()
+    close.join()
+    BC.heater_status = "off"
+    BC.fan_status = "off"
+    BC.water_status = "off"
+    BC.pump_status = "off"
+    BC.mist_status = "off"
 
     # soilPercent is not used but still collected just in case
     # soilPercent, soil = utils.getSoilMoisture(BC.pins_dict.get('adc_pin'))
     # sensorF, sensorH = utils.getTempHum(sensor)  # measure initial values
     while True:
-        if int(time.strftime("%S")) % 5 == 0:  # measure value every x seconds
+        if int(time.strftime("%S")) % 15 == 0:  # measure value every x seconds
             # print(measureValues()[0])
             soilPercent, soil = utils.getSoilMoisture(BC.pins_dict.get("adc_pin"))
-            sensorF, sensorH = utils.getTempHum(sensor)
-            time.sleep(1)
-            # measurements = measureValues()
+            #soilPercent, soil = 50, "dry"
+            a, b = utils.getTempHum(sensor)
+            sensorF, sensorH = round(a,2) , round(b,2)
+            print("Temperature: "+str(sensorF))
+            print("Humidity: "+str(sensorH)+"%")    
+
+            #open and write to file as backup for database
+            f = open("test_results.txt", "a")
+            f.write(str(time.strftime("%H:%M:%S"))+", "+str(sensorF)+", "+str(sensorH)+"%")
+            f.close()
+
             utils.dispOLED(
                 oled=oled,
                 temp=str(sensorF)[0:4],
@@ -78,6 +95,13 @@ def main():
 
             # make appropriate environment changes based on temp and hum
             utils.controlTempHum(sensorF, sensorH)
+            print("Time: "+time.strftime("%H:%M:%S"))
+            print("Heater: "+BC.heater_status)
+            print("Fan: "+BC.fan_status)
+            print("Roof status: "+BC.roof_status)
+            print("Pump status: "+BC.pump_status)
+            print("Mist sprayer status: "+BC.mist_status)
+            print("Soil water status: "+BC.water_status)
 
             print(latest_instructions.get("water"))
             if latest_instructions.get("water"):
@@ -132,7 +156,7 @@ def main():
                 send_samples_db()
 
             # sleep for at least 1 second to avoid multiple measurements in one second
-            time.sleep(1)
+            time.sleep(2)
 
 
 if __name__ == "__main__":
@@ -144,8 +168,6 @@ if __name__ == "__main__":
         + str(BC.watering_minute)
     )
 
-    import threading
-
     print("starting")
     main_thread = threading.Thread(target=main)
     main_thread.start()
@@ -155,7 +177,7 @@ if __name__ == "__main__":
         target=waterSchedule,
         args=(BC.watering_hour, BC.watering_minute, BC.watering_duration),
     )
-    scheduleThread.start()
+    #scheduleThread.start() #disabled until we test watering
     print("schedule thread started")
 
     app.run(host="0.0.0.0", port=5000, debug=True)
