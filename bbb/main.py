@@ -82,7 +82,7 @@ def main():
 
             #open and write to file as backup for database
             f = open("test_results.txt", "a")
-            f.write(str(time.strftime("%H:%M:%S"))+", "+str(sensorF)+", "+str(sensorH)+"%")
+            f.write(str(time.strftime("%H:%M:%S"))+", "+str(sensorF)+", "+str(sensorH)+"%, soil: "+str(round(soilPercent*100, 2))+"\n")
             f.close()
 
             utils.dispOLED(
