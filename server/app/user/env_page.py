@@ -6,11 +6,12 @@ import json
 from app.database.models import Instructions
 from app.database.database import session_scope
 from app.user.config import UserConfig
+from app.user.vegetables import Plants
 
 env_page_bp = Blueprint("env_page_bp", __name__)
 
 
-@env_page_bp.route(UserConfig.WATER_ROUTE, methods=["GET", "POST"])
+@env_page_bp.route(UserConfig.BUTTONS_ROUTE, methods=["GET", "POST"])
 @login_required
 def water_plant():
     """Water the plant."""
@@ -37,7 +38,7 @@ def water_plant():
 
         return jsonify({"success": True})
 
-    return render_template("/water.html", title="Water Plant")
+    return render_template("/buttons.html", title="Water Plant")
 
 
 @env_page_bp.route(UserConfig.ENV_ROUTE, methods=["GET", "POST"])

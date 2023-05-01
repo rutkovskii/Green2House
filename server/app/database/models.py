@@ -47,6 +47,7 @@ class User(Base, UserMixin):
 
     def to_dict(self):
         return {
+            "id": self.id,
             "name": self.name,
             "phone_number": self.phone_number,
             "email": self.email,
@@ -54,8 +55,8 @@ class User(Base, UserMixin):
         }
 
     def __repr__(self):
-        return "<User(name='{}', phone_number='{}', email='{}', datetime_joined='{}')>".format(
-            self.name, self.phone_number, self.email, self.datetime_joined
+        return "<User(id='{}',<User(name='{}', phone_number='{}', email='{}', datetime_joined='{}')>".format(
+            self.id, self.name, self.phone_number, self.email, self.datetime_joined
         )
 
 

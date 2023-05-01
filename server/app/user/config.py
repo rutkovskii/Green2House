@@ -4,10 +4,10 @@ class UserConfig:
     SERVE_DATA_SAMPLES_ROUTE = "/api/serve-data-records"
     ENV_ROUTE = "/environment"
     CURRENT_ENV_DATA_ROUTE = "/current-environment"
-    WATER_ROUTE = "/water-plant"
+    BUTTONS_ROUTE = "/buttons"
 
     # URL for the BBB
-    BBB_URL = "http://172.20.10.8:5000"
+    BBB_URL = "http://10.0.0.111:5000"
 
     INSTRUCTIONS_URL = f"{BBB_URL}/instructions"
     WATER_URL = f"{BBB_URL}/water-plant"

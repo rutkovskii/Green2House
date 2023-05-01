@@ -12,6 +12,24 @@ body {
   border-color: #3c763d;
 }
 
+
+.center-screen {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    height: 50vh;
+  }
+  
+.btn-custom {
+    font-size: 2rem;
+    padding: 1rem 2rem;
+    margin: 1rem;
+    width: 150px; /* Fixed width */
+    height: 60px; /* Fixed height */
+    text-align: center; /* Center text */
+  }
+
 .btn-primary:hover,
 .btn-primary:focus,
 .btn-primary:active {

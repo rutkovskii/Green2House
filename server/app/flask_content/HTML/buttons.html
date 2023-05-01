@@ -1,0 +1,80 @@
+{% extends "user_signedin_base.html" %} {% block content %}
+<div class="container">
+  <div class="page-header">
+    <h3>Control Your Plant</h3>
+  </div>
+  <div class="center-screen">
+    <button
+      id="waterButton"
+      class="btn btn-primary btn-custom"
+      data-endpoint="/water-plant"
+    >
+      Water
+    </button>
+    <button
+      id="mistButton"
+      class="btn btn-primary btn-custom"
+      data-endpoint="/mist-plant"
+    >
+      Mist
+    </button>
+    <button
+      id="liftLidButton"
+      class="btn btn-primary btn-custom"
+      data-endpoint="/lift-lid"
+    >
+      Lift Lid
+    </button>
+    <button
+      id="heatButton"
+      class="btn btn-primary btn-custom"
+      data-endpoint="/heat-plant"
+    >
+      Heat
+    </button>
+    <button
+      id="fanButton"
+      class="btn btn-primary btn-custom"
+      data-endpoint="/fan-plant"
+    >
+      Fan
+    </button>
+  </div>
+</div>
+
+<script>
+  function handleButtonClick(event) {
+    const button = event.target;
+    const endpoint = button.getAttribute("data-endpoint");
+
+    fetch(endpoint, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({}),
+    })
+      .then((response) => response.json())
+      .then((data) => console.log("Success:", data))
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }
+
+  document
+    .getElementById("waterButton")
+    .addEventListener("click", handleButtonClick);
+  document
+    .getElementById("mistButton")
+    .addEventListener("click", handleButtonClick);
+  document
+    .getElementById("liftLidButton")
+    .addEventListener("click", handleButtonClick);
+  document
+    .getElementById("heatButton")
+    .addEventListener("click", handleButtonClick);
+  document
+    .getElementById("fanButton")
+    .addEventListener("click", handleButtonClick);
+</script>
+{% endblock %}
