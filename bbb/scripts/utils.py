@@ -102,17 +102,33 @@ def controlTempHum(sensorF, sensorH):
             #print("mist sprayer off")
 
             # turn off water pump only if watering is not happening
-            if not GPIO.input(BC.pins_dict.get("water_relay_pin")): #GPIO.output(BC.pins_dict.get("water_relay_pin")) == GPIO.LOW:
+            if BC.water_status == "off":
                 relayOff(GPIO, BC.pins_dict.get("pump_relay_pin"))
                 BC.pump_status = "off"
                 print("pump off")
 
         elif (int(sensorH) <= BC.min_humidity and round(sensorF, 2) <= BC.min_temperature):
             relayOff(GPIO, BC.pins_dict.get("fan_relay_pin"))
+            relayOn(GPIO, BC.pins_dict.get("pump_relay_pin"))
+            time.sleep(1)
             relayOn(GPIO, BC.pins_dict.get("mist_relay_pin"))
             BC.fan_status = "off"
             BC.mist_status = "on"
+            BC.pump_status = "on"
             print("mist sprayers on")
+
+        elif BC.min_humidity < int(sensorH) and int(sensorH) < BC.max_humidity:
+            relayOff(GPIO, BC.pins_dict.get("mist_relay_pin"))
+            if BC.water_status == "off":
+                relayOff(GPIO, BC.pins_dict.get("pump_relay_pin"))
+                BC.pump_status = "off"
+
+        elif int(sensorH) < BC.min_humidity:
+            BC.pump_status = "on"
+            relayOn(GPIO, BC.pins_dict.get("mist_relay_pin"))
+            time.sleep(1)
+            relayOn(GPIO, BC.pins_dict.get("pump_relay_pin"))
+            BC.mist_status = "on"
 
 
 

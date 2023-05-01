@@ -29,14 +29,18 @@ def waterSchedule(hour, min, duration):
         if currentTime.tm_hour == hour and currentTime.tm_min == min:
             print("water on")
             utils.relayOn(GPIO, BC.pins_dict.get("water_relay_pin"))
+            BC.water_status = "on"
             time.sleep(2)
             utils.relayOn(GPIO, BC.pins_dict.get("pump_relay_pin"))
+            BC.pump_status = "on"
             time.sleep(duration * 60)
 
             # turn off pump only if mist sprayers not running
-            if GPIO.output(BC.pins_dict.get("mist_relay_pin")) == GPIO.LOW:
+            if BC.mist_status == "off":
                 utils.relayOff(GPIO, BC.pins_dict.get("pump_relay_pin"))
+                BC.pump_status = "off"
             utils.relayOff(GPIO, BC.pins_dict.get("water_relay_pin"))
+            BC.water_status = "off"
             # turn off water solenoid after pump
             print("water off")
             time.sleep(3600)
@@ -177,7 +181,7 @@ if __name__ == "__main__":
         target=waterSchedule,
         args=(BC.watering_hour, BC.watering_minute, BC.watering_duration),
     )
-    #scheduleThread.start() #disabled until we test watering
+    scheduleThread.start() #disabled until we test watering
     print("schedule thread started")
 
     app.run(host="0.0.0.0", port=5000, debug=True)
