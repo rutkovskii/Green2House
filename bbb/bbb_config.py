@@ -38,14 +38,14 @@ class BBB_Config:
     user_id = 6
     tempVariance = 1
 
-    watering_hour = 15
-    watering_minute = 15
+    watering_hour = 18
+    watering_minute = 35
     watering_duration = 0.1
 
     min_temperature = 50
     max_temperature = 65
     min_humidity = 20
-    max_humidity = 70
+    max_humidity = 90
 
     pump_status = "off" #waterp pump
     fan_status = "off" #fan
@@ -62,7 +62,7 @@ class BBB_Config:
     # must have internet connection
     SERVER_URL = "https://2c33-128-119-202-59.ngrok-free.app"
     SERVER_GET_DATA_URL = SERVER_URL + "/get-data"
-    SEND_DATA = True
+    SEND_DATA = False
 
     # Database
     DATABASE_LOCATION = os.path.join(BBB_DIR, "database.sqlite")
