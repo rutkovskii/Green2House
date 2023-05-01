@@ -27,15 +27,15 @@ class BBB_Config:
         # new pins for FPR, leave some pins commented out until final PCB arrives
         "mist_relay_pin": "P8_12",
         "water_relay_pin": "P8_14",
-        'h_bridge1': "P8_17",
-        'h_bridge2': "P8_15",
+        "h_bridge1": "P8_17",
+        "h_bridge2": "P8_15",
         # pump_relay_pin, fan_relay_pin stay the same
         # adc_pin renamed to adc1_pin, adc2_pin, etc
     }
 
     # Variables
     toggle = 0
-    user_id = 6
+    user_id = 2
     tempVariance = 1
 
     watering_hour = 18
@@ -47,11 +47,11 @@ class BBB_Config:
     min_humidity = 20
     max_humidity = 90
 
-    pump_status = "off" #waterp pump
-    fan_status = "off" #fan
-    heater_status = "off" #heater
-    mist_status = "off" #mist sprayer
-    water_status = "off" #soil watering
+    pump_status = "off"  # waterp pump
+    fan_status = "off"  # fan
+    heater_status = "off"  # heater
+    mist_status = "off"  # mist sprayer
+    water_status = "off"  # soil watering
     roof_status = "closed"
 
     # minADC = wet, maxADC = dry
@@ -60,7 +60,7 @@ class BBB_Config:
 
     # change link based on ngrok
     # must have internet connection
-    SERVER_URL = "https://2c33-128-119-202-59.ngrok-free.app"
+    SERVER_URL = "https://74d3-2601-180-8301-3f40-a925-8469-da69-30fb.ngrok-free.app"
     SERVER_GET_DATA_URL = SERVER_URL + "/get-data"
     SEND_DATA = False
 
