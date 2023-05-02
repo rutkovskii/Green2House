@@ -4,11 +4,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
-class ServerConfig:
-    DATABASE_URI = "postgresql+psycopg2://ubuntu:ubuntu@postgres:5432/postgresDB"
-
-    ENVIRONMENT = os.getenv("ENVIRONMENT")
-
+class AdminConfig:
     ADMIN_DIR = os.path.abspath(os.path.dirname(__file__))
     ROOT_DIR = os.path.dirname(ADMIN_DIR)
     FLASK_CONTENT_DIR = os.path.join(ROOT_DIR, "flask_content")
