@@ -7,8 +7,9 @@ from app.database.database import session_scope
 from app.database.models import DataSample
 from app.admin.config import AdminConfig
 import app.utils as u
+from app.server_logger import setup_logger
 
-
+logger = setup_logger(__name__, "server.log")
 get_data_bp = Blueprint("get_data_bp", __name__)
 
 
@@ -17,6 +18,7 @@ get_data_bp = Blueprint("get_data_bp", __name__)
 def get_data():
     if request.is_json:
         bulk_list = []
+        user_id = None
         for sample in json.loads(request.get_json()):
             print(sample)
 
@@ -38,6 +40,11 @@ def get_data():
                     time=u.dt_ts2time(timestamp_unix),
                 )
             )
+            user_id = sample.get("user_id")
+
+        logger.info(
+            f"Received {len(bulk_list)} data samples from {request.remote_addr} with id {user_id}"
+        )
 
         with session_scope() as s:
             s.bulk_save_objects(bulk_list)

@@ -94,6 +94,13 @@
         <button type="submit" class="btn btn-primary btn-lg large-btn">
           Submit
         </button>
+        <button
+          type="button"
+          id="shutdownButton"
+          class="btn btn-danger btn-lg large-btn"
+        >
+          Shut Down
+        </button>
       </div>
     </div>
   </form>
@@ -146,6 +153,27 @@
         $("#humidity-slider-max").val(max);
       },
     });
+
+    document
+      .getElementById("shutdownButton")
+      .addEventListener("click", handleShutdownButtonClick);
+
+    function handleShutdownButtonClick(event) {
+      const endpoint = "/shutdown-system";
+
+      fetch(endpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ shutdown: true }),
+      })
+        .then((response) => response.json())
+        .then((data) => console.log("Success:", data))
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    }
   </script>
 </div>
 {% endblock content %}

@@ -1,6 +1,7 @@
 import logging
 import os
 from config import Config
+from functools import wraps
 
 
 def setup_logger(name, log_file, level=logging.DEBUG):
@@ -20,3 +21,18 @@ def setup_logger(name, log_file, level=logging.DEBUG):
     logger.addHandler(handler)
 
     return logger
+
+
+def log_errors(logger):
+    def decorator(f):
+        @wraps(f)
+        def decorated_function(*args, **kwargs):
+            try:
+                return f(*args, **kwargs)
+            except Exception as e:
+                logger.exception("An error occurred: %s", e)
+                # return jsonify({"error": "An unexpected error occurred"}), 500
+
+        return decorated_function
+
+    return decorator

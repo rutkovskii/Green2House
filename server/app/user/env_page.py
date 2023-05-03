@@ -8,40 +8,46 @@ from app.database.database import session_scope
 from app.user.config import UserConfig
 from app.user.vegetables import Plants
 
+from app.server_logger import setup_logger, log_errors
+
 env_page_bp = Blueprint("env_page_bp", __name__)
+
+logger = setup_logger(__name__, "server.log")
 
 
 @env_page_bp.route(UserConfig.BUTTONS_ROUTE, methods=["GET", "POST"])
+@log_errors(logger)
 @login_required
-def water_plant():
-    """Water the plant."""
+def buttons():
+    """"""
 
-    if request.method == "POST":
-        data = request.get_json()
-        is_pressed = data.get("is_pressed", False)
-        print(f'Button is now: {"pressed" if is_pressed else "not pressed"}')
+    # if request.method == "POST":
+    #     data = request.get_json()
+    #     is_pressed = data.get("is_pressed", False)
+    #     print(f'Button is now: {"pressed" if is_pressed else "not pressed"}')
 
-        if is_pressed:
-            body = json.dumps({"user_id": session.get("user_id"), "water": True})
-        else:
-            body = json.dumps({"user_id": session.get("user_id"), "water": False})
+    #     if is_pressed:
+    #         body = json.dumps({"user_id": session.get("user_id"), "water": True})
+    #     else:
+    #         body = json.dumps({"user_id": session.get("user_id"), "water": False})
 
-        headers = {"Content-type": "application/json", "Accept": "text/plain"}
+    #     headers = {"Content-type": "application/json", "Accept": "text/plain"}
 
-        try:
-            r = requests.post(UserConfig.WATER_URL, json=body, headers=headers)
-        except requests.exceptions.ConnectionError as e:
-            print(e)
-            return jsonify({"success": False})
+    #     try:
+    #         r = requests.post(UserConfig.WATER_URL, json=body, headers=headers)
+    #     except requests.exceptions.ConnectionError as e:
+    #         print(e)
+    #         return jsonify({"success": False})
 
-        print(f"Status Code: {r.status_code}, Response: {r.json()}")
+    #     print(f"Status Code: {r.status_code}, Response: {r.json()}")
 
-        return jsonify({"success": True})
+    #     return jsonify({"success": True})
 
-    return render_template("/buttons.html", title="Water Plant")
+    return render_template("user_buttons.html", title="Buttons")
 
 
 @env_page_bp.route(UserConfig.ENV_ROUTE, methods=["GET", "POST"])
+@log_errors(logger)
 @login_required
 def set_environment():
     if request.method == "POST":
