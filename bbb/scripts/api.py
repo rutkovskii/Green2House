@@ -8,7 +8,14 @@ import json
 app = Flask(__name__)
 
 latest_instructions = {
+    # button actions
+    "shutdown": False,
     "water": False,
+    "mist": False,
+    "lid": False,
+    "fan": False,
+    "heat": False,
+    # instructions
     "min_temperature": None,
     "max_temperature": None,
     "min_humidity": None,
@@ -20,19 +27,54 @@ latest_instructions = {
 }
 
 
-@app.route("/water-plant", methods=["POST"])
-def water_plant():
+@app.route("/shutdown-system", methods=["POST"])
+def shutdown_system():
     if request.method == "POST":
         body = json.loads(request.get_json())
 
         global latest_instructions
-        latest_instructions["water"] = body["water"]
+        latest_instructions["shutdown"] = body["shutdown"]
 
-        print(body)
+        # Perform necessary actions to shut down the system
 
-        return jsonify({"message": "OK"})
+        print("System shut down")
+
+        return jsonify({"message": "System shut down successfully"})
 
     return jsonify({"error": "Request must be JSON"})
+
+
+@app.route("/buttons", methods=["POST"])
+def buttons():
+    if request.method == "POST":
+        body = json.loads(request.get_json())
+
+        global latest_instructions
+        action = body["action"]
+        latest_instructions[action] = True
+
+        print(f"{action.capitalize()} action performed")
+
+        return jsonify(
+            {"message": f"{action.capitalize()} action performed successfully"}
+        )
+
+    return jsonify({"error": "Request must be JSON"})
+
+
+# @app.route("/water-plant", methods=["POST"])
+# def water_plant():
+#     if request.method == "POST":
+#         body = json.loads(request.get_json())
+
+#         global latest_instructions
+#         latest_instructions["water"] = body["water"]
+
+#         print(body)
+
+#         return jsonify({"message": "OK"})
+
+#     return jsonify({"error": "Request must be JSON"})
 
 
 @app.route("/instructions", methods=["POST"])

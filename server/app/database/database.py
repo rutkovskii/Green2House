@@ -4,15 +4,22 @@ from contextlib import contextmanager
 
 # When running run.py
 from app.database.models import Base
-from app.admin.config import ServerConfig
+from config import Config
+from app.server_logger import setup_logger
+
 from app.database.database_prefills import prefill_users, prefill_samples
 
+logger = setup_logger(__name__, "database.log")
 
-engine = sqlalchemy.create_engine(
-    ServerConfig.DATABASE_URI
-)  # Server -> necessary for cron
-Session = sessionmaker(bind=engine)
-Base.metadata.create_all(engine)
+try:
+    engine = sqlalchemy.create_engine(Config.DATABASE_URI)
+    Session = sessionmaker(bind=engine)
+    Base.metadata.create_all(engine)
+    logger.info("Database Created")
+except Exception as e:
+    logger.error(e)
+    logger.error("Database Not Created")
+    # Handle error
 
 
 @contextmanager
