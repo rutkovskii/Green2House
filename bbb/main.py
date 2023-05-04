@@ -85,8 +85,11 @@ def main():
             print("Humidity: "+str(sensorH)+"%")    
 
             #open and write to file as backup for database
-            f = open("test_results.txt", "a")
-            f.write(str(time.strftime("%H:%M:%S"))+", "+str(sensorF)+", "+str(sensorH)+"%, soil: "+str(round(soilPercent*100, 2))+"\n")
+            f = open("test_results_5_2.txt", "a")
+            f.write(str(time.localtime().tm_mon)+"-"+str(time.localtime().tm_mday)+" "
+                    +str(time.strftime("%H:%M:%S"))+", "
+                    +str(sensorF)+", "+str(sensorH)+"%, soil: "
+                    +str(round(soilPercent*100, 2))+"\n")
             f.close()
 
             utils.dispOLED(

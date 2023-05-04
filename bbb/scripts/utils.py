@@ -61,7 +61,7 @@ def controlTempHum(sensorF, sensorH):
         ##print("temp: "+str(sensorF))
         #print("\n"+str(BC.max_temperature))
         #print("\n"+str(BC.max_temperature - ((BC.max_temperature - BC.min_temperature)/2)))
-        if round(sensorF, 1) <= BC.min_temperature:  # too cold
+        if sensorF <= BC.min_temperature:  # too cold
             close = threading.Thread(target=closeGH)
             close.start()
             relayOn(GPIO, BC.pins_dict.get("heater_relay_pin"))
@@ -71,9 +71,10 @@ def controlTempHum(sensorF, sensorH):
                 relayOff(GPIO, BC.pins_dict.get("fan_relay_pin"))
                 BC.fan_status = "off"
 
-        elif sensorF >= BC.max_temperature - ((BC.max_temperature - BC.min_temperature)/2):
+        if sensorF >= BC.min_temperature:
             relayOff(GPIO, BC.pins_dict.get("heater_relay_pin"))
             BC.heater_status = "off"
+    
 
         # elif round(sensorF, 1) <= BC.max_temperature - ((BC.max_temperature - BC.min_temperature)/2):
         #     if int(sensorH) <= BC.max_humidity:
@@ -81,7 +82,6 @@ def controlTempHum(sensorF, sensorH):
         #         BC.fan_status = "off"
 
         if sensorF >= BC.max_temperature:
-            print("too hot")  # too hot
             open = threading.Thread(target=openGH)
             open.start()
             relayOff(GPIO, BC.pins_dict.get("heater_relay_pin"))
@@ -90,11 +90,13 @@ def controlTempHum(sensorF, sensorH):
             relayOn(GPIO, BC.pins_dict.get("fan_relay_pin"))
             BC.fan_status = "on"
 
+        if sensorF <= BC.max_temperature:
+            relayOff(GPIO, BC.pins_dict.get("fan_relay_pin"))
+            BC.fan_status = "off"
+
     if BC.min_humidity and BC.max_humidity:
         # if int(sensorH) > BC.desiredHum:
         if int(sensorH) > BC.max_humidity:
-            if GPIO.input(BC.pins_dict.get("mist_relay_pin")):
-                print("mist sprayers off")
             relayOn(GPIO, BC.pins_dict.get("fan_relay_pin"))
             BC.fan_status = "on"
             relayOff(GPIO, BC.pins_dict.get("mist_relay_pin"))
@@ -105,9 +107,8 @@ def controlTempHum(sensorF, sensorH):
             if BC.water_status == "off":
                 relayOff(GPIO, BC.pins_dict.get("pump_relay_pin"))
                 BC.pump_status = "off"
-                print("pump off")
 
-        elif (int(sensorH) <= BC.min_humidity and round(sensorF, 2) <= BC.min_temperature):
+        elif int(sensorH) <= BC.min_humidity:
             relayOff(GPIO, BC.pins_dict.get("fan_relay_pin"))
             relayOn(GPIO, BC.pins_dict.get("pump_relay_pin"))
             time.sleep(1)
@@ -119,6 +120,7 @@ def controlTempHum(sensorF, sensorH):
 
         elif BC.min_humidity < int(sensorH) and int(sensorH) < BC.max_humidity:
             relayOff(GPIO, BC.pins_dict.get("mist_relay_pin"))
+            BC.mist_status = "off"
             if BC.water_status == "off":
                 relayOff(GPIO, BC.pins_dict.get("pump_relay_pin"))
                 BC.pump_status = "off"
