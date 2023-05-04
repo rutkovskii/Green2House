@@ -40,10 +40,10 @@ class BBB_Config:
 
     watering_hour = 18
     watering_minute = 35
-    watering_duration = 0.1
+    watering_duration = 0.0
 
-    min_temperature = 50
-    max_temperature = 65
+    min_temperature = 52
+    max_temperature = 80
     min_humidity = 20
     max_humidity = 90
 
@@ -60,7 +60,7 @@ class BBB_Config:
 
     # change link based on ngrok
     # must have internet connection
-    SERVER_URL = "https://2c33-128-119-202-59.ngrok-free.app"
+    SERVER_URL = "https://e497-73-238-133-19.ngrok-free.app"
     SERVER_GET_DATA_URL = SERVER_URL + "/get-data"
     SEND_DATA = False
 
