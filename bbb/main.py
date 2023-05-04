@@ -205,6 +205,8 @@ def main():
                 time.sleep(10)
                 utils.relayOff(GPIO, BC.pins_dict.get("heater_relay_pin"))
                 latest_instructions["heat"] = False
+            
+            latest_instructions["shutdown"] = False
 
 if __name__ == "__main__":
     print("Time: " + str(time.localtime().tm_hour) + ":" + str(time.localtime().tm_min))
