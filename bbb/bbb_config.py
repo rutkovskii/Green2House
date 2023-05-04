@@ -35,8 +35,7 @@ class BBB_Config:
 
     # Variables
     toggle = 0
-    user_id = 6
-    tempVariance = 1
+    user_id = 2
 
     watering_hour = 18
     watering_minute = 35

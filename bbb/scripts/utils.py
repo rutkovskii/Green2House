@@ -110,9 +110,9 @@ def controlTempHum(sensorF, sensorH):
 
         elif int(sensorH) <= BC.min_humidity:
             relayOff(GPIO, BC.pins_dict.get("fan_relay_pin"))
-            relayOn(GPIO, BC.pins_dict.get("pump_relay_pin"))
-            time.sleep(1)
             relayOn(GPIO, BC.pins_dict.get("mist_relay_pin"))
+            time.sleep(1)
+            relayOn(GPIO, BC.pins_dict.get("pump_relay_pin"))
             BC.fan_status = "off"
             BC.mist_status = "on"
             BC.pump_status = "on"
