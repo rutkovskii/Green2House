@@ -7,6 +7,7 @@ from app.database.models import Instructions
 from app.database.database import session_scope
 from app.user.config import UserConfig
 from app.user.vegetables import Plants
+from app.utils import class_to_dict
 
 from app.server_logger import setup_logger, log_errors
 
@@ -19,30 +20,7 @@ logger = setup_logger(__name__, "server.log")
 @log_errors(logger)
 @login_required
 def buttons():
-    """"""
-
-    # if request.method == "POST":
-    #     data = request.get_json()
-    #     is_pressed = data.get("is_pressed", False)
-    #     print(f'Button is now: {"pressed" if is_pressed else "not pressed"}')
-
-    #     if is_pressed:
-    #         body = json.dumps({"user_id": session.get("user_id"), "water": True})
-    #     else:
-    #         body = json.dumps({"user_id": session.get("user_id"), "water": False})
-
-    #     headers = {"Content-type": "application/json", "Accept": "text/plain"}
-
-    #     try:
-    #         r = requests.post(UserConfig.WATER_URL, json=body, headers=headers)
-    #     except requests.exceptions.ConnectionError as e:
-    #         print(e)
-    #         return jsonify({"success": False})
-
-    #     print(f"Status Code: {r.status_code}, Response: {r.json()}")
-
-    #     return jsonify({"success": True})
-
+    """Render the buttons page."""
     return render_template("user_buttons.html", title="Buttons")
 
 
@@ -87,8 +65,7 @@ def set_environment():
         if r.status_code == 200:
             flash("Environment settings updated successfully", "success")
         else:
-            print(r.status_code)
-            print(r)
+            logger.error(f"Status Code: {r.status_code}, Response: {r.json()}")
             flash("Environment settings could not be updated", "danger")
 
     # generate options for the watering_time dropdown
@@ -108,5 +85,6 @@ def set_environment():
         "user_env_page.html",
         watering_time_options=watering_time_options,
         watering_duration_options=watering_duration_options,
-        title="Set ENV — Green2House",
+        title="Set Environment — Green2House",
+        plants_data=json.dumps(class_to_dict(Plants)),
     )

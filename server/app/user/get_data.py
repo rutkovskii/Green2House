@@ -27,7 +27,7 @@ def get_data():
             timestamp_dt = datetime.strptime(timestamp_str, timestamp_format)
 
             # Convert the datetime object to a Unix timestamp (integer)
-            timestamp_unix = int(timestamp_dt.timestamp()) - 14400
+            timestamp_unix = int(timestamp_dt.timestamp())  # - 14400
 
             # for sample in request.get_json():
             bulk_list.append(

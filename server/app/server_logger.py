@@ -12,7 +12,9 @@ def setup_logger(name, log_file, level=logging.DEBUG):
 
     log_file_path = os.path.join(logs_directory, log_file)
 
-    handler = logging.FileHandler(log_file_path)
+    # handler = logging.FileHandler(log_file_path)
+    handler = logging.FileHandler(log_file_path, mode="w")
+
     formatter = logging.Formatter(
         "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
     )

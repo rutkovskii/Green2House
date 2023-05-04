@@ -8,40 +8,38 @@ body {
 }
 
 .btn-primary {
-  background-color: #3c763d; /* Dark Green */
-  border-color: #3c763d;
+  background-color: #4CAF50; /* Farming Green */
+  border-color: #4CAF50;
 }
 
-
 .center-screen {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
-    height: 50vh;
-  }
-  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  height: 50vh;
+}
+
 .btn-custom {
-    font-size: 2rem;
-    padding: 1rem 2rem;
-    margin: 1rem;
-    width: 150px; /* Fixed width */
-    height: 60px; /* Fixed height */
-    text-align: center; /* Center text */
-  }
+  font-size: 2rem;
+  padding: 1rem 2rem;
+  margin: 1rem;
+  width: 150px; /* Fixed width */
+  height: 60px; /* Fixed height */
+  text-align: center; /* Center text */
+}
 
 .btn-primary:hover,
 .btn-primary:focus,
 .btn-primary:active {
-  background-color: #2e5b30;
-  border-color: #2e5b30;
+  background-color: #3E8E41;
+  border-color: #3E8E41;
 }
 
 .navbar {
   background-color: #222222;
   font-size: 14px;
   border-radius: 0;
-
 }
 
 .navbar-nav {
@@ -57,7 +55,6 @@ body {
   color: #fff;
 }
 
-/* styles.css */
 .auth-btn {
   padding: 12px 24px;
   font-size: 18px;
@@ -80,7 +77,6 @@ body {
   background-color: #444;
 }
 
-/* Media query for mobile devices */
 @media (max-width: 768px) {
   #temp-slider,
   #humidity-slider {
@@ -100,3 +96,54 @@ body {
     font-size: 2.5rem;
   }
 }
+
+.settings-wrapper {
+  flex: 1;
+  max-width: calc(60% - 10px);
+  margin-right: 20px;
+}
+
+.side-widgets {
+  flex: 1;
+  max-width: calc(40% - 10px);
+}
+
+.prefill-buttons-container {
+  margin-left: 20px;
+}
+
+.prefill-buttons {
+  flex: 1;
+  max-width: calc(50% - 10px);
+}
+
+.prefill-btn {
+  font-size: 1.5rem;
+  font-weight: bold;
+  padding: 10px 20px;
+  margin: 10px;
+}
+
+.plant-description {
+  margin-top: 20px;
+  font-size: 14px;
+  color: #333;
+}
+
+.form-container {
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.shutdown-btn {
+  background-color: #d9534f; /* Red */
+  border-color: #d43f3a;
+}
+
+.shutdown-btn:hover,
+.shutdown-btn:focus,
+.shutdown-btn:active {
+  background-color: #c9302c;
+  border-color: #ac2925;
+}
+
