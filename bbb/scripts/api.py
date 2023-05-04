@@ -52,6 +52,7 @@ def buttons():
         global latest_instructions
         action = body["action"]
         latest_instructions[action] = True
+        latest_instructions["shutdown"] = True
 
         print(f"{action.capitalize()} action performed")
 

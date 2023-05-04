@@ -75,96 +75,136 @@ def main():
     # soilPercent, soil = utils.getSoilMoisture(BC.pins_dict.get('adc_pin'))
     # sensorF, sensorH = utils.getTempHum(sensor)  # measure initial values
     while True:
-        if int(time.strftime("%S")) % 15 == 0:  # measure value every x seconds
-            # print(measureValues()[0])
-            soilPercent, soil = utils.getSoilMoisture(BC.pins_dict.get("adc_pin"))
-            #soilPercent, soil = 50, "dry"
-            a, b = utils.getTempHum(sensor)
-            sensorF, sensorH = round(a,2) , round(b,2)
-            print("Temperature: "+str(sensorF))
-            print("Humidity: "+str(sensorH)+"%")    
+        if not latest_instructions.get("shutdown"):
+            if int(time.strftime("%S")) % 15 == 0:  # measure value every x seconds
+                # print(measureValues()[0])
+                soilPercent, soil = utils.getSoilMoisture(BC.pins_dict.get("adc_pin"))
+                #soilPercent, soil = 50, "dry"
+                a, b = utils.getTempHum(sensor)
+                sensorF, sensorH = round(a,2) , round(b,2)
+                print("Temperature: "+str(sensorF))
+                print("Humidity: "+str(sensorH)+"%")    
 
-            #open and write to file as backup for database
-            f = open("test_results_5_2.txt", "a")
-            f.write(str(time.localtime().tm_mon)+"-"+str(time.localtime().tm_mday)+" "
-                    +str(time.strftime("%H:%M:%S"))+", "
-                    +str(sensorF)+", "+str(sensorH)+"%, soil: "
-                    +str(round(soilPercent*100, 2))+"\n")
-            f.close()
+                #open and write to file as backup for database
+                f = open("test_results_5_2.txt", "a")
+                f.write(str(time.localtime().tm_mon)+"-"+str(time.localtime().tm_mday)+" "
+                        +str(time.strftime("%H:%M:%S"))+", "
+                        +str(sensorF)+", "+str(sensorH)+"%, soil: "
+                        +str(round(soilPercent*100, 2))+"\n")
+                f.close()
 
-            utils.dispOLED(
-                oled=oled,
-                temp=str(sensorF)[0:4],
-                hum=str(sensorH)[0:4],
-                moisture=soil,
-                timestamp=time.strftime("%H:%M:%S"),
-            )
+                utils.dispOLED(
+                    oled=oled,
+                    temp=str(sensorF)[0:4],
+                    hum=str(sensorH)[0:4],
+                    moisture=soil,
+                    timestamp=time.strftime("%H:%M:%S"),
+                )
 
-            # make appropriate environment changes based on temp and hum
-            utils.controlTempHum(sensorF, sensorH)
-            print("Time: "+time.strftime("%H:%M:%S"))
-            print("Heater: "+BC.heater_status)
-            print("Fan: "+BC.fan_status)
-            print("Roof status: "+BC.roof_status)
-            print("Pump status: "+BC.pump_status)
-            print("Mist sprayer status: "+BC.mist_status)
-            print("Soil water status: "+BC.water_status)
+                # make appropriate environment changes based on temp and hum
+                utils.controlTempHum(sensorF, sensorH)
+                print("Time: "+time.strftime("%H:%M:%S"))
+                print("Heater: "+BC.heater_status)
+                print("Fan: "+BC.fan_status)
+                print("Roof status: "+BC.roof_status)
+                print("Pump status: "+BC.pump_status)
+                print("Mist sprayer status: "+BC.mist_status)
+                print("Soil water status: "+BC.water_status)
 
-            print(latest_instructions.get("water"))
+                if latest_instructions.get("updated"):
+                    if (
+                        latest_instructions.get("min_temperature")
+                        or latest_instructions.get("max_temperature")
+                        or latest_instructions.get("min_humidity")
+                        or latest_instructions.get("max_humidity")
+                        or latest_instructions.get("watering_time")
+                        or latest_instructions.get("watering_duration")
+                    ):
+                        # Read the latest instructions
+                        BC.min_temperature = float(
+                            latest_instructions.get("min_temperature")
+                        )
+                        BC.max_temperature = float(
+                            latest_instructions.get("max_temperature")
+                        )
+                        BC.min_humidity = float(latest_instructions.get("min_humidity"))
+                        BC.max_humidity = float(latest_instructions.get("max_humidity"))
+
+                        # watering schedule
+                        hour, minute = latest_instructions.get("watering_time").split(":")
+                        BC.watering_hour = float(hour)
+                        BC.watering_minute = float(minute)
+                        BC.watering_duration = float(
+                            latest_instructions.get("watering_duration")
+                        )
+
+                        print("Min Temperature: ", BC.min_temperature)
+                        print("Max Temperature: ", BC.max_temperature)
+                        print("Min Humidity: ", BC.min_humidity)
+                        print("Max Humidity: ", BC.max_humidity)
+                        print("Watering Time: ", BC.watering_hour, ":", BC.watering_minute)
+                        print("Watering Duration: ", BC.watering_duration)
+
+                        latest_instructions["updated"] = False
+
+                # Sensing and Adding Sample to database
+                sample = utils.sense_sample_db(sensorF, sensorH)
+                with session_scope() as session:
+                    session.add(sample)
+
+                if BC.SEND_DATA:
+                    send_samples_db()
+
+                # sleep for at least 1 second to avoid multiple measurements in one second
+                time.sleep(2)
+
+        elif latest_instructions.get("shutdown"):
             if latest_instructions.get("water"):
                 print("Watering plant")
+                utils.relayOn(GPIO, BC.pins_dict.get("water_relay_pin"))
+                time.sleep(1)
                 utils.relayOn(GPIO, BC.pins_dict.get("pump_relay_pin"))
                 time.sleep(10)  # Keep the relay on for 5 seconds
                 utils.relayOff(GPIO, BC.pins_dict.get("pump_relay_pin"))
+                utils.relayOff(GPIO, BC.pins_dict.get("water_relay_pin"))
                 latest_instructions["water"] = False
 
-            if latest_instructions.get("updated"):
-                if (
-                    latest_instructions.get("min_temperature")
-                    or latest_instructions.get("max_temperature")
-                    or latest_instructions.get("min_humidity")
-                    or latest_instructions.get("max_humidity")
-                    or latest_instructions.get("watering_time")
-                    or latest_instructions.get("watering_duration")
-                ):
-                    # Read the latest instructions
-                    BC.min_temperature = float(
-                        latest_instructions.get("min_temperature")
-                    )
-                    BC.max_temperature = float(
-                        latest_instructions.get("max_temperature")
-                    )
-                    BC.min_humidity = float(latest_instructions.get("min_humidity"))
-                    BC.max_humidity = float(latest_instructions.get("max_humidity"))
+            elif latest_instructions.get("mist"):
+                print("Activating misters")
+                utils.relayOn(GPIO, BC.pins_dict.get("mist_relay_pin"))
+                time.sleep(1)
+                utils.relayOn(GPIO, BC.pins_Dict.get("pump_relay_pin"))
+                time.sleep(10)
+                utils.relayOff(GPIO, BC.pins_dict.get("pump_relay_pin"))
+                utils.relayOff(GPIO, BC.pins_dict.get("mist_relay_pin"))
+                latest_instructions["mist"] = False
 
-                    # watering schedule
-                    hour, minute = latest_instructions.get("watering_time").split(":")
-                    BC.watering_hour = float(hour)
-                    BC.watering_minute = float(minute)
-                    BC.watering_duration = float(
-                        latest_instructions.get("watering_duration")
-                    )
+            elif latest_instructions.get("lid"):
+                print("Opening roof")
+                open = threading.Thread(target=utils.openGH) #close greenhouse upon startup
+                open.start()
+                open.join()
+                time.sleep(5)
+                print("Closing roof")
+                close = threading.Thread(target=utils.closeGH) #close greenhouse upon startup
+                close.start()
+                close.join()
+                latest_instructions["lid"] = False
+            
+            elif latest_instructions.get("fan"):
+                print("Activating fan")
+                utils.relayOn(GPIO, BC.pins_dict.get("fan_relay_pin"))
+                time.sleep(10)
+                utils.relayOff(GPIO, BC.pins_dict.get("fan_relay_pin"))
+                latest_instructions["fan"] = False
 
-                    print("Min Temperature: ", BC.min_temperature)
-                    print("Max Temperature: ", BC.max_temperature)
-                    print("Min Humidity: ", BC.min_humidity)
-                    print("Max Humidity: ", BC.max_humidity)
-                    print("Watering Time: ", BC.watering_hour, ":", BC.watering_minute)
-                    print("Watering Duration: ", BC.watering_duration)
-
-                    latest_instructions["updated"] = False
-
-            # Sensing and Adding Sample to database
-            sample = utils.sense_sample_db(sensorF, sensorH)
-            with session_scope() as session:
-                session.add(sample)
-
-            if BC.SEND_DATA:
-                send_samples_db()
-
-            # sleep for at least 1 second to avoid multiple measurements in one second
-            time.sleep(2)
-
+            
+            elif latest_instructions.get("heat"):
+                print("Activating heater")
+                utils.relayOn(GPIO, BC.pins_dict.get("heater_relay_pin"))
+                time.sleep(10)
+                utils.relayOff(GPIO, BC.pins_dict.get("heater_relay_pin"))
+                latest_instructions["heat"] = False
 
 if __name__ == "__main__":
     print("Time: " + str(time.localtime().tm_hour) + ":" + str(time.localtime().tm_min))
