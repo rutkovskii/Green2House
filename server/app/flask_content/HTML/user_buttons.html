@@ -7,52 +7,50 @@
     <button
       id="waterButton"
       class="btn btn-primary btn-custom"
-      data-endpoint="/water-plant"
+      data-action="water"
     >
       Water
     </button>
     <button
       id="mistButton"
       class="btn btn-primary btn-custom"
-      data-endpoint="/mist-plant"
+      data-action="mist"
     >
       Mist
     </button>
     <button
       id="liftLidButton"
       class="btn btn-primary btn-custom"
-      data-endpoint="/lift-lid"
+      data-action="lid"
     >
       Lift Lid
     </button>
     <button
       id="heatButton"
       class="btn btn-primary btn-custom"
-      data-endpoint="/heat-plant"
+      data-action="heat"
     >
       Heat
     </button>
-    <button
-      id="fanButton"
-      class="btn btn-primary btn-custom"
-      data-endpoint="/fan-plant"
-    >
+    <button id="fanButton" class="btn btn-primary btn-custom" data-action="fan">
       Fan
     </button>
   </div>
 </div>
 
 <script>
+  const buttonActions = ["water", "mist", "liftLid", "heat", "fan"];
+
   function handleButtonClick(event) {
     const button = event.target;
-    const endpoint = button.getAttribute("data-endpoint");
+    const action = button.getAttribute("data-action");
 
-    fetch(endpoint, {
+    fetch("/buttons", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({}),
+      body: JSON.stringify({ action: action }),
     })
       .then((response) => response.json())
       .then((data) => console.log("Success:", data))
@@ -61,20 +59,10 @@
       });
   }
 
-  document
-    .getElementById("waterButton")
-    .addEventListener("click", handleButtonClick);
-  document
-    .getElementById("mistButton")
-    .addEventListener("click", handleButtonClick);
-  document
-    .getElementById("liftLidButton")
-    .addEventListener("click", handleButtonClick);
-  document
-    .getElementById("heatButton")
-    .addEventListener("click", handleButtonClick);
-  document
-    .getElementById("fanButton")
-    .addEventListener("click", handleButtonClick);
+  buttonActions.forEach((action) => {
+    document
+      .getElementById(`${action}Button`)
+      .addEventListener("click", handleButtonClick);
+  });
 </script>
 {% endblock %}

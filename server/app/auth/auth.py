@@ -2,7 +2,7 @@ from app.database.database import session_scope
 from app.database.models import User
 
 from app.auth.forms import SignUpForm, LoginForm
-from app.admin.config import ServerConfig
+from app.admin.config import AdminConfig
 
 from flask import Blueprint, render_template, flash, redirect, url_for, request, session
 from flask_login import (
@@ -40,7 +40,7 @@ def signup():
     if form.validate_on_submit():
         name = " ".join([form.first_name.data.strip(), form.last_name.data.strip()])
         is_admin = False
-        if name in ServerConfig.ADMINS:
+        if name in AdminConfig.ADMINS:
             is_admin = True
 
         now = datetime.utcnow() + timedelta(seconds=__generate_rand_int())
@@ -53,7 +53,7 @@ def signup():
             name=" ".join([form.first_name.data.strip(), form.last_name.data.strip()]),
             email=form.email.data.lower().strip(),
             is_admin=is_admin,
-            auth_token=generate_token(ServerConfig.SECRET_KEY, payload),
+            auth_token=generate_token(AdminConfig.SECRET_KEY, payload),
         )
         user.set_password(form.password1.data)
 

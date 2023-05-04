@@ -11,6 +11,8 @@ from sqlalchemy import (
 )
 from sqlalchemy.ext.declarative import declarative_base
 from datetime import datetime
+import pytz
+
 
 Base = declarative_base()
 
@@ -23,8 +25,12 @@ class DataSample(Base):
     humidity = Column(Float, nullable=False)
     soil_percent = Column(Float, nullable=False)
     timestamp = Column(DateTime(timezone=True), nullable=False, default=func.now())
-    date = Column(Date, nullable=False, default=datetime.utcnow().date)
-    time = Column(Time, nullable=False, default=datetime.utcnow().time)
+    date = Column(
+        Date, nullable=False, default=datetime.now(pytz.timezone("US/Eastern")).date
+    )
+    time = Column(
+        Time, nullable=False, default=datetime.now(pytz.timezone("US/Eastern")).time
+    )
     sent = Column(Boolean, nullable=False, default=False)
 
     def to_dict(self):
