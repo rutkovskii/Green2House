@@ -88,7 +88,7 @@ def main():
                 print("Temperature: "+str(sensorF)+" F")
                 print("Humidity: "+str(sensorH)+"%")  
                 print("Soil moisture: "+str(soilPercent)+"%")
-                print("Water level: "+str(tankLevel))  
+                print("Water level: high")
 
                 #open and write to file as backup for database
                 f = open("test_results_5_4.txt", "a")
@@ -108,8 +108,8 @@ def main():
 
                 # make appropriate environment changes based on temp and hum
                 utils.controlTempHum(sensorF, sensorH)
-                print("Heater: "+BC.heater_status)
-                print("Fan: "+BC.fan_status)
+                print("Heater status: "+BC.heater_status)
+                print("Fan status: "+BC.fan_status)
                 print("Roof status: "+BC.roof_status)
                 print("Pump status: "+BC.pump_status)
                 print("Mist sprayer status: "+BC.mist_status)
