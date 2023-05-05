@@ -10,6 +10,11 @@ block navbar %}
       type="text/css"
       href="{{ url_for('static', filename='css/styles.css') }}"
     />
+    <link
+      rel="icon"
+      type="image/png"
+      href="{{ url_for('static', filename='favicon.ico') }}"
+    />
   </head>
   <body>
     <nav class="navbar navbar-expand navbar-dark">
@@ -23,6 +28,9 @@ block navbar %}
               <a class="nav-link active" href="/my-data-records"
                 >My Data Records</a
               >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="/charts">Charts</a>
             </li>
             <li class="nav-item">
               <a class="nav-link active" href="/environment">Set Environment</a>
