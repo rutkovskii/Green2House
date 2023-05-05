@@ -10,6 +10,7 @@ server/.env
 docs/BeaverConnection.png
 .vscode
 server/volumes
+*.pem
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

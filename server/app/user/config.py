@@ -9,7 +9,9 @@ class UserConfig:
     CHARTS_ROUTE = "/charts"
 
     # URL for the BBB
-    BBB_URL = "http://107.115.17.17:5000"
+    IP = "172.20.10.5"
+    BBB_URL = f"http://{IP}:5000"
 
     INSTRUCTIONS_URL = f"{BBB_URL}/instructions"
-    WATER_URL = f"{BBB_URL}/water-plant"
+    BUTTONS_URL = f"{BBB_URL}/buttons"
+    SHUTDOWN_URL = f"{BBB_URL}/shutdown"

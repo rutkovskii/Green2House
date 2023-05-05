@@ -23,7 +23,9 @@ logger = setup_logger(__name__, "server.log")
 @login_required
 def buttons():
     """Render the buttons page."""
-    return render_template("user_buttons.html", title="Buttons — G2H")
+    return render_template(
+        "user_buttons.html", title="Buttons — G2H", buttons_url=UserConfig.BUTTONS_URL
+    )
 
 
 @env_page_bp.route(UserConfig.ENV_ROUTE, methods=["GET", "POST"])
@@ -106,6 +108,6 @@ def set_environment():
         "user_env_page.html",
         watering_time_options=watering_time_options,
         watering_duration_options=watering_duration_options,
-        title="Set Environment — Green2House",
+        title="Set Environment — G2H",
         plants_data=json.dumps(class_to_dict(Plants)),
     )

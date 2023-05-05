@@ -1,7 +1,9 @@
 import time
 import Adafruit_BBIO.ADC as ADC
 import Adafruit_BBIO.GPIO as GPIO
+
 import threading
+import multiprocessing
 import os
 
 from bbb_config import BBB_Config as BC  # pins are here
@@ -247,20 +249,22 @@ def main():
 
 
 if __name__ == "__main__":
-    # app.run(host="0.0.0.0", port=5000, debug=True)
-    print("starting")
-    # main_thread = threading.Thread(target=main)
-    # main_thread.start()
-    # print("main thread started")
-    # connect code here
-    scheduleThread = threading.Thread(
+    # Set up the three processes
+    main_process = multiprocessing.Process(target=main)
+    flask_process = multiprocessing.Process(
+        target=app.run, kwargs={"host": "0.0.0.0", "port": 5000, "debug": True}
+    )
+    schedule_process = multiprocessing.Process(
         target=waterSchedule,
         args=(BC.watering_hour, BC.watering_minute, BC.watering_duration),
     )
-    host = "0.0.0.0"
-    port = 5000
-    debug = True
-    apiThread = threading.Thread(target=app.run, args=(host, port, debug))
-    apiThread.start()
-    scheduleThread.start()  # disabled until we test watering
-    main()
+
+    # Start the processes
+    main_process.start()
+    flask_process.start()
+    schedule_process.start()
+
+    # Wait for the processes to finish
+    main_process.join()
+    flask_process.join()
+    schedule_process.join()

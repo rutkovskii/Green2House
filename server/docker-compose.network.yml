@@ -22,6 +22,7 @@ services:
       POSTGRES_PASSWORD: ubuntu
       POSTGRES_DB: postgresDB
       # TZ: America/New_York
+
     ports:
       - "5432:5432"
     volumes:
@@ -38,7 +39,19 @@ services:
       - "5000:5000"
     depends_on:
       - postgres
+    networks:
+      custom_network:
+        ipv4_address: 172.26.255.254
     volumes:
       - type: bind
         source: ./volumes/logs
         target: /server/volumes/logs
+
+
+networks:
+  custom_network:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.26.0.0/16"

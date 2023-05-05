@@ -20,7 +20,7 @@ logger = setup_logger(__name__, "server.log")
 @login_required
 def charts():
     """Render the charts page."""
-    return render_template("user_charts.html", title="Charts — Green2House")
+    return render_template("user_charts.html", title="Charts — G2H")
 
 
 @charts_page_bp.route(UserConfig.SERVE_GRAPH_DATA_ROUTE, methods=["GET"])
@@ -53,7 +53,7 @@ def get_data_samples():
                 .order_by(DataSample.timestamp.asc())
                 .all()
             )
-            data_samples_dicts = [sample.to_dict() for sample in data_samples]
+            data_samples_dicts = [sample.to_dict_charts() for sample in data_samples]
     else:
         with session_scope() as s:
             data_samples = (

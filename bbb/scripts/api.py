@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 from database.models import Instructions
 from database.database import session_scope
 from datetime import datetime
@@ -6,6 +7,8 @@ import json
 
 
 app = Flask(__name__)
+CORS(app, resources={r"*": {"origins": "*"}})
+
 
 latest_instructions = {
     # button actions
@@ -27,7 +30,7 @@ latest_instructions = {
 }
 
 
-@app.route("/shutdown-system", methods=["POST"])
+@app.route("/shutdown", methods=["POST"])
 def shutdown_system():
     if request.method == "POST":
         body = json.loads(request.get_json())
@@ -37,7 +40,7 @@ def shutdown_system():
 
         # Perform necessary actions to shut down the system
 
-        print("System shut down")
+        print("System shut down", flush=True)
 
         return jsonify({"message": "System shut down successfully"})
 
@@ -54,7 +57,7 @@ def buttons():
         latest_instructions[action] = True
         latest_instructions["shutdown"] = True
 
-        print(f"{action.capitalize()} action performed")
+        print(f"{action.capitalize()} action performed", flush=True)
 
         return jsonify(
             {"message": f"{action.capitalize()} action performed successfully"}

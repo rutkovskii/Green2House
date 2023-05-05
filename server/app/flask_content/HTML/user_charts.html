@@ -29,7 +29,7 @@
 
 <script>
   function prepareChartData(dataSamples) {
-    const timeLabels = dataSamples.map((sample) => sample.time);
+    const timeLabels = dataSamples.map((sample) => sample.date_time);
     const temperatureData = dataSamples.map((sample) => sample.temperature);
     const humidityData = dataSamples.map((sample) => sample.humidity);
 
@@ -136,7 +136,7 @@
   // Fetch data samples from the server and update the chart
   async function fetchDataSamplesAndUpdateChart(duration) {
     try {
-      const user_id = "{{ current_user.get_id() }},";
+      const user_id = "{{ current_user.get_id() }}";
       const token = "{{ current_user.get_auth_token() }}";
       const response = await fetch(
         `/api/serve-graph-data-records?user_id=${user_id}&token=${token}&duration=${duration}`

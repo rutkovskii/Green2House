@@ -39,13 +39,15 @@
 </div>
 
 <script>
+  const buttonsUrl = "{{ buttons_url }}";
+  console.log(buttonsUrl);
   const buttonActions = ["water", "mist", "liftLid", "heat", "fan"];
 
   function handleButtonClick(event) {
     const button = event.target;
     const action = button.getAttribute("data-action");
 
-    fetch("/buttons", {
+    fetch(buttonsUrl, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

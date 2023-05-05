@@ -53,10 +53,10 @@ def set_up_pins(pins_dict):
 
     if pins_dict["water_relay_pin"]:
         GPIO.setup(pins_dict["water_relay_pin"], GPIO.OUT)
-    
+
     else:
         print("water_relay_pin is None")
-    
+
     if pins_dict["mist_relay_pin"]:
         GPIO.setup(pins_dict["mist_relay_pin"], GPIO.OUT)
 

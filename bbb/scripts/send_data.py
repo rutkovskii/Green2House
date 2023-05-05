@@ -19,27 +19,36 @@ def send_samples_db():
         # If there are unsent samples, send them to the server
         if unsent_samples:
             # Convert the samples to a JSON payload
-            payload = json.dumps([sample.to_dict() for sample in unsent_samples])
+            payload = [sample.to_dict() for sample in unsent_samples]
 
-            for attempt in range(3):
-                try:
-                    # Send the samples to the server in JSON format
-                    response = requests.post(server_url, json=payload)
+            # Calculate the number of chunks based on the payload size limit
+            chunk_size = 5000
+            chunks = [
+                payload[i : i + chunk_size] for i in range(0, len(payload), chunk_size)
+            ]
 
-                    # If the server responds with a 200 status code, mark the samples as sent in the database
-                    if response.status_code == 200:
-                        with session_scope() as s:
-                            mark_samples_as_sent(s, unsent_samples)
-                        break
-                    else:
-                        raise Exception(
-                            f"Server responded with status code {response.status_code}"
+            for chunk in chunks:
+                chunk_payload = json.dumps(chunk)
+
+                for attempt in range(3):
+                    try:
+                        # Send the samples to the server in JSON format
+                        response = requests.post(server_url, json=chunk_payload)
+
+                        # If the server responds with a 200 status code, mark the samples as sent in the database
+                        if response.status_code == 200:
+                            with session_scope() as s:
+                                mark_samples_as_sent(s, unsent_samples)
+                            break
+                        else:
+                            raise Exception(
+                                f"Server responded with status code {response.status_code}"
+                            )
+
+                    except Exception as e:
+                        print(
+                            f"Error sending samples to the server (attempt {attempt + 1}): {e}"
                         )
-
-                except Exception as e:
-                    print(
-                        f"Error sending samples to the server (attempt {attempt + 1}): {e}"
-                    )
 
         else:
             # If there are no unsent samples, do not send anything to the server

@@ -14,4 +14,4 @@ logger = setup_logger(__name__, "server.log")
 @login_required
 def charts():
     """Render the charts page."""
-    return render_template("admin_charts.html", title="Admin Charts — Green2House")
+    return render_template("admin_charts.html", title="Admin Charts — G2H")

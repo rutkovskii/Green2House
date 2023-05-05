@@ -10,7 +10,7 @@ def index():
     if current_user.is_authenticated:
         return redirect(url_for("home_bp.home"))
 
-    return render_template("index.html", title="Green2House")
+    return render_template("index.html", title="G2H")
 
 
 @index_bp.route("/favicon.ico")
