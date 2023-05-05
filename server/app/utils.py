@@ -25,3 +25,9 @@ def dt_obj2date(obj):
 def dt_obj2time(obj):
     """Gives time in %H:%M:%S from datetime object"""
     return obj.strftime("%H:%M:%S")
+
+
+def class_to_dict(cls):
+    return {
+        key: value for key, value in cls.__dict__.items() if not key.startswith("__")
+    }

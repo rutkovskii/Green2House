@@ -14,7 +14,9 @@ datasample_page_bp = Blueprint("datasample_page_bp", __name__)
 @datasample_page_bp.route(UserConfig.MY_DATA_SAMPLES_ROUTE, methods=["GET"])
 @login_required
 def serve_page_data_samples():
-    return render_template("/user_data_records_table.html", title="My Data Samples")
+    return render_template(
+        "/user_data_records_table.html", title="My Data Samples — G2H"
+    )
 
 
 @datasample_page_bp.route(UserConfig.SERVE_DATA_SAMPLES_ROUTE, methods=["GET", "POST"])

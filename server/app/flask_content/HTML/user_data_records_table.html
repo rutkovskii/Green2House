@@ -5,6 +5,7 @@
       <tr>
         <th>Temperature</th>
         <th>Humidity</th>
+        <th>Soil Moisture</th>
         <th>Date (Y/M/D)</th>
         <th>Time</th>
       </tr>
@@ -29,10 +30,11 @@
           },
           serverSide: true,
           columns: [
-            {data: 'temperature', width: "25%"},
-            {data: 'humidity', width: "25%"},
-            {data: 'date', width: "25%"},
-            {data: 'time', width: "25%"},
+            {data: 'temperature', width: "20%"},
+            {data: 'humidity', width: "20%"},
+            {data: 'soil_percent', width: "20%"}
+            {data: 'date', width: "20%"},
+            {data: 'time', width: "20%"},
           ],
       });
 

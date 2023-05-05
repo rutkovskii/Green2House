@@ -67,28 +67,44 @@ class DataSample(Base):
     user_id = Column(Integer, nullable=False)
     temperature = Column(Float, nullable=False)
     humidity = Column(Float, nullable=False)
+    soil_percent = Column(Float, nullable=False)
     timestamp = Column(DateTime(timezone=True), nullable=False)
-    date = Column(Date, nullable=False)  # is it redundant?
-    time = Column(Time, nullable=False)  # is it redundant?
+    date = Column(Date, nullable=False)
+    time = Column(Time, nullable=False)
+    date_time = Column(String, nullable=False)
 
     def to_dict(self):
         return {
             "user_id": self.user_id,
             "temperature": self.temperature,
             "humidity": self.humidity,
+            "soil_percent": self.soil_percent,
             "timestamp": self.timestamp,
             "date": self.date,
             "time": self.time,
+            "date_time": self.date_time,
+        }
+
+    def to_dict_charts(self):
+        return {
+            "temperature": self.temperature,
+            "humidity": self.humidity,
+            "soil_percent": self.soil_percent,
+            "date": self.date.isoformat(),
+            "time": self.time.strftime("%H:%M:%S"),
+            "date_time": self.date_time,
         }
 
     def __repr__(self):
-        return "<DataSample(user_id='{}',temperature='{}', humidity='{}', timestamp='{}', date='{}', time='{}')>".format(
+        return "<DataSample(user_id='{}', temperature='{}', humidity='{}', soil_percent='{}', timestamp='{}', date='{}', time='{}', date_time='{}')>".format(
             self.user_id,
             self.temperature,
             self.humidity,
+            self.soil_percent,
             self.timestamp,
             self.date,
             self.time,
+            self.date_time,
         )
 
 

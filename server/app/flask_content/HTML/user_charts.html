@@ -1,0 +1,169 @@
+{% extends "user_signedin_base.html" %} {% block content %}
+<link
+  rel="stylesheet"
+  href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"
+/>
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/styles.css') }}"
+/>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@2.0.0/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <h3>Last 24 Hours</h3>
+      <canvas id="temperatureHumidityChart24Hours"></canvas>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <h3>All Time</h3>
+      <canvas id="temperatureHumidityChartAllTime"></canvas>
+    </div>
+  </div>
+</div>
+
+<script>
+  function prepareChartData(dataSamples) {
+    const timeLabels = dataSamples.map((sample) => sample.time);
+    const temperatureData = dataSamples.map((sample) => sample.temperature);
+    const humidityData = dataSamples.map((sample) => sample.humidity);
+
+    return {
+      timeLabels,
+      temperatureData,
+      humidityData,
+    };
+  }
+
+  // Create a chart using Chart.js
+  function createChart(chartId, timeLabels, temperatureData, humidityData) {
+    const ctx = document.getElementById(chartId).getContext("2d");
+
+    const chart = new Chart(ctx, {
+      type: "line",
+      data: {
+        labels: timeLabels,
+        datasets: [
+          {
+            label: "Temperature",
+            data: temperatureData,
+            borderColor: "rgba(255, 99, 132, 1)",
+            backgroundColor: "rgba(255, 99, 132, 0.1)",
+            tension: 0.4,
+            yAxisID: "y",
+          },
+          {
+            label: "Humidity",
+            data: humidityData,
+            borderColor: "rgba(54, 162, 235, 1)",
+            backgroundColor: "rgba(54, 162, 235, 0.1)",
+            tension: 0.4,
+            yAxisID: "y1",
+          },
+        ],
+      },
+      options: {
+        scales: {
+          x: {
+            type: "category",
+            title: {
+              display: true,
+              text: "Time (H:M:S) | Date (M/D/Y)",
+              font: {
+                size: 16,
+              },
+            },
+            ticks: {
+              font: {
+                size: 15,
+              },
+            },
+          },
+          y: {
+            suggestedMin: 40,
+            suggestedMax: 100,
+            title: {
+              display: true,
+              text: "Temperature (°F)",
+              font: {
+                size: 20,
+              },
+            },
+            ticks: {
+              font: {
+                size: 15,
+              },
+            },
+          },
+          y1: {
+            position: "right",
+            suggestedMin: 40,
+            suggestedMax: 100,
+            title: {
+              display: true,
+              text: "Humidity (%)",
+              font: {
+                size: 20,
+              },
+            },
+            ticks: {
+              font: {
+                size: 15,
+              },
+            },
+          },
+        },
+        plugins: {
+          legend: {
+            labels: {
+              font: {
+                size: 20,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    return chart;
+  }
+
+  // Fetch data samples from the server and update the chart
+  async function fetchDataSamplesAndUpdateChart(duration) {
+    try {
+      const user_id = "{{ current_user.get_id() }},";
+      const token = "{{ current_user.get_auth_token() }}";
+      const response = await fetch(
+        `/api/serve-graph-data-records?user_id=${user_id}&token=${token}&duration=${duration}`
+      );
+
+      if (response.ok) {
+        const newDataSamples = await response.json();
+        const { timeLabels, temperatureData, humidityData } =
+          prepareChartData(newDataSamples);
+        createChart(
+          duration === "24h"
+            ? "temperatureHumidityChart24Hours"
+            : "temperatureHumidityChartAllTime",
+          timeLabels,
+          temperatureData,
+          humidityData
+        );
+      } else {
+        console.error("Failed to fetch data samples:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error fetching data samples:", error);
+    }
+  }
+
+  // Initialize the chart
+  fetchDataSamplesAndUpdateChart("24h");
+  fetchDataSamplesAndUpdateChart("all");
+</script>
+{% endblock %}

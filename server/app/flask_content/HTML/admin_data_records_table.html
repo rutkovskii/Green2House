@@ -1,55 +1,52 @@
-{% extends "admin_table_base.html" %}
-
-{% block content %}
+{% extends "admin_table_base.html" %} {% block content %}
 <table id="all_data_samples" class="table table-striped">
-    <thead>
+  <thead>
     <tr>
-        <th>User Id</th>
-        <th>Temperature</th>
-        <th>Humidity</th>
-        <th>Date (Y/M/D)</th>
-        <th>Time</th>
+      <th>User Id</th>
+      <th>Temperature</th>
+      <th>Humidity</th>
+      <th>Soil Moisture</th>
+      <th>Date (Y/M/D)</th>
+      <th>Time</th>
     </tr>
-    </thead>
-    <tbody></tbody>
+  </thead>
+  <tbody></tbody>
 </table>
-{% endblock %}
-
-{% block scripts %}
+{% endblock %} {% block scripts %}
 <script>
 
-    $(document).ready(function () {
-        var table = $('#all_data_samples').DataTable({
-            order: [],
-            ajax: {
-                url:"/api/serve-data-records",
-                method:"GET",
-                data: {
-                    'token' : '{{ current_user.get_auth_token() }}'
-                }
-            },
-            serverSide: true,
-            columns: [
-                {data: "user_id", width: "20%"},
-                {data: 'temperature', width: "20%"},
-                {data: 'humidity', width: "20%"},
-                {data: 'date', width: "20%"},
-                {data: 'time', width: "20%"},
-            ]
-        });
+  $(document).ready(function () {
+      var table = $('#all_data_samples').DataTable({
+          order: [],
+          ajax: {
+              url:"/api/serve-data-records",
+              method:"GET",
+              data: {
+                  'token' : '{{ current_user.get_auth_token() }}'
+              }
+          },
+          serverSide: true,
+          columns: [
+              {data: "user_id", width: "20%"},
+              {data: 'temperature', width: "13.4%"},
+              {data: 'humidity', width: "13.4%"},
+              {data: 'soil_percent', width: "13.3%"}
+              {data: 'date', width: "20%"},
+              {data: 'time', width: "20%"},
+          ]
+      });
 
-        // Switching with left and right keyboard buttons
-        $(document).keydown( function(e) {
-            // left arrow
-            if ((e.keyCode || e.which) === 37) {
-                $( "#data_previous" ).click();
-            }
-            // right arrow
-            if ((e.keyCode || e.which) === 39) {
-                $( "#data_next" ).click();
-            }
-        })
-    });
-
+      // Switching with left and right keyboard buttons
+      $(document).keydown( function(e) {
+          // left arrow
+          if ((e.keyCode || e.which) === 37) {
+              $( "#data_previous" ).click();
+          }
+          // right arrow
+          if ((e.keyCode || e.which) === 39) {
+              $( "#data_next" ).click();
+          }
+      })
+  });
 </script>
 {% endblock %}

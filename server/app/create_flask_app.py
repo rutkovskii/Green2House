@@ -15,6 +15,8 @@ from app.user.home_page import home_page_bp
 from app.admin.views import admin_bp
 from app.auth.auth import auth_bp, login_manager
 from app.index import index_bp
+from app.user.charts import charts_page_bp
+from app.admin.charts import admin_charts_page_bp
 
 from app.server_logger import setup_logger
 from config import Config
@@ -36,6 +38,8 @@ def register_blueprints(app):
     app.register_blueprint(index_bp)
     app.register_blueprint(env_page_bp)
     app.register_blueprint(current_env_data_page_bp)
+    app.register_blueprint(charts_page_bp)
+    app.register_blueprint(admin_charts_page_bp)
 
 
 def add_configs(app):
