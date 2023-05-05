@@ -28,6 +28,8 @@ def get_data():
 
             # Convert the datetime object to a Unix timestamp (integer)
             timestamp_unix = int(timestamp_dt.timestamp())  # - 14400
+            date_inst = (u.dt_ts2date(timestamp_unix),)
+            time_inst = (u.dt_ts2time(timestamp_unix),)
 
             # for sample in request.get_json():
             bulk_list.append(
@@ -35,9 +37,11 @@ def get_data():
                     user_id=int(sample.get("user_id")),
                     temperature=sample.get("temperature"),
                     humidity=sample.get("humidity"),
+                    soil_percent=sample.get("soil_percent"),
                     timestamp=u.dt_ts2dt_obj(timestamp_unix),
-                    date=u.dt_ts2date(timestamp_unix),
-                    time=u.dt_ts2time(timestamp_unix),
+                    date=date_inst,
+                    time=time_inst,
+                    date_time=f"{time_inst} | {date_inst}",
                 )
             )
             user_id = sample.get("user_id")

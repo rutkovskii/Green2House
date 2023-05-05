@@ -19,6 +19,7 @@ class AdminConfig:
     ADMIN_PAGE_SERVE_USERS_ROUTE = "/api/serve-users"
     GET_DATA_ROUTE = "/get-data"
     ADMIN_DATA_SAMPLES_ROUTE = "/admin/all-data-records"
+    ADMIN_PAGE_CHARTS_ROUTE = "/admin/charts"
 
     # Secrets
     ADMINS = [os.getenv("ADMIN1"), os.getenv("ADMIN2")]

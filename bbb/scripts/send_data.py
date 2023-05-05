@@ -21,18 +21,25 @@ def send_samples_db():
             # Convert the samples to a JSON payload
             payload = json.dumps([sample.to_dict() for sample in unsent_samples])
 
-            # Send the samples to the server in JSON format
-            response = requests.post(server_url, json=payload)
+            for attempt in range(3):
+                try:
+                    # Send the samples to the server in JSON format
+                    response = requests.post(server_url, json=payload)
 
-            # If the server responds with a 200 status code, mark the samples as sent in the database
-            if response.status_code == 200:
-                with session_scope() as s:
-                    mark_samples_as_sent(s, unsent_samples)
+                    # If the server responds with a 200 status code, mark the samples as sent in the database
+                    if response.status_code == 200:
+                        with session_scope() as s:
+                            mark_samples_as_sent(s, unsent_samples)
+                        break
+                    else:
+                        raise Exception(
+                            f"Server responded with status code {response.status_code}"
+                        )
 
-            # If the server responds with a 400 status code or if no response is received,
-            # do not mark the samples as sent in the database
-            elif response.status_code == 400 or response.status_code is None:
-                pass
+                except Exception as e:
+                    print(
+                        f"Error sending samples to the server (attempt {attempt + 1}): {e}"
+                    )
 
         else:
             # If there are no unsent samples, do not send anything to the server
