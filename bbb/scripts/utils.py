@@ -28,10 +28,7 @@ def getTempHum(sensor):
 def getSoilMoisture(pin):  # accepts an ADC pin eg. "AIN0"
     readADC = ADC.read_raw(pin)
     # print(readADC)
-    soilPercent = 1 - (readADC - BC.minADC) / (BC.maxADC - BC.minADC)
-    print(
-        "Soil moisture: " + str(round(soilPercent * 100, 2)) + "%"
-    )  # print % moisture to console window
+    soilPercent = (1 - (readADC - BC.minADC) / (BC.maxADC - BC.minADC))*100
     if readADC >= 2900:  # general soil values
         soil = "dry"
         # relayOn(GPIO, BC.pins_dict.get('pump_relay_pin'))
@@ -46,6 +43,31 @@ def getSoilMoisture(pin):  # accepts an ADC pin eg. "AIN0"
 
     elif 1450 <= readADC <= 1800:
         soil = "soaked"
+        # relayOff(GPIO, BC.pins_dict.get('pump_relay_pin'))
+
+    else:
+        soil = "Out of Range"
+        # relayOff(GPIO, BC.pins_dict.get('pump_relay_pin'))
+    return round(soilPercent,1), soil  # give both percent and general reading
+
+def getWaterLevel(pin):  # accepts an ADC pin eg. "AIN0"
+    readADC = ADC.read_raw(pin)
+    # print(readADC)
+    soilPercent = 1 - (readADC - BC.minADC) / (BC.maxADC - BC.minADC)
+    if readADC >= 2900:  # general soil values
+        soil = "low"
+        # relayOn(GPIO, BC.pins_dict.get('pump_relay_pin'))
+
+    elif 2500 <= readADC < 2900:
+        soil = "high"
+        # relayOff(GPIO, BC.pins_dict.get('pump_relay_pin'))
+
+    elif 1800 < readADC < 2500:
+        soil = "high"
+        # relayOff(GPIO, BC.pins_dict.get('pump_relay_pin'))
+
+    elif 1450 <= readADC <= 1800:
+        soil = "high"
         # relayOff(GPIO, BC.pins_dict.get('pump_relay_pin'))
 
     else:
@@ -110,9 +132,9 @@ def controlTempHum(sensorF, sensorH):
 
         elif int(sensorH) <= BC.min_humidity:
             relayOff(GPIO, BC.pins_dict.get("fan_relay_pin"))
-            relayOn(GPIO, BC.pins_dict.get("pump_relay_pin"))
-            time.sleep(1)
             relayOn(GPIO, BC.pins_dict.get("mist_relay_pin"))
+            time.sleep(1)
+            relayOn(GPIO, BC.pins_dict.get("pump_relay_pin"))
             BC.fan_status = "off"
             BC.mist_status = "on"
             BC.pump_status = "on"

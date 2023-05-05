@@ -2,6 +2,7 @@ import time
 import Adafruit_BBIO.ADC as ADC
 import Adafruit_BBIO.GPIO as GPIO
 import threading
+import os
 
 from bbb_config import BBB_Config as BC  # pins are here
 from scripts.init_home import create_all
@@ -76,17 +77,21 @@ def main():
     # sensorF, sensorH = utils.getTempHum(sensor)  # measure initial values
     while True:
         if not latest_instructions.get("shutdown"):
-            if int(time.strftime("%S")) % 15 == 0:  # measure value every x seconds
+            if int(time.strftime("%S")) % 5 == 0:  # measure value every x seconds
                 # print(measureValues()[0])
                 soilPercent, soil = utils.getSoilMoisture(BC.pins_dict.get("adc_pin"))
+                tankPercent, tankLevel = utils.getWaterLevel(BC.pins_dict.get("adc2_pin"))
                 #soilPercent, soil = 50, "dry"
                 a, b = utils.getTempHum(sensor)
                 sensorF, sensorH = round(a,2) , round(b,2)
-                print("Temperature: "+str(sensorF))
-                print("Humidity: "+str(sensorH)+"%")    
+                os.system("clear")
+                print("Temperature: "+str(sensorF)+" F")
+                print("Humidity: "+str(sensorH)+"%")  
+                print("Soil moisture: "+str(soilPercent)+"%")
+                print("Water level: "+str(tankLevel))  
 
                 #open and write to file as backup for database
-                f = open("test_results_5_2.txt", "a")
+                f = open("test_results_5_4.txt", "a")
                 f.write(str(time.localtime().tm_mon)+"-"+str(time.localtime().tm_mday)+" "
                         +str(time.strftime("%H:%M:%S"))+", "
                         +str(sensorF)+", "+str(sensorH)+"%, soil: "
@@ -103,13 +108,19 @@ def main():
 
                 # make appropriate environment changes based on temp and hum
                 utils.controlTempHum(sensorF, sensorH)
-                print("Time: "+time.strftime("%H:%M:%S"))
                 print("Heater: "+BC.heater_status)
                 print("Fan: "+BC.fan_status)
                 print("Roof status: "+BC.roof_status)
                 print("Pump status: "+BC.pump_status)
                 print("Mist sprayer status: "+BC.mist_status)
                 print("Soil water status: "+BC.water_status)
+                print("Last Measured: "+time.strftime("%H:%M:%S"))
+                if BC.watering_minute < 10:
+                    print("Next watering: %s:0%s" %(str(BC.watering_hour), str(int(BC.watering_minute))))
+                
+                else:
+                    print("Next watering: %s:%s" %(str(BC.watering_hour), str(BC.watering_minute)))
+
 
                 if latest_instructions.get("updated"):
                     if (
@@ -156,7 +167,7 @@ def main():
                     send_samples_db()
 
                 # sleep for at least 1 second to avoid multiple measurements in one second
-                time.sleep(2)
+                time.sleep(1)
 
         elif latest_instructions.get("shutdown"):
             if latest_instructions.get("water"):
@@ -181,9 +192,9 @@ def main():
 
             elif latest_instructions.get("lid"):
                 print("Opening roof")
-                open = threading.Thread(target=utils.openGH) #close greenhouse upon startup
-                open.start()
-                open.join()
+                open_greenhouse = threading.Thread(target=utils.openGH) #close greenhouse upon startup
+                open_greenhouse.start()
+                open_greenhouse.join()
                 time.sleep(5)
                 print("Closing roof")
                 close = threading.Thread(target=utils.closeGH) #close greenhouse upon startup
@@ -209,24 +220,19 @@ def main():
             latest_instructions["shutdown"] = False
 
 if __name__ == "__main__":
-    print("Time: " + str(time.localtime().tm_hour) + ":" + str(time.localtime().tm_min))
-    print(
-        "Time of next watering: "
-        + str(BC.watering_hour)
-        + ":"
-        + str(BC.watering_minute)
-    )
+    temp_a, temp_b = utils.getSoilMoisture(BC.pins_dict.get("adc2_pin"))
+    print(temp_a, temp_b)
 
     print("starting")
-    main_thread = threading.Thread(target=main)
-    main_thread.start()
-    print("main thread started")
+    #main_thread = threading.Thread(target=main)
+    #main_thread.start()
+    #print("main thread started")
     # connect code here
     scheduleThread = threading.Thread(
         target=waterSchedule,
         args=(BC.watering_hour, BC.watering_minute, BC.watering_duration),
     )
-    scheduleThread.start() #disabled until we test watering
-    print("schedule thread started")
+    #scheduleThread.start() #disabled until we test watering
+    main()
 
     app.run(host="0.0.0.0", port=5000, debug=True)
