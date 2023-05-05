@@ -14,39 +14,38 @@
 </table>
 {% endblock %} {% block scripts %}
 <script>
-
   $(document).ready(function () {
-      var table = $('#all_data_samples').DataTable({
-          order: [],
-          ajax: {
-              url:"/api/serve-data-records",
-              method:"GET",
-              data: {
-                  'token' : '{{ current_user.get_auth_token() }}'
-              }
-          },
-          serverSide: true,
-          columns: [
-              {data: "user_id", width: "20%"},
-              {data: 'temperature', width: "13.4%"},
-              {data: 'humidity', width: "13.4%"},
-              {data: 'soil_percent', width: "13.3%"}
-              {data: 'date', width: "20%"},
-              {data: 'time', width: "20%"},
-          ]
-      });
+    var table = $("#all_data_samples").DataTable({
+      order: [],
+      ajax: {
+        url: "/api/serve-data-records",
+        method: "GET",
+        data: {
+          token: "{{ current_user.get_auth_token() }}",
+        },
+      },
+      serverSide: true,
+      columns: [
+        { data: "user_id", width: "20%" },
+        { data: "temperature", width: "13.4%" },
+        { data: "humidity", width: "13.4%" },
+        { data: "soil_percent", width: "13.3%" },
+        { data: "date", width: "20%" },
+        { data: "time", width: "20%" },
+      ],
+    });
 
-      // Switching with left and right keyboard buttons
-      $(document).keydown( function(e) {
-          // left arrow
-          if ((e.keyCode || e.which) === 37) {
-              $( "#data_previous" ).click();
-          }
-          // right arrow
-          if ((e.keyCode || e.which) === 39) {
-              $( "#data_next" ).click();
-          }
-      })
+    // Switching with left and right keyboard buttons
+    $(document).keydown(function (e) {
+      // left arrow
+      if ((e.keyCode || e.which) === 37) {
+        $("#data_previous").click();
+      }
+      // right arrow
+      if ((e.keyCode || e.which) === 39) {
+        $("#data_next").click();
+      }
+    });
   });
 </script>
 {% endblock %}
