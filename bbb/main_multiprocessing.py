@@ -77,9 +77,13 @@ def main():
     # soilPercent is not used but still collected just in case
     # soilPercent, soil = utils.getSoilMoisture(BC.pins_dict.get('adc_pin'))
     # sensorF, sensorH = utils.getTempHum(sensor)  # measure initial values
+    next_time = time.time() + 5
     while True:
         if not latest_instructions.get("shutdown"):
-            if int(time.strftime("%S")) % 5 == 0:  # measure value every x seconds
+            if time.time() >= next_time:
+                # ... take measurements and perform operations ...
+                next_time += 5
+
                 # print(measureValues()[0])
                 soilPercent, soil = utils.getSoilMoisture(BC.pins_dict.get("adc_pin"))
                 tankPercent, tankLevel = utils.getWaterLevel(
