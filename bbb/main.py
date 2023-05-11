@@ -164,7 +164,9 @@ def main():
                     session.add(sample)
 
                 if BC.SEND_DATA:
+                    print("Sending")
                     send_samples_db()
+                    print("Sent")
 
                 # sleep for at least 1 second to avoid multiple measurements in one second
                 time.sleep(1)
@@ -220,9 +222,7 @@ def main():
             latest_instructions["shutdown"] = False
 
 if __name__ == "__main__":
-    temp_a, temp_b = utils.getSoilMoisture(BC.pins_dict.get("adc2_pin"))
-    print(temp_a, temp_b)
-
+    #app.run(host="0.0.0.0", port=5000, debug=True)
     print("starting")
     #main_thread = threading.Thread(target=main)
     #main_thread.start()
@@ -232,7 +232,11 @@ if __name__ == "__main__":
         target=waterSchedule,
         args=(BC.watering_hour, BC.watering_minute, BC.watering_duration),
     )
-    #scheduleThread.start() #disabled until we test watering
+    host = "0.0.0.0"
+    port = 5000
+    debug = True
+    apiThread = threading.Thread(target=app.run, args=(host, port, debug))
+    apiThread.start()
+    scheduleThread.start() #disabled until we test watering
     main()
 
-    app.run(host="0.0.0.0", port=5000, debug=True)
