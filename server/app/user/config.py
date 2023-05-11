@@ -1,3 +1,8 @@
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
 class UserConfig:
     # Routes
     MY_DATA_SAMPLES_ROUTE = "/my-data-records"
@@ -9,7 +14,7 @@ class UserConfig:
     CHARTS_ROUTE = "/charts"
 
     # URL for the BBB
-    IP = "172.20.10.5"
+    IP = os.getenv("BBB_IP")
     BBB_URL = f"http://{IP}:5000"
 
     INSTRUCTIONS_URL = f"{BBB_URL}/instructions"
