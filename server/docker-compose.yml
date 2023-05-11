@@ -1,22 +1,21 @@
 version: "3.9"
 
 services:
-  # nginx:
-  #   image: nginx:stable-alpine
-  #   container_name: nginx_reverse_proxy
-  #   ports:
-  #     - "80:80"
-  #     - "443:443"
-  #   volumes:
-  #     - ./nginx.conf:/etc/nginx/nginx.conf
-  #     - /etc/letsencrypt:/etc/letsencrypt
-  #   depends_on:
-  #     - aec
+  nginx:
+    image: nginx:stable-alpine
+    container_name: nginx_reverse_proxy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - /etc/letsencrypt:/etc/letsencrypt
+    depends_on:
+      - server
 
   postgres:
     container_name: G2H-postgres
     image: postgres:14
-    platform: linux/arm64/v8
     environment:
       POSTGRES_USER: ubuntu
       POSTGRES_PASSWORD: ubuntu

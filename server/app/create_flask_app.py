@@ -48,6 +48,7 @@ def add_configs(app):
 
 
 def create_app():
+    logger.info(AdminConfig.FLASK_HTML_DIR)
     FlaskApp = Flask(
         __name__,
         template_folder=os.path.abspath(AdminConfig.FLASK_HTML_DIR),

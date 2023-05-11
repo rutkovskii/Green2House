@@ -13,14 +13,3 @@ class Config:
 
     ENVIRONMENT = os.getenv("ENVIRONMENT")
     DATABASE_URI = "postgresql+psycopg2://ubuntu:ubuntu@postgres:5432/postgresDB"
-
-    # Keys and Secrets
-    # SECRET_KEY = os.getenv("SECRET_KEY")
-
-    # with open(os.path.join(CONFIG_DIR, "env.txt")) as e:
-    #     ENVIRONMENT = e.read().strip()
-    # if ENVIRONMENT == "local":
-    #     pass
-
-    # elif ENVIRONMENT == "server":
-    #     pass
