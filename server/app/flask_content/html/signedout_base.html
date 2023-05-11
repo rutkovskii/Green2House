@@ -1,0 +1,33 @@
+{% extends "bootstrap/base.html" %} {% import "bootstrap/wtf.html" as wtf %} {%
+block navbar %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>{{ title }}</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/styles.css') }}"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      href="{{ url_for('static', filename='favicon.ico') }}"
+    />
+  </head>
+  <body>
+    <nav class="navbar navbar-expand navbar-dark">
+      <div class="container-fluid">
+        <nav class="navbar-expand">
+          <ul class="nav navbar-nav horizontal">
+            <li class="nav-item">
+              <a class="nav-link active" href="/">G2H</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </nav>
+  </body>
+</html>
+
+{% endblock %}

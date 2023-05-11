@@ -1,0 +1,13 @@
+[Unit]
+Description=API Service
+After=network.target
+
+[Service]
+User=debian
+WorkingDirectory=/home/debian/bbb
+ExecStart=/bin/bash /home/debian/bbb/system_runner_2.sh
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,70 @@
+{% extends "user_signedin_base.html" %} {% block content %}
+<div class="container">
+  <div class="page-header">
+    <h3>Control Actuation</h3>
+  </div>
+  <div class="center-screen">
+    <button
+      id="waterButton"
+      class="btn btn-primary btn-custom"
+      data-action="water"
+    >
+      Water
+    </button>
+    <button
+      id="mistButton"
+      class="btn btn-primary btn-custom"
+      data-action="mist"
+    >
+      Mist
+    </button>
+    <button
+      id="liftLidButton"
+      class="btn btn-primary btn-custom"
+      data-action="lid"
+    >
+      Lift Lid
+    </button>
+    <button
+      id="heatButton"
+      class="btn btn-primary btn-custom"
+      data-action="heat"
+    >
+      Heat
+    </button>
+    <button id="fanButton" class="btn btn-primary btn-custom" data-action="fan">
+      Fan
+    </button>
+  </div>
+</div>
+
+<script>
+  const buttonsUrl = "{{ buttons_url }}";
+  console.log(buttonsUrl);
+  const buttonActions = ["water", "mist", "liftLid", "heat", "fan"];
+
+  function handleButtonClick(event) {
+    const button = event.target;
+    const action = button.getAttribute("data-action");
+
+    fetch(buttonsUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ action: action }),
+    })
+      .then((response) => response.json())
+      .then((data) => console.log("Success:", data))
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }
+
+  buttonActions.forEach((action) => {
+    document
+      .getElementById(`${action}Button`)
+      .addEventListener("click", handleButtonClick);
+  });
+</script>
+{% endblock %}

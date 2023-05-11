@@ -1,0 +1,33 @@
+{% extends "signedout_base.html" %}{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-md-4">
+      <div class="page-header">
+        <h3>About the Project</h3>
+      </div>
+      <p>
+        As people seek to eat healthier and live cleaner lives it can be very
+        challenging to do in an efficient manner. One way people are looking to
+        do this is through home gardening, which has a large room for
+        improvement and has not yet been made smart and efficient on a small
+        scale. Green2House aims to provide a smart portable greenhouse allowing
+        for individuals to grow plants without as much hassle for watering them
+        and keeping them protected.
+      </p>
+    </div>
+    <div class="col-md-4">
+      <div class="page-header">
+        <h3>Sign In or Register</h3>
+      </div>
+      <div class="d-flex align-items-center">
+        <a href="/sign-in" class="btn btn-primary btn-lg auth-btn" role="button"
+          >Sign In</a
+        >
+        <a href="/sign-up" class="btn btn-primary btn-lg auth-btn" role="button"
+          >Sign Up</a
+        >
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,73 @@
+{% extends "bootstrap/base.html" %} {% import "bootstrap/wtf.html" as wtf %} {%
+block navbar %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>{{ title }}</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/styles.css') }}"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      href="{{ url_for('static', filename='favicon.ico') }}"
+    />
+  </head>
+  <body>
+    <nav class="navbar navbar-expand navbar-dark">
+      <div class="container-fluid">
+        <nav class="navbar-expand">
+          <ul class="nav navbar-nav horizontal">
+            <li class="nav-item">
+              <a class="nav-link active" href="/admin">Admin Page</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="/admin/all-users"
+                >Admin All Users</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="/admin/all-data-records"
+                >Admin Data Records</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="/admin/charts">Admin Charts</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="/home">User Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="/my-data-records"
+                >User Data Records</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="/charts">User Charts</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="/environment"
+                >User Set Environment</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="/current-environment"
+                >User Current Environment</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="/buttons">User Controls</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="/sign-out">Sign Out</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </nav>
+  </body>
+</html>
+
+{% endblock %}

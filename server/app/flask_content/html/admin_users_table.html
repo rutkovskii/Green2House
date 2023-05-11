@@ -1,0 +1,53 @@
+{% extends "admin_table_base.html" %} {% block content %}
+<div class="table-reponsive">
+  <table id="all_users" class="table table-striped">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Phone Number</th>
+        <th>Email</th>
+        <th>Date and Time Joined</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+</div>
+{% endblock %} {% block scripts %}
+<script>
+  $(document).ready(function () {
+    var table = $("#all_users").DataTable({
+      order: [],
+      autoWidth: false,
+      reponsive: true,
+      ajax: {
+        url: "/api/serve-users",
+        method: "GET",
+        data: {
+          token: "{{ current_user.get_auth_token() }}",
+        },
+      },
+      serverSide: true,
+      columns: [
+        { data: "id", width: "10%" },
+        { data: "name", width: "20%" },
+        { data: "phone_number", width: "20%" },
+        { data: "email", width: "25%" },
+        { data: "datetime_joined", width: "25%" },
+      ],
+    });
+
+    // Switching with left and right keyboard buttons
+    $(document).keydown(function (e) {
+      // left arrow
+      if ((e.keyCode || e.which) === 37) {
+        $("#data_previous").click();
+      }
+      // right arrow
+      if ((e.keyCode || e.which) === 39) {
+        $("#data_next").click();
+      }
+    });
+  });
+</script>
+{% endblock %}

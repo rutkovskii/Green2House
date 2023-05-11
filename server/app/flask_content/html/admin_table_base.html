@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>{{ title }}</title>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap5.css"
+    />
+
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='css/styles.css') }}"
+    />
+  </head>
+  <body>
+    <nav class="navbar navbar-expand navbar-dark">
+      <div class="container-fluid">
+        <nav class="navbar-expand">
+          <ul class="nav navbar-nav horizontal">
+            <li class="nav-item">
+              <a class="nav-link active" href="/admin">Admin Page</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="/admin/all-users"
+                >Admin All Users</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="/admin/all-data-records"
+                >Admin Data Records</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="/admin/charts">Admin Charts</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="/home">User Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="/my-data-records"
+                >User Data Records</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="/charts">User Charts</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="/environment"
+                >User Set Environment</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="/current-environment"
+                >User Current Environment</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="/buttons">User Controls</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="/sign-out">Sign Out</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </nav>
+    <div class="container">
+      <div class="container-fluid">
+        <br />
+        <h3>{{ title }}</h3>
+        <hr />
+        {% block content %}{% endblock %}
+      </div>
+    </div>
+    <script
+      type="text/javascript"
+      charset="utf8"
+      src="https://code.jquery.com/jquery-3.6.0.min.js"
+    ></script>
+    <script
+      type="text/javascript"
+      charset="utf8"
+      src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"
+    ></script>
+    <script
+      type="text/javascript"
+      charset="utf8"
+      src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap5.js"
+    ></script>
+    {% block scripts %}{% endblock %}
+  </body>
+</html>

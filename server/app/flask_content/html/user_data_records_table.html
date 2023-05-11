@@ -1,0 +1,54 @@
+{% extends "user_table_base.html" %} {% block content %}
+<div class="table-responsive">
+  <table id="all_data_samples" class="table table-striped">
+    <thead>
+      <tr>
+        <th>Temperature</th>
+        <th>Humidity</th>
+        <th>Soil Moisture</th>
+        <th>Date (Y/M/D)</th>
+        <th>Time</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+</div>
+{% endblock %} {% block scripts %}
+<script>
+  $(document).ready(function () {
+      var table = $('#all_data_samples').DataTable({
+          order: [],
+          autoWidth: false,
+          reponsive: true,
+          ajax: {
+              url:"/api/serve-data-records",
+              method:"GET",
+              data: {
+                  'user_id': {{ current_user.get_id() }},
+                  'token': '{{ current_user.get_auth_token() }}'
+              },
+          },
+          serverSide: true,
+          columns: [
+            {data: 'temperature', width: "20%"},
+            {data: 'humidity', width: "20%"},
+            {data: 'soil_percent', width: "20%"},
+            {data: 'date', width: "20%"},
+            {data: 'time', width: "20%"},
+          ],
+      });
+
+      // Switching with left and right keyboard buttons
+      $(document).keydown( function(e) {
+          // left arrow
+          if ((e.keyCode || e.which) === 37) {
+              $( "#data_previous" ).click();
+          }
+          // right arrow
+          if ((e.keyCode || e.which) === 39) {
+              $( "#data_next" ).click();
+          }
+      })
+  });
+</script>
+{% endblock %}

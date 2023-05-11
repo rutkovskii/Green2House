@@ -1,0 +1,56 @@
+{% extends "bootstrap/base.html" %} {% import "bootstrap/wtf.html" as wtf %} {%
+block navbar %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>{{ title }}</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='css/styles.css') }}"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      href="{{ url_for('static', filename='favicon.ico') }}"
+    />
+  </head>
+  <body>
+    <nav class="navbar navbar-expand navbar-dark">
+      <div class="container-fluid">
+        <nav class="navbar-expand">
+          <ul class="nav navbar-nav horizontal">
+            <li class="nav-item">
+              <a class="nav-link active" href="/home">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="/my-data-records"
+                >My Data Records</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="/charts">Charts</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="/environment">Set Environment</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="/current-environment"
+                >Current Environment</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="/buttons">Controls</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="/sign-out">Sign Out</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </nav>
+  </body>
+</html>
+
+{% endblock %}

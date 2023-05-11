@@ -1,0 +1,149 @@
+body {
+  background-color: #e0ebe0; /* Light Green */
+  color: #333; /* Dark Text */
+}
+
+.page-header {
+  color: #3c763d; /* Dark Green */
+}
+
+.btn-primary {
+  background-color: #4CAF50; /* Farming Green */
+  border-color: #4CAF50;
+}
+
+.center-screen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  height: 50vh;
+}
+
+.btn-custom {
+  font-size: 2rem;
+  padding: 1rem 2rem;
+  margin: 1rem;
+  width: 150px; /* Fixed width */
+  height: 60px; /* Fixed height */
+  text-align: center; /* Center text */
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active {
+  background-color: #3E8E41;
+  border-color: #3E8E41;
+}
+
+.navbar {
+  background-color: #222222;
+  font-size: 14px;
+  border-radius: 0;
+}
+
+.navbar-nav {
+  min-width: 360px;
+  float: left;
+}
+
+.navbar-nav>li {
+  float: left;
+}
+
+.navbar-nav>li>a {
+  color: #fff;
+}
+
+.auth-btn {
+  padding: 12px 24px;
+  font-size: 18px;
+  margin: 0 10px;
+  border-radius: 4px;
+}
+
+.auth-btn:hover,
+.auth-btn:focus {
+  background-color: #2e5b30;
+  border-color: #2e5b30;
+}
+
+#temp-slider,
+#humidity-slider {
+  width: 75%;
+}
+
+.ui-slider-range {
+  background-color: #444;
+}
+
+@media (max-width: 768px) {
+  #temp-slider,
+  #humidity-slider {
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .submit-btn-container {
+    text-align: center;
+  }
+  .submit-btn-container .btn {
+    display: inline-block;
+  }
+  .large-btn {
+    padding: 15px 30px;
+    font-size: 2.5rem;
+  }
+}
+
+.settings-wrapper {
+  flex: 1;
+  max-width: calc(60% - 10px);
+  margin-right: 20px;
+}
+
+.side-widgets {
+  flex: 1;
+  max-width: calc(40% - 10px);
+}
+
+.prefill-buttons-container {
+  margin-left: px;
+}
+
+.prefill-buttons {
+  flex: 1;
+  max-width: calc(50% - 10px);
+}
+
+.prefill-btn {
+  font-size: 1.5rem;
+  font-weight: bold;
+  padding: 10px 20px;
+  margin: 10px;
+}
+
+.plant-description {
+  margin-top: 20px;
+  font-size: 14px;
+  color: #333;
+}
+
+.form-container {
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.shutdown-btn {
+  background-color: #d9534f; /* Red */
+  border-color: #d43f3a;
+}
+
+.shutdown-btn:hover,
+.shutdown-btn:focus,
+.shutdown-btn:active {
+  background-color: #c9302c;
+  border-color: #ac2925;
+}
+

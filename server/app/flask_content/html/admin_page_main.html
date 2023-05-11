@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+
+{% extends "admin_signedin_base.html" %} {% block title %}Admin Page{% endblock
+%} {% block content %} {% with messages = get_flashed_messages() %} {% if
+messages %}
+<ul class="flashes">
+  {% for message in messages %}
+  <li>{{ message }}</li>
+  {% endfor %}
+</ul>
+{% endif %} {% endwith %}
+<div class="container">
+  <div class="page-header">
+    <h2>Admin Page: Use Header for now</h2>
+  </div>
+  <p>As an admin, you have access to the following functionalities:</p>
+  <ul>
+    <li>View all users</li>
+    <li>View all data records</li>
+  </ul>
+  <div class="admin-actions">
+    <a href="/admin/all-users" class="btn btn-primary" role="button"
+      >View All Users</a
+    >
+    <a href="/admin/all-data-records" class="btn btn-primary" role="button"
+      >View All Data Records</a
+    >
+  </div>
+</div>
+{% endblock %}
