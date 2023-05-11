@@ -60,7 +60,7 @@ class BBB_Config:
 
     # change link based on ngrok
     # must have internet connection
-    SERVER_URL = "https://13e8-128-119-202-42.ngrok-free.app"
+    SERVER_URL = "https://green2house.com"
     SERVER_GET_DATA_URL = SERVER_URL + "/get-data"
     SEND_DATA = False
 
