@@ -249,8 +249,7 @@ def main():
 
 
 if __name__ == "__main__":
-    # Set up the three processes
-    main_process = multiprocessing.Process(target=main)
+    # Set up the two processes
     flask_process = multiprocessing.Process(
         target=app.run, kwargs={"host": "0.0.0.0", "port": 5000, "debug": True}
     )
@@ -260,11 +259,12 @@ if __name__ == "__main__":
     )
 
     # Start the processes
-    main_process.start()
     flask_process.start()
     schedule_process.start()
 
     # Wait for the processes to finish
-    main_process.join()
     flask_process.join()
     schedule_process.join()
+
+    # Run main directly in the main process
+    main()
