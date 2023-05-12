@@ -10,12 +10,14 @@ class UserConfig:
     SERVE_GRAPH_DATA_ROUTE = "/api/serve-graph-data-records"
     ENV_ROUTE = "/environment"
     CURRENT_ENV_DATA_ROUTE = "/current-environment"
-    BUTTONS_ROUTE = "/buttons"
+    BUTTONS_ROUTE = "/controls"
     CHARTS_ROUTE = "/charts"
 
     # URL for the BBB
-    IP = os.getenv("BBB_IP")
-    BBB_URL = f"http://{IP}:5000"
+    # IP = os.getenv("BBB_IP")
+    # BBB_URL = f"http://{IP}:5000"
+    IP = os.getenv("DOMAIN")
+    BBB_URL = f"https://{IP}"
 
     INSTRUCTIONS_URL = f"{BBB_URL}/instructions"
     BUTTONS_URL = f"{BBB_URL}/buttons"

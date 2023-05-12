@@ -24,7 +24,7 @@ logger = setup_logger(__name__, "server.log")
 def buttons():
     """Render the buttons page."""
     return render_template(
-        "user_buttons.html", title="Buttons — G2H", buttons_url=UserConfig.BUTTONS_URL
+        "user_buttons.html", title="Controls — G2H", buttons_url=UserConfig.BUTTONS_URL
     )
 
 
