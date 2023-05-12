@@ -11,6 +11,10 @@ def create_main(latest_instructions):
     return main
 
 
+def run_app(app):
+    app.run(host="0.0.0.0", port=5000, debug=False)
+
+
 if __name__ == "__main__":
     # Create a Manager
     manager = Manager()
@@ -35,10 +39,10 @@ if __name__ == "__main__":
 
     # Create your Flask app and the main function with the shared dictionary
     app = create_app(latest_instructions)
-    main = create_main(latest_instructions)
+    main = main_func(latest_instructions)
 
     # Create the processes
-    flask_process = Process(target=app.run, kwargs={"host": "0.0.0.0", "port": 5000, "debug": False})
+    flask_process = Process(target=run_app, args=(app,))
     main_process = Process(target=main)
     schedule_process = Process(target=waterSchedule)
 
@@ -46,7 +50,6 @@ if __name__ == "__main__":
     flask_process.start()
     main_process.start()
     schedule_process.start()
-
 
     # Wait for the processes to finish
     flask_process.join()
