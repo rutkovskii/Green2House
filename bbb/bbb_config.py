@@ -8,6 +8,8 @@ class BBB_Config:
     BBB_DIR = os.path.abspath(os.path.dirname(__file__))
     FILES_DIR = os.path.join(BBB_DIR, "files")
     CONFIG_DIR = os.path.join(BBB_DIR, "configs")
+
+    LI_PATH = os.path.join(BBB_DIR, "latest_instructions.txt")
     # DATA_DIR = os.path.join(SCRIPTS_DIR,'data')
     # LOG_DIR = os.path.join(SCRIPTS_DIR,'logs')
 

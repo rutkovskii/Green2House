@@ -97,13 +97,13 @@ def main():
     }
 
     try:
-        with open('./scripts/latest_instructions.txt', 'r') as file:
+        with open(BC.LI_PATH, 'r') as file:
             latest_instructions = json.load(file)
     except FileNotFoundError:
         print('No existing instructions file found, using default instructions.')
 
     try:
-        with open('./scripts/latest_instructions.txt', 'r') as file:
+        with open(BC.LI_PATH, 'r') as file:
             latest_instructions = json.load(file)
     except FileNotFoundError:
         print('No existing instructions file found, using default instructions.')
@@ -119,7 +119,7 @@ def main():
                 next_time += 10
 
                 try:
-                    with open('./scripts/latest_instructions.txt', 'r') as file:
+                    with open(BC.LI_PATH, 'r') as file:
                         latest_instructions = json.load(file)
                 except FileNotFoundError:
                     print('No existing instructions file found, using default instructions.')
@@ -225,7 +225,7 @@ def main():
 
                         latest_instructions["updated"] = False
 
-                        write_instructions_to_file('./scripts/latest_instructions.txt', latest_instructions)
+                        write_instructions_to_file(BC.LI_PATH, latest_instructions)
 
                 # Sensing and Adding Sample to database
                 sample = utils.sense_sample_db(sensorF, sensorH)
@@ -251,7 +251,7 @@ def main():
                 utils.relayOff(GPIO, BC.pins_dict.get("water_relay_pin"))
                 latest_instructions["water"] = False
 
-                write_instructions_to_file('./scripts/latest_instructions.txt', latest_instructions)
+                write_instructions_to_file(BC.LI_PATH, latest_instructions)
 
             elif latest_instructions.get("mist"):
                 print("Activating misters")
@@ -263,7 +263,7 @@ def main():
                 utils.relayOff(GPIO, BC.pins_dict.get("mist_relay_pin"))
                 latest_instructions["mist"] = False
 
-                write_instructions_to_file('./scripts/latest_instructions.txt', latest_instructions)
+                write_instructions_to_file(BC.LI_PATH, latest_instructions)
 
             elif latest_instructions.get("lid"):
                 print("Opening roof")
@@ -281,7 +281,7 @@ def main():
                 close.join()
                 latest_instructions["lid"] = False
 
-                write_instructions_to_file('./scripts/latest_instructions.txt', latest_instructions)
+                write_instructions_to_file(BC.LI_PATH, latest_instructions)
 
             elif latest_instructions.get("fan"):
                 print("Activating fan")
@@ -290,7 +290,7 @@ def main():
                 utils.relayOff(GPIO, BC.pins_dict.get("fan_relay_pin"))
                 latest_instructions["fan"] = False
 
-                write_instructions_to_file('./scripts/latest_instructions.txt', latest_instructions)
+                write_instructions_to_file(BC.LI_PATH, latest_instructions)
 
             elif latest_instructions.get("heat"):
                 print("Activating heater")
@@ -299,11 +299,11 @@ def main():
                 utils.relayOff(GPIO, BC.pins_dict.get("heater_relay_pin"))
                 latest_instructions["heat"] = False
 
-                write_instructions_to_file('./scripts/latest_instructions.txt', latest_instructions)
+                write_instructions_to_file(BC.LI_PATH, latest_instructions)
 
             latest_instructions["shutdown"] = False
 
-            write_instructions_to_file('./scripts/latest_instructions.txt', latest_instructions)
+            write_instructions_to_file(BC.LI_PATH, latest_instructions)
 
 
 if __name__ == "__main__":

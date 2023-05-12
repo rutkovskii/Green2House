@@ -4,6 +4,7 @@ from database.models import Instructions
 from database.database import session_scope
 from datetime import datetime
 import json
+from bbb_config import BBB_Config
 
 
 app = Flask(__name__)
@@ -64,7 +65,7 @@ def shutdown_system():
         print("System shut down", flush=True)
 
         # Write to file
-        write_instructions_to_file('latest_instructions.txt', latest_instructions)
+        write_instructions_to_file(BBB_Config.LI_PATH, latest_instructions)
 
         return jsonify({"message": "System shut down successfully"})
 
@@ -83,7 +84,7 @@ def buttons():
 
         print(f"{action.capitalize()} action performed", flush=True)
 
-        write_instructions_to_file('latest_instructions.txt', latest_instructions)
+        write_instructions_to_file(BBB_Config.LI_PATH, latest_instructions)
 
         return jsonify(
             {"message": f"{action.capitalize()} action will be performed"}
@@ -117,7 +118,7 @@ def instructions():
 
         latest_instructions["updated"] = True
 
-        write_instructions_to_file('latest_instructions.txt', latest_instructions)
+        write_instructions_to_file(BBB_Config.LI_PATH, latest_instructions)
 
         instructions = Instructions(
             user_id=data.get("user_id"),
