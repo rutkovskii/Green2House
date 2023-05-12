@@ -87,20 +87,19 @@
       </div>
 
       <br />
-      <div class="form-group">
-        <div class="submit-btn-container">
-          <button type="submit" class="btn btn-primary btn-lg large-btn">
-            Submit
-          </button>
-          <button
-            type="button"
-            id="shutdownButton"
-            class="btn btn-danger btn-lg large-btn shutdown-btn"
-          >
-            Shutdown
-          </button>
-        </div>
+      <div class="form-group button-group">
+        <button type="submit" class="btn btn-primary btn-lg large-btn">
+          Submit
+        </button>
+        <button
+        type="button"
+        id="shutdownButton"
+        class="btn btn-danger btn-lg large-btn shutdown-btn"
+        >
+        Shutdown
+        </button>
       </div>
+      
     </form>
   </div>
 
@@ -194,7 +193,7 @@
         document.getElementById("shutdownButton").addEventListener("click", handleShutdownButtonClick);
 
         function handleShutdownButtonClick(event) {
-            const endpoint = "/shutdown-system";
+            const endpoint = "/shutdown";
 
             fetch(endpoint, {
                 method: "POST",

@@ -1,14 +1,18 @@
 body {
-  background-color: #e0ebe0; /* Light Green */
-  color: #333; /* Dark Text */
+  background-color: #e0ebe0;
+  /* Light Green */
+  color: #333;
+  /* Dark Text */
 }
 
 .page-header {
-  color: #3c763d; /* Dark Green */
+  color: #3c763d;
+  /* Dark Green */
 }
 
 .btn-primary {
-  background-color: #4CAF50; /* Farming Green */
+  background-color: #4CAF50;
+  /* Farming Green */
   border-color: #4CAF50;
 }
 
@@ -24,9 +28,12 @@ body {
   font-size: 2rem;
   padding: 1rem 2rem;
   margin: 1rem;
-  width: 150px; /* Fixed width */
-  height: 60px; /* Fixed height */
-  text-align: center; /* Center text */
+  width: 150px;
+  /* Fixed width */
+  height: 60px;
+  /* Fixed height */
+  text-align: center;
+  /* Center text */
 }
 
 .btn-primary:hover,
@@ -78,6 +85,7 @@ body {
 }
 
 @media (max-width: 768px) {
+
   #temp-slider,
   #humidity-slider {
     width: 95%;
@@ -88,9 +96,11 @@ body {
   .submit-btn-container {
     text-align: center;
   }
+
   .submit-btn-container .btn {
     display: inline-block;
   }
+
   .large-btn {
     padding: 15px 30px;
     font-size: 2.5rem;
@@ -136,7 +146,8 @@ body {
 }
 
 .shutdown-btn {
-  background-color: #d9534f; /* Red */
+  background-color: #d9534f;
+  /* Red */
   border-color: #d43f3a;
 }
 
@@ -147,3 +158,16 @@ body {
   border-color: #ac2925;
 }
 
+.button-group {
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  gap: 5px;
+  /* adjust as needed */
+}
+
+@media (max-width: 600px) {
+  .button-group {
+    flex-direction: column;
+  }
+}
