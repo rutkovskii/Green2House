@@ -11,7 +11,8 @@ def create_main(latest_instructions):
     return main
 
 
-def run_app(app):
+def run_app(latest_instructions):
+    app = create_app(latest_instructions)
     app.run(host="0.0.0.0", port=5000, debug=False)
 
 
@@ -38,11 +39,10 @@ if __name__ == "__main__":
     })
 
     # Create your Flask app and the main function with the shared dictionary
-    app = create_app(latest_instructions)
-    main = main_func(latest_instructions)
+    main = create_main(latest_instructions)
 
     # Create the processes
-    flask_process = Process(target=run_app, args=(app,))
+    flask_process = Process(target=run_app, args=(latest_instructions,))
     main_process = Process(target=main)
     schedule_process = Process(target=waterSchedule)
 
