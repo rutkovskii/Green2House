@@ -29,19 +29,21 @@
 
 <script>
   function prepareChartData(dataSamples) {
-    const timeLabels = dataSamples.map((sample) => sample.time);
+    const timeLabels = dataSamples.map((sample) => sample.date_time);
     const temperatureData = dataSamples.map((sample) => sample.temperature);
     const humidityData = dataSamples.map((sample) => sample.humidity);
+    const soilPercentData = dataSamples.map((sample) => sample.soil_percent);
 
     return {
       timeLabels,
       temperatureData,
       humidityData,
+      soilPercentData,
     };
   }
 
   // Create a chart using Chart.js
-  function createChart(chartId, timeLabels, temperatureData, humidityData) {
+  function createChart(chartId, timeLabels, temperatureData, humidityData, soilPercentData) { 
     const ctx = document.getElementById(chartId).getContext("2d");
 
     const chart = new Chart(ctx, {
@@ -64,6 +66,14 @@
             backgroundColor: "rgba(54, 162, 235, 0.1)",
             tension: 0.4,
             yAxisID: "y1",
+          },
+          {
+            label: "Soil Moisture",
+            data: soilPercentData,
+            borderColor: "rgba(75, 192, 192, 1)",
+            backgroundColor: "rgba(75, 192, 192, 0.1)",
+            tension: 0.4,
+            yAxisID: "y2",
           },
         ],
       },
@@ -117,6 +127,23 @@
               },
             },
           },
+          y2: { 
+        position: "right",
+        suggestedMin: 0,
+        suggestedMax: 100,
+        title: {
+          display: true,
+          text: "Soil Percent (%)",
+          font: {
+            size: 20,
+          },
+        },
+        ticks: {
+          font: {
+            size: 15,
+          },
+        },
+      },
         },
         plugins: {
           legend: {

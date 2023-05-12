@@ -77,7 +77,7 @@ def main():
     # soilPercent is not used but still collected just in case
     # soilPercent, soil = utils.getSoilMoisture(BC.pins_dict.get('adc_pin'))
     # sensorF, sensorH = utils.getTempHum(sensor)  # measure initial values
-    next_time = time.time() + 5
+    next_time = time.time() + 10
     while True:
         if not latest_instructions.get("shutdown"):
             if time.time() >= next_time + 2:
