@@ -34,6 +34,23 @@ def write_instructions_to_file(filename, latest_instructions):
         json.dump(latest_instructions, f)
 
 
+import os
+
+def write_instructions_to_file(filename, latest_instructions):
+    try:
+        # Check if the directory exists, if not create it
+        dir_name = os.path.dirname(filename)
+        if dir_name and not os.path.exists(dir_name):
+            os.makedirs(dir_name)
+
+        with open(filename, 'w') as f:
+            json.dump(latest_instructions, f)
+    except PermissionError:
+        print(f"Permission denied: Can't write to the file {filename}")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+
 @app.route("/shutdown", methods=["POST"])
 def shutdown_system():
     if request.method == "POST":
