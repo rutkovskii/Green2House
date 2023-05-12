@@ -280,9 +280,7 @@ def main():
 
 
 if __name__ == "__main__":
-    # Run main in a separate thread
-    main_thread = threading.Thread(target=main)
-    main_thread.start()
+
 
     # Set up the two processes
     flask_process = multiprocessing.Process(
@@ -296,6 +294,10 @@ if __name__ == "__main__":
     # Start the processes
     flask_process.start()
     schedule_process.start()
+
+        # Run main in a separate thread
+    main_thread = threading.Thread(target=main)
+    main_thread.start()
 
     # Wait for the thread and processes to finish
     main_thread.join()
