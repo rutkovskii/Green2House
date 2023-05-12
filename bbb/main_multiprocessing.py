@@ -77,9 +77,13 @@ def main():
     # soilPercent is not used but still collected just in case
     # soilPercent, soil = utils.getSoilMoisture(BC.pins_dict.get('adc_pin'))
     # sensorF, sensorH = utils.getTempHum(sensor)  # measure initial values
+    next_time = time.time() + 5
     while True:
         if not latest_instructions.get("shutdown"):
-            if int(time.strftime("%S")) % 5 == 0:  # measure value every x seconds
+            if time.time() >= next_time:
+                # ... take measurements and perform operations ...
+                next_time += 5
+
                 # print(measureValues()[0])
                 soilPercent, soil = utils.getSoilMoisture(BC.pins_dict.get("adc_pin"))
                 tankPercent, tankLevel = utils.getWaterLevel(
@@ -249,8 +253,11 @@ def main():
 
 
 if __name__ == "__main__":
-    # Set up the three processes
-    main_process = multiprocessing.Process(target=main)
+    # Run main in a separate thread
+    main_thread = threading.Thread(target=main)
+    main_thread.start()
+
+    # Set up the two processes
     flask_process = multiprocessing.Process(
         target=app.run, kwargs={"host": "0.0.0.0", "port": 5000, "debug": True}
     )
@@ -260,11 +267,11 @@ if __name__ == "__main__":
     )
 
     # Start the processes
-    main_process.start()
     flask_process.start()
     schedule_process.start()
 
-    # Wait for the processes to finish
-    main_process.join()
+    # Wait for the thread and processes to finish
+    main_thread.join()
     flask_process.join()
     schedule_process.join()
+
