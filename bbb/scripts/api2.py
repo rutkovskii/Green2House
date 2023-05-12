@@ -16,7 +16,6 @@ def create_app(latest_instructions):
         if request.method == "POST":
             body = request.get_json()
 
-            global latest_instructions
             latest_instructions["shutdown"] = body["shutdown"]
 
             # Perform necessary actions to shut down the system
@@ -33,7 +32,6 @@ def create_app(latest_instructions):
         if request.method == "POST":
             body = request.get_json()
 
-            global latest_instructions
             action = body["action"]
             latest_instructions[action] = True
             latest_instructions["shutdown"] = True
