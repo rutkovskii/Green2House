@@ -82,7 +82,7 @@ def main():
         if not latest_instructions.get("shutdown"):
             if time.time() >= next_time + 2:
                 # ... take measurements and perform operations ...
-                next_time += 5
+                next_time += 10
 
                 # print(measureValues()[0])
                 soilPercent, soil = utils.getSoilMoisture(BC.pins_dict.get("adc_pin"))
