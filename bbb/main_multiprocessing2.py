@@ -252,26 +252,3 @@ def main(latest_instructions):
             latest_instructions["shutdown"] = False
 
 
-if __name__ == "__main__":
-    # Run main in a separate thread
-    main_thread = threading.Thread(target=main)
-    main_thread.start()
-
-    # Set up the two processes
-    flask_process = multiprocessing.Process(
-        target=app.run, kwargs={"host": "0.0.0.0", "port": 5000, "debug": False}
-    )
-    schedule_process = multiprocessing.Process(
-        target=waterSchedule,
-        args=(BC.watering_hour, BC.watering_minute, BC.watering_duration),
-    )
-
-    # Start the processes
-    flask_process.start()
-    schedule_process.start()
-
-    # Wait for the thread and processes to finish
-    main_thread.join()
-    flask_process.join()
-    schedule_process.join()
-

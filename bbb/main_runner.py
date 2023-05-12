@@ -1,14 +1,7 @@
 from multiprocessing import Manager, Process
-from scripts.api import app as flask_app
+from scripts.api2 import create_app
 from main_multiprocessing2 import main as main_func
 from main_multiprocessing2 import waterSchedule
-
-
-def create_app(latest_instructions):
-    # Modify your Flask app to accept the shared dictionary as an argument
-    # and use it instead of the global latest_instructions dictionary.
-    app = flask_app(latest_instructions)
-    return app
 
 
 def create_main(latest_instructions):
