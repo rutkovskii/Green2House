@@ -26,6 +26,26 @@ ADC.setup()
 # WET DIRT: 1500
 # PURE WATER: 1450
 
+latest_instructions_clean = {
+        # button actions
+        "shutdown": False,
+        "water": False,
+        "mist": False,
+        "lid": False,
+        "fan": False,
+        "heat": False,
+        # instructions
+        "min_temperature": None,
+        "max_temperature": None,
+        "min_humidity": None,
+        "max_humidity": None,
+        "watering_time": None,
+        "watering_duration": None,
+        "timestamp": None,
+        "updated": False,
+    }
+
+
 
 def waterSchedule(hour, min, duration):
     while True:
@@ -292,6 +312,8 @@ def main():
                 latest_instructions["heat"] = False
 
             latest_instructions["shutdown"] = False
+
+            latest_instructions = latest_instructions_clean
 
             write_instructions_to_file(BC.LI_PATH, latest_instructions)
 
