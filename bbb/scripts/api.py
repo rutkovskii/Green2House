@@ -33,7 +33,7 @@ latest_instructions = {
 @app.route("/shutdown", methods=["POST"])
 def shutdown_system():
     if request.method == "POST":
-        body = json.loads(request.get_json())
+        body = request.get_json()
 
         global latest_instructions
         latest_instructions["shutdown"] = body["shutdown"]
@@ -50,7 +50,7 @@ def shutdown_system():
 @app.route("/buttons", methods=["POST"])
 def buttons():
     if request.method == "POST":
-        body = json.loads(request.get_json())
+        body = request.get_json()
 
         global latest_instructions
         action = body["action"]
