@@ -251,8 +251,6 @@ def main():
                 utils.relayOff(GPIO, BC.pins_dict.get("water_relay_pin"))
                 latest_instructions["water"] = False
 
-                write_instructions_to_file(BC.LI_PATH, latest_instructions)
-
             elif latest_instructions.get("mist"):
                 print("Activating misters")
                 utils.relayOn(GPIO, BC.pins_dict.get("mist_relay_pin"))
@@ -262,8 +260,6 @@ def main():
                 utils.relayOff(GPIO, BC.pins_dict.get("pump_relay_pin"))
                 utils.relayOff(GPIO, BC.pins_dict.get("mist_relay_pin"))
                 latest_instructions["mist"] = False
-
-                write_instructions_to_file(BC.LI_PATH, latest_instructions)
 
             elif latest_instructions.get("lid"):
                 print("Opening roof")
@@ -281,8 +277,6 @@ def main():
                 close.join()
                 latest_instructions["lid"] = False
 
-                write_instructions_to_file(BC.LI_PATH, latest_instructions)
-
             elif latest_instructions.get("fan"):
                 print("Activating fan")
                 utils.relayOn(GPIO, BC.pins_dict.get("fan_relay_pin"))
@@ -290,16 +284,12 @@ def main():
                 utils.relayOff(GPIO, BC.pins_dict.get("fan_relay_pin"))
                 latest_instructions["fan"] = False
 
-                write_instructions_to_file(BC.LI_PATH, latest_instructions)
-
             elif latest_instructions.get("heat"):
                 print("Activating heater")
                 utils.relayOn(GPIO, BC.pins_dict.get("heater_relay_pin"))
                 time.sleep(10)
                 utils.relayOff(GPIO, BC.pins_dict.get("heater_relay_pin"))
                 latest_instructions["heat"] = False
-
-                write_instructions_to_file(BC.LI_PATH, latest_instructions)
 
             latest_instructions["shutdown"] = False
 
