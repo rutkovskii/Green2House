@@ -75,6 +75,12 @@ def main():
     BC.pump_status = "off"
     BC.mist_status = "off"
 
+    try:
+        with open('./scripts/latest_instructions.txt', 'r') as file:
+            latest_instructions = json.load(file)
+    except FileNotFoundError:
+        print('No existing instructions file found, using default instructions.')
+
     # soilPercent is not used but still collected just in case
     # soilPercent, soil = utils.getSoilMoisture(BC.pins_dict.get('adc_pin'))
     # sensorF, sensorH = utils.getTempHum(sensor)  # measure initial values
