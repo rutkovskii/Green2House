@@ -251,7 +251,7 @@ def main():
                 utils.relayOff(GPIO, BC.pins_dict.get("water_relay_pin"))
                 latest_instructions["water"] = False
 
-            elif latest_instructions.get("mist"):
+            if latest_instructions.get("mist"):
                 print("Activating misters")
                 utils.relayOn(GPIO, BC.pins_dict.get("mist_relay_pin"))
                 time.sleep(1)
@@ -261,7 +261,7 @@ def main():
                 utils.relayOff(GPIO, BC.pins_dict.get("mist_relay_pin"))
                 latest_instructions["mist"] = False
 
-            elif latest_instructions.get("lid"):
+            if latest_instructions.get("lid"):
                 print("Opening roof")
                 open_greenhouse = threading.Thread(
                     target=utils.openGH
@@ -277,14 +277,14 @@ def main():
                 close.join()
                 latest_instructions["lid"] = False
 
-            elif latest_instructions.get("fan"):
+            if latest_instructions.get("fan"):
                 print("Activating fan")
                 utils.relayOn(GPIO, BC.pins_dict.get("fan_relay_pin"))
                 time.sleep(10)
                 utils.relayOff(GPIO, BC.pins_dict.get("fan_relay_pin"))
                 latest_instructions["fan"] = False
 
-            elif latest_instructions.get("heat"):
+            if latest_instructions.get("heat"):
                 print("Activating heater")
                 utils.relayOn(GPIO, BC.pins_dict.get("heater_relay_pin"))
                 time.sleep(10)
