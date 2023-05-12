@@ -213,7 +213,7 @@ def main():
                 print("Activating misters")
                 utils.relayOn(GPIO, BC.pins_dict.get("mist_relay_pin"))
                 time.sleep(1)
-                utils.relayOn(GPIO, BC.pins_Dict.get("pump_relay_pin"))
+                utils.relayOn(GPIO, BC.pins_dict.get("pump_relay_pin"))
                 time.sleep(10)
                 utils.relayOff(GPIO, BC.pins_dict.get("pump_relay_pin"))
                 utils.relayOff(GPIO, BC.pins_dict.get("mist_relay_pin"))
