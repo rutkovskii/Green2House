@@ -75,6 +75,33 @@ def main():
     BC.pump_status = "off"
     BC.mist_status = "off"
 
+
+    # Initialize latest_instructions with a default value
+    latest_instructions = {
+        # button actions
+        "shutdown": False,
+        "water": False,
+        "mist": False,
+        "lid": False,
+        "fan": False,
+        "heat": False,
+        # instructions
+        "min_temperature": None,
+        "max_temperature": None,
+        "min_humidity": None,
+        "max_humidity": None,
+        "watering_time": None,
+        "watering_duration": None,
+        "timestamp": None,
+        "updated": False,
+    }
+
+    try:
+        with open('./scripts/latest_instructions.txt', 'r') as file:
+            latest_instructions = json.load(file)
+    except FileNotFoundError:
+        print('No existing instructions file found, using default instructions.')
+
     try:
         with open('./scripts/latest_instructions.txt', 'r') as file:
             latest_instructions = json.load(file)
