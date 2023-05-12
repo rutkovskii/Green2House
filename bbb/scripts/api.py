@@ -60,25 +60,10 @@ def buttons():
         print(f"{action.capitalize()} action performed", flush=True)
 
         return jsonify(
-            {"message": f"{action.capitalize()} action performed successfully"}
+            {"message": f"{action.capitalize()} action will be performed"}
         )
 
     return jsonify({"error": "Request must be JSON"})
-
-
-# @app.route("/water-plant", methods=["POST"])
-# def water_plant():
-#     if request.method == "POST":
-#         body = json.loads(request.get_json())
-
-#         global latest_instructions
-#         latest_instructions["water"] = body["water"]
-
-#         print(body)
-
-#         return jsonify({"message": "OK"})
-
-#     return jsonify({"error": "Request must be JSON"})
 
 
 @app.route("/instructions", methods=["POST"])
